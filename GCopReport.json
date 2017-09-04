@@ -1,0 +1,11 @@
+{
+  "Items": [
+    {
+      "Analyzer": "LongMethodAnalyzer",
+      "OccurrenceCount": 7,
+      "Exceptions": null,
+      "SentToServer": true,
+      "InstallationName": "ALI-A"
+    }
+  ]
+}

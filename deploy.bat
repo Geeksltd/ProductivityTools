@@ -1,0 +1,1 @@
+copy ".\GeeksProductivityTools\bin\Debug\GeeksProductivityTools.vsix" "R:\Developer Tools\Geeks\Geeks.Productivity.Tools\GeeksProductivityTools.vsix"

@@ -1,0 +1,617 @@
+WebException @11/02/2016 11:55:23
+The operation has timed out
+*******************************************************
+WebException @11/02/2016 12:12:39
+The remote server returned an error: (503) Server Unavailable.
+*******************************************************
+WebException @11/02/2016 12:18:01
+The operation has timed out
+*******************************************************
+WebException @11/02/2016 12:21:05
+The operation has timed out
+*******************************************************
+WebException @03/03/2016 00:59:02
+Unable to connect to the remote server
+*******************************************************
+WebException @03/03/2016 01:04:02
+Unable to connect to the remote server
+*******************************************************
+WebException @03/03/2016 01:09:02
+Unable to connect to the remote server
+*******************************************************
+WebException @03/03/2016 01:14:02
+Unable to connect to the remote server
+*******************************************************
+WebException @03/03/2016 01:19:02
+Unable to connect to the remote server
+*******************************************************
+WebException @03/03/2016 01:24:02
+Unable to connect to the remote server
+*******************************************************
+WebException @03/03/2016 01:29:02
+Unable to connect to the remote server
+*******************************************************
+WebException @03/03/2016 01:34:02
+Unable to connect to the remote server
+*******************************************************
+WebException @03/03/2016 01:39:02
+Unable to connect to the remote server
+*******************************************************
+WebException @03/03/2016 01:44:02
+Unable to connect to the remote server
+*******************************************************
+WebException @03/03/2016 01:49:02
+Unable to connect to the remote server
+*******************************************************
+WebException @03/03/2016 01:54:02
+Unable to connect to the remote server
+*******************************************************
+WebException @03/03/2016 01:59:02
+Unable to connect to the remote server
+*******************************************************
+WebException @03/03/2016 02:04:02
+Unable to connect to the remote server
+*******************************************************
+WebException @03/03/2016 02:09:02
+Unable to connect to the remote server
+*******************************************************
+WebException @03/03/2016 02:14:02
+Unable to connect to the remote server
+*******************************************************
+WebException @03/03/2016 02:19:02
+Unable to connect to the remote server
+*******************************************************
+WebException @03/03/2016 02:24:02
+Unable to connect to the remote server
+*******************************************************
+WebException @03/03/2016 02:29:02
+Unable to connect to the remote server
+*******************************************************
+WebException @03/03/2016 02:34:02
+Unable to connect to the remote server
+*******************************************************
+WebException @03/03/2016 02:39:02
+Unable to connect to the remote server
+*******************************************************
+WebException @03/03/2016 02:44:02
+Unable to connect to the remote server
+*******************************************************
+WebException @03/03/2016 02:49:02
+Unable to connect to the remote server
+*******************************************************
+WebException @03/03/2016 02:54:02
+Unable to connect to the remote server
+*******************************************************
+WebException @03/03/2016 02:59:02
+Unable to connect to the remote server
+*******************************************************
+WebException @03/03/2016 03:04:02
+Unable to connect to the remote server
+*******************************************************
+WebException @03/03/2016 03:09:02
+Unable to connect to the remote server
+*******************************************************
+WebException @03/03/2016 03:14:02
+Unable to connect to the remote server
+*******************************************************
+WebException @03/03/2016 03:19:02
+Unable to connect to the remote server
+*******************************************************
+WebException @03/03/2016 03:24:02
+Unable to connect to the remote server
+*******************************************************
+WebException @03/03/2016 03:29:02
+Unable to connect to the remote server
+*******************************************************
+WebException @03/03/2016 03:34:02
+Unable to connect to the remote server
+*******************************************************
+WebException @03/03/2016 03:39:02
+Unable to connect to the remote server
+*******************************************************
+WebException @03/03/2016 03:44:02
+Unable to connect to the remote server
+*******************************************************
+WebException @03/03/2016 03:49:02
+Unable to connect to the remote server
+*******************************************************
+WebException @03/03/2016 03:54:02
+Unable to connect to the remote server
+*******************************************************
+WebException @03/03/2016 03:59:02
+Unable to connect to the remote server
+*******************************************************
+WebException @03/03/2016 04:04:02
+Unable to connect to the remote server
+*******************************************************
+WebException @03/03/2016 04:09:02
+Unable to connect to the remote server
+*******************************************************
+WebException @03/03/2016 04:14:02
+Unable to connect to the remote server
+*******************************************************
+WebException @03/03/2016 04:19:02
+Unable to connect to the remote server
+*******************************************************
+WebException @03/03/2016 04:24:02
+Unable to connect to the remote server
+*******************************************************
+WebException @03/03/2016 04:29:02
+Unable to connect to the remote server
+*******************************************************
+WebException @03/03/2016 04:34:02
+Unable to connect to the remote server
+*******************************************************
+WebException @03/03/2016 04:39:02
+Unable to connect to the remote server
+*******************************************************
+WebException @03/03/2016 04:44:02
+Unable to connect to the remote server
+*******************************************************
+WebException @03/03/2016 04:49:02
+Unable to connect to the remote server
+*******************************************************
+WebException @03/03/2016 04:54:02
+Unable to connect to the remote server
+*******************************************************
+WebException @03/03/2016 04:59:02
+Unable to connect to the remote server
+*******************************************************
+WebException @03/03/2016 05:04:02
+Unable to connect to the remote server
+*******************************************************
+WebException @03/03/2016 05:09:02
+Unable to connect to the remote server
+*******************************************************
+WebException @03/03/2016 05:14:02
+Unable to connect to the remote server
+*******************************************************
+WebException @03/03/2016 05:19:02
+Unable to connect to the remote server
+*******************************************************
+WebException @03/03/2016 05:24:02
+Unable to connect to the remote server
+*******************************************************
+WebException @03/03/2016 05:29:02
+Unable to connect to the remote server
+*******************************************************
+WebException @03/03/2016 05:34:02
+Unable to connect to the remote server
+*******************************************************
+WebException @03/03/2016 05:39:02
+Unable to connect to the remote server
+*******************************************************
+WebException @03/03/2016 05:44:02
+Unable to connect to the remote server
+*******************************************************
+WebException @03/03/2016 05:49:02
+Unable to connect to the remote server
+*******************************************************
+WebException @03/03/2016 05:54:02
+Unable to connect to the remote server
+*******************************************************
+WebException @03/03/2016 05:59:02
+Unable to connect to the remote server
+*******************************************************
+WebException @03/03/2016 06:04:02
+Unable to connect to the remote server
+*******************************************************
+WebException @03/03/2016 06:09:02
+Unable to connect to the remote server
+*******************************************************
+WebException @03/03/2016 06:14:02
+Unable to connect to the remote server
+*******************************************************
+WebException @03/03/2016 06:19:02
+Unable to connect to the remote server
+*******************************************************
+WebException @03/03/2016 06:24:02
+Unable to connect to the remote server
+*******************************************************
+WebException @03/03/2016 06:29:02
+Unable to connect to the remote server
+*******************************************************
+WebException @03/03/2016 06:34:02
+Unable to connect to the remote server
+*******************************************************
+WebException @03/03/2016 06:39:02
+Unable to connect to the remote server
+*******************************************************
+WebException @03/03/2016 06:44:02
+Unable to connect to the remote server
+*******************************************************
+WebException @03/03/2016 06:49:02
+Unable to connect to the remote server
+*******************************************************
+WebException @03/03/2016 06:54:02
+Unable to connect to the remote server
+*******************************************************
+WebException @03/03/2016 06:59:02
+Unable to connect to the remote server
+*******************************************************
+WebException @03/03/2016 07:04:01
+Unable to connect to the remote server
+*******************************************************
+WebException @03/03/2016 07:09:01
+Unable to connect to the remote server
+*******************************************************
+WebException @03/03/2016 07:14:01
+Unable to connect to the remote server
+*******************************************************
+WebException @03/03/2016 07:19:01
+Unable to connect to the remote server
+*******************************************************
+WebException @03/03/2016 07:24:01
+Unable to connect to the remote server
+*******************************************************
+WebException @03/03/2016 07:29:01
+Unable to connect to the remote server
+*******************************************************
+WebException @03/03/2016 07:34:01
+Unable to connect to the remote server
+*******************************************************
+WebException @03/03/2016 07:39:01
+Unable to connect to the remote server
+*******************************************************
+WebException @03/03/2016 07:44:01
+Unable to connect to the remote server
+*******************************************************
+WebException @03/03/2016 07:49:01
+Unable to connect to the remote server
+*******************************************************
+WebException @03/03/2016 07:54:01
+Unable to connect to the remote server
+*******************************************************
+WebException @03/03/2016 07:59:01
+Unable to connect to the remote server
+*******************************************************
+WebException @03/03/2016 08:04:01
+Unable to connect to the remote server
+*******************************************************
+WebException @03/03/2016 08:09:01
+Unable to connect to the remote server
+*******************************************************
+WebException @03/03/2016 08:14:01
+Unable to connect to the remote server
+*******************************************************
+WebException @03/03/2016 08:19:01
+Unable to connect to the remote server
+*******************************************************
+WebException @03/03/2016 08:24:01
+Unable to connect to the remote server
+*******************************************************
+WebException @03/03/2016 08:29:01
+Unable to connect to the remote server
+*******************************************************
+WebException @03/03/2016 08:34:01
+Unable to connect to the remote server
+*******************************************************
+WebException @03/03/2016 08:39:01
+Unable to connect to the remote server
+*******************************************************
+WebException @03/03/2016 08:44:01
+Unable to connect to the remote server
+*******************************************************
+WebException @03/03/2016 08:49:01
+Unable to connect to the remote server
+*******************************************************
+WebException @03/03/2016 08:54:01
+Unable to connect to the remote server
+*******************************************************
+WebException @03/03/2016 08:59:01
+Unable to connect to the remote server
+*******************************************************
+WebException @08/03/2016 02:10:24
+Unable to connect to the remote server
+*******************************************************
+WebException @08/03/2016 02:15:24
+Unable to connect to the remote server
+*******************************************************
+WebException @08/03/2016 02:20:24
+Unable to connect to the remote server
+*******************************************************
+WebException @08/03/2016 02:25:24
+Unable to connect to the remote server
+*******************************************************
+WebException @08/03/2016 02:30:24
+Unable to connect to the remote server
+*******************************************************
+WebException @08/03/2016 02:35:24
+Unable to connect to the remote server
+*******************************************************
+WebException @08/03/2016 02:45:24
+Unable to connect to the remote server
+*******************************************************
+WebException @08/03/2016 02:50:24
+Unable to connect to the remote server
+*******************************************************
+WebException @08/03/2016 02:55:24
+Unable to connect to the remote server
+*******************************************************
+WebException @08/03/2016 03:00:24
+Unable to connect to the remote server
+*******************************************************
+WebException @08/03/2016 03:05:24
+Unable to connect to the remote server
+*******************************************************
+WebException @08/03/2016 03:10:24
+Unable to connect to the remote server
+*******************************************************
+WebException @08/03/2016 03:15:24
+Unable to connect to the remote server
+*******************************************************
+WebException @08/03/2016 03:20:24
+Unable to connect to the remote server
+*******************************************************
+WebException @08/03/2016 03:25:24
+Unable to connect to the remote server
+*******************************************************
+WebException @08/03/2016 03:30:24
+Unable to connect to the remote server
+*******************************************************
+WebException @08/03/2016 03:35:24
+Unable to connect to the remote server
+*******************************************************
+WebException @08/03/2016 03:45:24
+Unable to connect to the remote server
+*******************************************************
+WebException @08/03/2016 03:50:24
+Unable to connect to the remote server
+*******************************************************
+WebException @08/03/2016 03:55:24
+Unable to connect to the remote server
+*******************************************************
+WebException @08/03/2016 04:00:24
+Unable to connect to the remote server
+*******************************************************
+WebException @08/03/2016 04:05:24
+Unable to connect to the remote server
+*******************************************************
+WebException @08/03/2016 04:10:24
+Unable to connect to the remote server
+*******************************************************
+WebException @08/03/2016 04:35:24
+Unable to connect to the remote server
+*******************************************************
+WebException @08/03/2016 04:45:24
+Unable to connect to the remote server
+*******************************************************
+WebException @08/03/2016 04:50:24
+Unable to connect to the remote server
+*******************************************************
+WebException @08/03/2016 04:55:24
+Unable to connect to the remote server
+*******************************************************
+WebException @08/03/2016 05:00:24
+Unable to connect to the remote server
+*******************************************************
+WebException @08/03/2016 05:05:24
+Unable to connect to the remote server
+*******************************************************
+WebException @08/03/2016 05:10:24
+Unable to connect to the remote server
+*******************************************************
+WebException @08/03/2016 05:15:24
+Unable to connect to the remote server
+*******************************************************
+WebException @08/03/2016 05:20:24
+Unable to connect to the remote server
+*******************************************************
+WebException @08/03/2016 05:25:24
+Unable to connect to the remote server
+*******************************************************
+WebException @08/03/2016 05:30:24
+Unable to connect to the remote server
+*******************************************************
+WebException @08/03/2016 05:35:24
+Unable to connect to the remote server
+*******************************************************
+WebException @08/03/2016 05:45:24
+Unable to connect to the remote server
+*******************************************************
+WebException @08/03/2016 05:50:24
+Unable to connect to the remote server
+*******************************************************
+WebException @08/03/2016 05:55:24
+Unable to connect to the remote server
+*******************************************************
+WebException @08/03/2016 06:00:24
+Unable to connect to the remote server
+*******************************************************
+WebException @08/03/2016 06:05:24
+Unable to connect to the remote server
+*******************************************************
+WebException @08/03/2016 06:10:24
+Unable to connect to the remote server
+*******************************************************
+WebException @08/03/2016 06:15:24
+Unable to connect to the remote server
+*******************************************************
+WebException @08/03/2016 06:20:23
+Unable to connect to the remote server
+*******************************************************
+WebException @08/03/2016 06:25:23
+Unable to connect to the remote server
+*******************************************************
+WebException @08/03/2016 06:30:23
+Unable to connect to the remote server
+*******************************************************
+WebException @08/03/2016 06:35:23
+Unable to connect to the remote server
+*******************************************************
+WebException @08/03/2016 06:45:23
+Unable to connect to the remote server
+*******************************************************
+WebException @08/03/2016 06:50:23
+Unable to connect to the remote server
+*******************************************************
+WebException @08/03/2016 06:55:23
+Unable to connect to the remote server
+*******************************************************
+WebException @08/03/2016 07:00:23
+Unable to connect to the remote server
+*******************************************************
+WebException @08/03/2016 07:05:23
+Unable to connect to the remote server
+*******************************************************
+WebException @08/03/2016 07:10:23
+Unable to connect to the remote server
+*******************************************************
+WebException @08/03/2016 07:15:23
+Unable to connect to the remote server
+*******************************************************
+WebException @08/03/2016 07:20:23
+Unable to connect to the remote server
+*******************************************************
+WebException @08/03/2016 07:25:23
+Unable to connect to the remote server
+*******************************************************
+WebException @08/03/2016 07:30:23
+Unable to connect to the remote server
+*******************************************************
+WebException @08/03/2016 07:35:23
+Unable to connect to the remote server
+*******************************************************
+WebException @08/03/2016 07:45:23
+Unable to connect to the remote server
+*******************************************************
+WebException @08/03/2016 07:50:23
+Unable to connect to the remote server
+*******************************************************
+WebException @08/03/2016 07:55:23
+Unable to connect to the remote server
+*******************************************************
+WebException @08/03/2016 08:00:23
+Unable to connect to the remote server
+*******************************************************
+WebException @08/03/2016 08:05:23
+Unable to connect to the remote server
+*******************************************************
+WebException @08/03/2016 08:10:23
+Unable to connect to the remote server
+*******************************************************
+WebException @08/03/2016 08:15:23
+Unable to connect to the remote server
+*******************************************************
+WebException @08/03/2016 08:20:23
+Unable to connect to the remote server
+*******************************************************
+WebException @08/03/2016 08:25:23
+Unable to connect to the remote server
+*******************************************************
+WebException @08/03/2016 08:30:23
+Unable to connect to the remote server
+*******************************************************
+WebException @08/03/2016 08:35:23
+Unable to connect to the remote server
+*******************************************************
+WebException @08/03/2016 08:45:23
+Unable to connect to the remote server
+*******************************************************
+WebException @08/03/2016 08:50:23
+Unable to connect to the remote server
+*******************************************************
+WebException @08/03/2016 08:55:23
+Unable to connect to the remote server
+*******************************************************
+WebException @08/03/2016 09:00:23
+Unable to connect to the remote server
+*******************************************************
+WebException @08/03/2016 09:05:23
+Unable to connect to the remote server
+*******************************************************
+WebException @08/03/2016 09:51:38
+The operation has timed out
+*******************************************************
+WebException @05/05/2016 12:05:45
+Unable to connect to the remote server
+*******************************************************
+WebException @06/07/2016 11:29:26
+The remote server returned an error: (500) Internal Server Error.
+*******************************************************
+WebException @06/07/2016 11:31:05
+The remote server returned an error: (500) Internal Server Error.
+*******************************************************
+WebException @06/07/2016 11:32:08
+The remote server returned an error: (500) Internal Server Error.
+*******************************************************
+WebException @06/07/2016 11:33:13
+The remote server returned an error: (500) Internal Server Error.
+*******************************************************
+WebException @06/07/2016 11:34:20
+The remote server returned an error: (500) Internal Server Error.
+*******************************************************
+WebException @06/07/2016 11:35:45
+The remote server returned an error: (500) Internal Server Error.
+*******************************************************
+WebException @06/07/2016 11:38:09
+The remote server returned an error: (500) Internal Server Error.
+*******************************************************
+WebException @06/07/2016 11:39:57
+The remote server returned an error: (500) Internal Server Error.
+*******************************************************
+WebException @06/07/2016 11:41:18
+The remote server returned an error: (500) Internal Server Error.
+*******************************************************
+WebException @06/07/2016 11:42:25
+The remote server returned an error: (500) Internal Server Error.
+*******************************************************
+WebException @06/07/2016 11:46:27
+The remote server returned an error: (500) Internal Server Error.
+*******************************************************
+WebException @06/07/2016 11:48:57
+The remote server returned an error: (500) Internal Server Error.
+*******************************************************
+WebException @06/07/2016 11:50:18
+The remote server returned an error: (500) Internal Server Error.
+*******************************************************
+WebException @06/07/2016 11:51:22
+The remote server returned an error: (500) Internal Server Error.
+*******************************************************
+WebException @06/07/2016 11:52:23
+The remote server returned an error: (500) Internal Server Error.
+*******************************************************
+WebException @06/07/2016 11:53:23
+The remote server returned an error: (500) Internal Server Error.
+*******************************************************
+WebException @06/07/2016 11:54:26
+The remote server returned an error: (500) Internal Server Error.
+*******************************************************
+WebException @06/07/2016 11:56:18
+The remote server returned an error: (500) Internal Server Error.
+*******************************************************
+WebException @06/07/2016 11:57:20
+The remote server returned an error: (500) Internal Server Error.
+*******************************************************
+WebException @06/07/2016 11:58:26
+The remote server returned an error: (500) Internal Server Error.
+*******************************************************
+WebException @06/07/2016 11:59:28
+The remote server returned an error: (500) Internal Server Error.
+*******************************************************
+WebException @06/07/2016 12:00:57
+The remote server returned an error: (500) Internal Server Error.
+*******************************************************
+WebException @06/07/2016 12:01:57
+The remote server returned an error: (500) Internal Server Error.
+*******************************************************
+WebException @06/07/2016 12:03:45
+The remote server returned an error: (500) Internal Server Error.
+*******************************************************
+WebException @06/07/2016 12:04:49
+The remote server returned an error: (500) Internal Server Error.
+*******************************************************
+WebException @06/07/2016 12:05:50
+The remote server returned an error: (500) Internal Server Error.
+*******************************************************
+WebException @06/07/2016 12:06:53
+The remote server returned an error: (500) Internal Server Error.
+*******************************************************
+NullReferenceException @06/07/2016 12:10:48
+Object reference not set to an instance of an object.
+System.NullReferenceException: Object reference not set to an instance of an object.
+   at System.Collections.Generic.Dictionary`2.Insert(TKey key, TValue value, Boolean add)
+   at System.Collections.Generic.Dictionary`2.Add(TKey key, TValue value)
+   at GCop.Utilities.DteExtensions.GetProjectFromFilePath(String filePath)
+   at GCop.Core.Settings.VisualStudioSettingsValidator.ValidateContext(Rule rule, SyntaxTree tree, IEnumerable`1 references)
+*******************************************************
