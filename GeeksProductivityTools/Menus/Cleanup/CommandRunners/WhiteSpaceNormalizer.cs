@@ -14,9 +14,6 @@ namespace Geeks.GeeksProductivityTools.Menus.Cleanup
     // TODO: Refactor this bloody class Ali
     public class WhiteSpaceNormalizer : ICodeCleaner
     {
-        const int MinLeftPadding = 4;
-        const string WhiteSpaceTriviaText = "    ";
-
         public void Run(ProjectItem item) => Task.Run(() => NormalizeUsingDirectives(item));
 
         static void NormalizeUsingDirectives(ProjectItem item)
