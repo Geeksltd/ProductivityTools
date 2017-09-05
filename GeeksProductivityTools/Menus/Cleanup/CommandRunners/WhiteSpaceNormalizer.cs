@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Mono.CSharp;
 
 namespace Geeks.GeeksProductivityTools.Menus.Cleanup
 {
@@ -31,26 +32,6 @@ namespace Geeks.GeeksProductivityTools.Menus.Cleanup
 
         private class Rewriter : CSharpSyntaxRewriter
         {
-            public override bool VisitIntoStructuredTrivia
-            {
-                get { return true; }
-            }
-
-            public override SyntaxNode Visit(SyntaxNode node)
-            {
-                return base.Visit(node);
-            }
-
-            public override SyntaxToken VisitToken(SyntaxToken token)
-            {
-                return base.VisitToken(token);
-            }
-
-            public override SyntaxNode VisitSkippedTokensTrivia(SkippedTokensTriviaSyntax node)
-            {
-                return base.VisitSkippedTokensTrivia(node);
-            }
-
             private bool LastTokenIsAOpenBrace = false;
             public override SyntaxTriviaList VisitList(SyntaxTriviaList list)
             {
@@ -62,28 +43,13 @@ namespace Geeks.GeeksProductivityTools.Menus.Cleanup
                 {
                     var item = newList[i];
 
-                    if (item.IsKind(SyntaxKind.SingleLineCommentTrivia) || item.IsKind(SyntaxKind.MultiLineCommentTrivia))
+                    if (item.Token.IsKind(SyntaxKind.CloseBraceToken))
                     {
-                        LastTokenIsAOpenBrace = false;
-                        if (newList.Count > i + 1)
-                        {
-                            if (newList[i + 1].IsKind(SyntaxKind.EndOfLineTrivia))
-                            {
-                                i++;
-                            }
-                        }
-                    }
-                    else if (item.Token.IsKind(SyntaxKind.CloseBraceToken))
-                    {
-                        var currentList = newList.Skip(i).ToList();
+                        var searchedComments = getCommecnts(newList);
 
-                        var comments =
-                            currentList.Where(t => t.IsKind(SyntaxKind.SingleLineCommentTrivia) ||
-                                                   t.IsKind(SyntaxKind.MultiLineCommentTrivia));
-
-                        if (comments.Any())
+                        if (searchedComments.Any())
                         {
-                            newList = ProcessWithComments(newList);
+                            newList = ProcessWithComments(newList, searchedComments, true);
                             i = newList.Count;
                         }
                         else if (newList.Count > i + 1)
@@ -94,9 +60,26 @@ namespace Geeks.GeeksProductivityTools.Menus.Cleanup
                             newList.RemoveRange(i, lineBreaksAtBeginning);
                         }
                     }
-                    else if (item.IsKind(SyntaxKind.EndOfLineTrivia))
+                    else if (item.IsKind(SyntaxKind.EndOfLineTrivia) || item.IsKind(SyntaxKind.WhitespaceTrivia))
                     {
-                        if (newList.Count > i + 1)
+                        var searchedComments = getCommecnts(newList);
+
+                        if (searchedComments.Any())
+                        {
+                            if (LastTokenIsAOpenBrace)
+                            {
+                                var lineBreaksAtBeginning =
+                                    newList.Skip(i).TakeWhile(t => t.IsKind(SyntaxKind.EndOfLineTrivia)).Count();
+
+                                newList.RemoveRange(i, lineBreaksAtBeginning);
+
+                                LastTokenIsAOpenBrace = false;
+                            }
+
+                            newList = ProcessWithComments(newList, searchedComments, false);
+                            i = newList.Count;
+                        }
+                        else if (newList.Count > i + 1 && item.IsKind(SyntaxKind.EndOfLineTrivia))
                         {
                             if (LastTokenIsAOpenBrace)
                             {
@@ -125,20 +108,24 @@ namespace Geeks.GeeksProductivityTools.Menus.Cleanup
                 return list;
             }
 
-            List<SyntaxTrivia> ProcessWithComments(List<SyntaxTrivia> list)
+            private List<SyntaxTrivia> getCommecnts(List<SyntaxTrivia> newList)
             {
-                var newList = list.ToList();
+                return
+                    newList
+                        .Where(t => t.IsKind(SyntaxKind.SingleLineCommentTrivia) ||
+                                    t.IsKind(SyntaxKind.MultiLineCommentTrivia))
+                        .ToList();
+            }
+
+            List<SyntaxTrivia> ProcessWithComments(List<SyntaxTrivia> syntaxTrivias, IList<SyntaxTrivia> searchedComments, bool itsForCloseBrace)
+            {
+                var newList = syntaxTrivias.ToList();
 
                 var output = new List<SyntaxTrivia>();
 
-                var comments =
-                    newList
-                    .Where(
-                        t =>
-                            t.IsKind(SyntaxKind.SingleLineCommentTrivia) ||
-                            t.IsKind(SyntaxKind.MultiLineCommentTrivia)
-                    )
-                    .ToList();
+                var comments = searchedComments;
+                var firstLine = newList.FirstOrDefault(x => x.IsKind(SyntaxKind.EndOfLineTrivia));
+
 
                 for (int i = 0; i < comments.Count + 1; i++)
                 {
@@ -148,9 +135,9 @@ namespace Geeks.GeeksProductivityTools.Menus.Cleanup
                     if (selectedEnOfLines.Count != 0)
                     {
                         output.Add(selectedEnOfLines[0]);
-                        if (i > 0 && i < comments.Count)
+                        if (itsForCloseBrace && i > 0 && i < comments.Count)
                         {
-                            output.Add(selectedEnOfLines[0]);
+                            if (firstLine != null) output.Add(firstLine);
                         }
                         arrayIndex += selectedEnOfLines.Count;
                     }
@@ -163,7 +150,16 @@ namespace Geeks.GeeksProductivityTools.Menus.Cleanup
                     if (i < comments.Count)
                     {
                         output.Add(comments[i]);
-                        arrayIndex += 1;
+                        arrayIndex++;
+
+                        if (!itsForCloseBrace)
+                        {
+                            if (firstLine != null)
+                            {
+                                output.Add(firstLine);
+                                arrayIndex++;
+                            }
+                        }
                     }
                     newList.RemoveRange(0, arrayIndex);
                 }
