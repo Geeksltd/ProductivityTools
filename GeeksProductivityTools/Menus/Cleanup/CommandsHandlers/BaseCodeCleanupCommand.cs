@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using Microsoft.VisualStudio.Shell;
 
 namespace Geeks.GeeksProductivityTools.Menus.Cleanup

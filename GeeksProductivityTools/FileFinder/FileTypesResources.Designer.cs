@@ -24,7 +24,6 @@ namespace Geeks.GeeksProductivityTools.FileFinder
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     internal class FileTypesResources
     {
-
         static global::System.Resources.ResourceManager resourceMan;
 
         static global::System.Globalization.CultureInfo resourceCulture;

@@ -1,4 +1,4 @@
-﻿using System.ComponentModel;
+using System.ComponentModel;
 
 namespace System.Windows.Forms
 {
@@ -21,7 +21,6 @@ namespace System.Windows.Forms
             else
                 containerControl.Invoke(new MethodInvoker(delegate { SafeAction(control, containerControl, action); }));
         }
-
 
         public static T SafeGet<T>(this Control control, Func<T> expr)
         {

@@ -1,4 +1,4 @@
-﻿namespace Geeks.GeeksProductivityTools.Utils
+namespace Geeks.GeeksProductivityTools.Utils
 {
     public class ProcessActions
     {

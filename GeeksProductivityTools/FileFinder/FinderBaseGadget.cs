@@ -58,7 +58,6 @@ namespace GeeksAddin.FileFinder
 
                     if (Settings.Default.TrackItemInSolutionExplorer)
                         TrackInSolutionExplorer(app, item);
-
                 }
             }
             catch (Exception err)

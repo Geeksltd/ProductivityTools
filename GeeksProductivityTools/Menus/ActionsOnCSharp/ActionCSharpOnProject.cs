@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using EnvDTE;
 using Geeks.GeeksProductivityTools.Utils;
 using static Geeks.GeeksProductivityTools.Menus.ActionsOnCSharp.CSharpActionDelegate;

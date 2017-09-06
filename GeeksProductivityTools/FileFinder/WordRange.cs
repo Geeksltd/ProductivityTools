@@ -1,4 +1,4 @@
-﻿namespace GeeksAddin.FileFinder
+namespace GeeksAddin.FileFinder
 {
     internal class WordRange
     {

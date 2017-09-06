@@ -262,7 +262,6 @@ namespace GeeksAddin.Attacher
             this.statusBar.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
-
         }
 
         #endregion

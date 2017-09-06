@@ -80,7 +80,6 @@ namespace GeeksAddin.Attacher
                         }
                     }
                     index++;
-
                 }
             }
             var count = listBoxProcess.SafeGet(() => listBoxProcess.Items.Count);
@@ -227,7 +226,6 @@ namespace GeeksAddin.Attacher
             Close();
             DTE.ExecuteCommand("Debug.AttachtoProcess", "");
         }
-
 
         void DisableAllButtons()
         {

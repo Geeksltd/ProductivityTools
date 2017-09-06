@@ -24,7 +24,6 @@ namespace Geeks.GeeksProductivityTools
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     public class Resources
     {
-
         static global::System.Resources.ResourceManager resourceMan;
 
         static global::System.Globalization.CultureInfo resourceCulture;

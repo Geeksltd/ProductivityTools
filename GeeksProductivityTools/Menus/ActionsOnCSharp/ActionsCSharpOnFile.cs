@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using EnvDTE;
 using Geeks.GeeksProductivityTools.Definition;
 using Geeks.GeeksProductivityTools.Menus.Cleanup;

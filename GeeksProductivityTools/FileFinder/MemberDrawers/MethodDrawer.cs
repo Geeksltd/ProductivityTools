@@ -187,7 +187,6 @@ namespace Geeks.GeeksProductivityTools.FileFinder.MemberDrawers
                 position.X += CalculateStringWidth(" " + argumentType[1], e);
             }
 
-
             return position.X;
         }
 

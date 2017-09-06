@@ -1,4 +1,4 @@
-﻿namespace GeeksAddin
+namespace GeeksAddin
 {
     using System;
     using System.Collections.Generic;

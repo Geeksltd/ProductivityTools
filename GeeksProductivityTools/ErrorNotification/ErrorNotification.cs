@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 
 namespace Geeks.GeeksProductivityTools
 {
@@ -6,7 +6,6 @@ namespace Geeks.GeeksProductivityTools
     {
         internal static void EmailError(string message)
         {
-
         }
 
         internal static void EmailError(Exception ex)

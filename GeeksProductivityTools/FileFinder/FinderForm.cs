@@ -133,7 +133,6 @@ namespace GeeksAddin.FileFinder
                         lstFiles.SelectedIndex++;
                     e.Handled = true;
                     break;
-
             }
 
             if ((e.KeyCode == Keys.Back) && e.Control)

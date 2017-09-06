@@ -27,7 +27,6 @@ namespace GeeksAddin
                 }
                 return _Gadgets;
             }
-
         }
     }
 }

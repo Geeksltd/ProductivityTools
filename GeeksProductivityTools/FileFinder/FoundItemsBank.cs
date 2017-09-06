@@ -16,7 +16,5 @@ namespace GeeksAddin.FileFinder
                 Pointer = 0;
             }
         }
-
-
     }
 }

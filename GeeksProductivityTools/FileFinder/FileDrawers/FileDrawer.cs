@@ -82,7 +82,6 @@ namespace Geeks.GeeksProductivityTools.FileFinder.FileDrawers
                                              DrawItemEventArgs e,
                                              ref Point position)
         {
-
             if (!string.IsNullOrEmpty(text) ||
                 !string.IsNullOrEmpty(pathValue))
             {

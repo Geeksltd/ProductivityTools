@@ -45,7 +45,6 @@ namespace GeeksAddin.Attacher
             }
             catch (Exception)
             {
-
             }
         }
 

@@ -28,10 +28,8 @@ namespace GeeksAddin
             {
                 for (var i = 1; i <= solution.Projects.Count; i++)
                 {
-
                     var projectItem = app.Solution.Projects.Item(i);
                     AddPathFromProjectItem(basePaths, projectItem);
-
                 }
 
                 return basePaths.ToArray();
@@ -119,11 +117,9 @@ namespace GeeksAddin
             if (projects.IsEmpty())
                 throw new Exception("No project is open in M#. Error (on Utils.cs line 131)");
 
-
             var project = projects.FirstOrDefault(p => p.Name.ToUpper().Contains(solutionName));
             if (project == null)
                 throw new Exception("Cannot find any open project in M# to match with solution name:" + solutionName + "Utils.cs line 137");
-
 
             return project.MSharpUrl;
         }

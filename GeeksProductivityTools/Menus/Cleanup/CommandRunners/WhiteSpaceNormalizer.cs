@@ -115,7 +115,6 @@ namespace Geeks.GeeksProductivityTools.Menus.Cleanup
                 var comments = searchedComments;
                 var firstLine = newList.FirstOrDefault(x => x.IsKind(SyntaxKind.EndOfLineTrivia));
 
-
                 for (int i = 0; i < comments.Count + 1; i++)
                 {
                     int arrayIndex = 0;

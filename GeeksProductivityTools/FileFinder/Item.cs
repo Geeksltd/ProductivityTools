@@ -5,7 +5,6 @@ using Geeks.GeeksProductivityTools.Definition;
 
 namespace GeeksAddin.FileFinder
 {
-
     internal class Item : IEquatable<Item>
     {
         public Item(string projectBasePath, string fullFileName)
