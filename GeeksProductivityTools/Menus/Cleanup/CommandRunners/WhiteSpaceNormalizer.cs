@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using EnvDTE;
@@ -21,9 +21,9 @@ namespace Geeks.GeeksProductivityTools.Menus.Cleanup
             newRoot.WriteSourceTo(item.ToFullPathPropertyValue());
         }
 
-        private class Rewriter : CSharpSyntaxRewriter
+        class Rewriter : CSharpSyntaxRewriter
         {
-            private bool LastTokenIsAOpenBrace = false;
+            bool LastTokenIsAOpenBrace = false;
             public override SyntaxTriviaList VisitList(SyntaxTriviaList list)
             {
                 list = base.VisitList(list);
@@ -97,7 +97,7 @@ namespace Geeks.GeeksProductivityTools.Menus.Cleanup
                 return list;
             }
 
-            private List<SyntaxTrivia> GetComments(IEnumerable<SyntaxTrivia> newList)
+            List<SyntaxTrivia> GetComments(IEnumerable<SyntaxTrivia> newList)
             {
                 return
                     newList

@@ -1,11 +1,11 @@
-﻿namespace GeeksAddin.Attacher
+namespace GeeksAddin.Attacher
 {
     partial class FormAttacher
     {
         /// <summary>
         /// Required designer variable.
         /// </summary>
-        private System.ComponentModel.IContainer components = null;
+        System.ComponentModel.IContainer components = null;
 
         /// <summary>
         /// Clean up any resources being used.
@@ -26,7 +26,7 @@
         /// Required method for Designer support - do not modify
         /// the contents of this method with the code editor.
         /// </summary>
-        private void InitializeComponent()
+        void InitializeComponent()
         {
             this.tabControl = new System.Windows.Forms.TabControl();
             this.tbpgWorkers = new System.Windows.Forms.TabPage();
@@ -267,22 +267,22 @@
 
         #endregion
 
-        private System.Windows.Forms.TabControl tabControl;
-        private System.Windows.Forms.TabPage tbpgWorkers;
-        private System.Windows.Forms.Button btnOriginal;
-        private System.Windows.Forms.Button btnRefresh;
-        private System.Windows.Forms.Button btnAttachToAll;
-        private System.Windows.Forms.Button btnAttach;
-        private System.Windows.Forms.ListBox listBoxProcess;
-        private System.Windows.Forms.TabPage tbpgRemoteMachines;
-        private System.Windows.Forms.Button btnAdd;
-        private System.Windows.Forms.TextBox txtMachineName;
-        private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.ListBox lstRemoteMachines;
-        private System.ComponentModel.BackgroundWorker ProcessListLoader;
-        private System.Windows.Forms.StatusStrip statusBar;
-        private System.Windows.Forms.ToolStripStatusLabel lblStatus;
-        private System.Windows.Forms.TextBox txtSearchProcess;
-        private System.Windows.Forms.CheckBox checkBoxExcludeMSharp;
+        System.Windows.Forms.TabControl tabControl;
+        System.Windows.Forms.TabPage tbpgWorkers;
+        System.Windows.Forms.Button btnOriginal;
+        System.Windows.Forms.Button btnRefresh;
+        System.Windows.Forms.Button btnAttachToAll;
+        System.Windows.Forms.Button btnAttach;
+        System.Windows.Forms.ListBox listBoxProcess;
+        System.Windows.Forms.TabPage tbpgRemoteMachines;
+        System.Windows.Forms.Button btnAdd;
+        System.Windows.Forms.TextBox txtMachineName;
+        System.Windows.Forms.Label label1;
+        System.Windows.Forms.ListBox lstRemoteMachines;
+        System.ComponentModel.BackgroundWorker ProcessListLoader;
+        System.Windows.Forms.StatusStrip statusBar;
+        System.Windows.Forms.ToolStripStatusLabel lblStatus;
+        System.Windows.Forms.TextBox txtSearchProcess;
+        System.Windows.Forms.CheckBox checkBoxExcludeMSharp;
     }
 }
