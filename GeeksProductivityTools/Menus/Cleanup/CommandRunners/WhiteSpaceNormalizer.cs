@@ -7,7 +7,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Mono.CSharp;
 
 namespace Geeks.GeeksProductivityTools.Menus.Cleanup
 {
@@ -18,8 +17,6 @@ namespace Geeks.GeeksProductivityTools.Menus.Cleanup
 
         static void NormalizeUsingDirectives(ProjectItem item)
         {
-            var file = item.ToFullPathPropertyValue();
-
             var initialSource = item.ToSyntaxNode();
 
             var newRoot = new Rewriter().Visit(initialSource);
@@ -36,17 +33,17 @@ namespace Geeks.GeeksProductivityTools.Menus.Cleanup
 
                 var newList = list.ToList();
 
+                var searchedComments = GetComments(newList);
+
                 for (int i = 0; i < newList.Count; i++)
                 {
                     var item = newList[i];
 
                     if (item.Token.IsKind(SyntaxKind.CloseBraceToken))
                     {
-                        var searchedComments = getCommecnts(newList);
-
                         if (searchedComments.Any())
                         {
-                            newList = ProcessWithComments(newList, searchedComments, true);
+                            newList = ProcessWithComments(newList, searchedComments, itsForCloseBrace: true);
                             i = newList.Count;
                         }
                         else if (newList.Count > i + 1)
@@ -59,8 +56,6 @@ namespace Geeks.GeeksProductivityTools.Menus.Cleanup
                     }
                     else if (item.IsKind(SyntaxKind.EndOfLineTrivia) || item.IsKind(SyntaxKind.WhitespaceTrivia))
                     {
-                        var searchedComments = getCommecnts(newList);
-
                         if (searchedComments.Any())
                         {
                             if (LastTokenIsAOpenBrace)
@@ -73,7 +68,7 @@ namespace Geeks.GeeksProductivityTools.Menus.Cleanup
                                 LastTokenIsAOpenBrace = false;
                             }
 
-                            newList = ProcessWithComments(newList, searchedComments, false);
+                            newList = ProcessWithComments(newList, searchedComments, itsForCloseBrace: false);
                             i = newList.Count;
                         }
                         else if (newList.Count > i + 1 && item.IsKind(SyntaxKind.EndOfLineTrivia))
@@ -105,7 +100,7 @@ namespace Geeks.GeeksProductivityTools.Menus.Cleanup
                 return list;
             }
 
-            private List<SyntaxTrivia> getCommecnts(List<SyntaxTrivia> newList)
+            private List<SyntaxTrivia> GetComments(IEnumerable<SyntaxTrivia> newList)
             {
                 return
                     newList
