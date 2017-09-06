@@ -40,7 +40,6 @@ namespace System
             if (secondArgumentLength == 0)
                 return firstArgumentLength;
 
-
             // Step 2
             int[,] distance = new int[firstArgumentLength + 1, secondArgumentLength + 1];
 

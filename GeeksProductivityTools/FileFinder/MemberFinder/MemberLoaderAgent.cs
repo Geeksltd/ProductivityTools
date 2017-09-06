@@ -1,7 +1,3 @@
-using Geeks.GeeksProductivityTools.Definition;
-using Geeks.GeeksProductivityTools.Properties;
-using ICSharpCode.NRefactory;
-using ICSharpCode.NRefactory.Ast;
 using System;
 using System.CodeDom.Compiler;
 using System.Collections.Generic;
@@ -10,6 +6,10 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
+using Geeks.GeeksProductivityTools.Definition;
+using Geeks.GeeksProductivityTools.Properties;
+using ICSharpCode.NRefactory;
+using ICSharpCode.NRefactory.Ast;
 
 namespace GeeksAddin.FileFinder
 {

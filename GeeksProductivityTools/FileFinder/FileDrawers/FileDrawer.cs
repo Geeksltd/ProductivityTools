@@ -1,7 +1,7 @@
-using Geeks.GeeksProductivityTools.Definition;
-using Geeks.GeeksProductivityTools.FileFinder.FinderDrawerUtility;
 using System.Drawing;
 using System.Windows.Forms;
+using Geeks.GeeksProductivityTools.Definition;
+using Geeks.GeeksProductivityTools.FileFinder.FinderDrawerUtility;
 
 namespace Geeks.GeeksProductivityTools.FileFinder.FileDrawers
 {
@@ -82,7 +82,6 @@ namespace Geeks.GeeksProductivityTools.FileFinder.FileDrawers
                                              DrawItemEventArgs e,
                                              ref Point position)
         {
-
             if (!string.IsNullOrEmpty(text) ||
                 !string.IsNullOrEmpty(pathValue))
             {

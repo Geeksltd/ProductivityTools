@@ -1,11 +1,11 @@
-﻿namespace GeeksAddin
+namespace GeeksAddin
 {
-    using EnvDTE;
-    using EnvDTE80;
-    using Geeks.GeeksProductivityTools;
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using EnvDTE;
+    using EnvDTE80;
+    using Geeks.GeeksProductivityTools;
 
     static class DteExtensions
     {

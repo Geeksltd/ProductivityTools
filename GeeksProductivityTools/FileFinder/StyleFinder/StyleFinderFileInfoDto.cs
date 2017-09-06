@@ -1,4 +1,4 @@
-﻿namespace Geeks.GeeksProductivityTools.FileFinder
+namespace Geeks.GeeksProductivityTools.FileFinder
 {
     internal struct StyleFinderFileInfoDto
     {

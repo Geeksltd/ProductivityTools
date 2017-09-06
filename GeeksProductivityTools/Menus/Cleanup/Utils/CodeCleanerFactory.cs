@@ -1,5 +1,4 @@
-﻿using Geeks.GeeksProductivityTools.Definition;
-using System;
+using Geeks.GeeksProductivityTools.Definition;
 
 namespace Geeks.GeeksProductivityTools.Menus.Cleanup
 {

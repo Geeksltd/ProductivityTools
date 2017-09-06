@@ -1,11 +1,11 @@
 namespace GeeksAddin.FileFinder
 {
-    using Geeks.GeeksProductivityTools.FileFinder;
-    using Geeks.GeeksProductivityTools.Properties;
     using System.ComponentModel;
     using System.IO;
     using System.Linq;
     using System.Windows.Forms;
+    using Geeks.GeeksProductivityTools.FileFinder;
+    using Geeks.GeeksProductivityTools.Properties;
 
     class StyleLoaderAgent : Loader
     {

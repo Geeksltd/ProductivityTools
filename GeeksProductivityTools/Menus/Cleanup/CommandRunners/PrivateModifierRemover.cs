@@ -1,6 +1,6 @@
-﻿using EnvDTE;
-using Microsoft.CodeAnalysis;
 using System.Threading.Tasks;
+using EnvDTE;
+using Microsoft.CodeAnalysis;
 
 namespace Geeks.GeeksProductivityTools.Menus.Cleanup
 {

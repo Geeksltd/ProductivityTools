@@ -1,4 +1,4 @@
-﻿using Geeks.GeeksProductivityTools.FileFinder;
+using Geeks.GeeksProductivityTools.FileFinder;
 
 namespace GeeksAddin.FileFinder
 {

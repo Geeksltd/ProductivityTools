@@ -1,4 +1,4 @@
-﻿using EnvDTE80;
+using EnvDTE80;
 
 namespace GeeksAddin
 {

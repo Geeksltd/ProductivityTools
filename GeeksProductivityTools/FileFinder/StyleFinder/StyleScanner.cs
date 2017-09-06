@@ -1,5 +1,5 @@
-﻿using GeeksAddin.FileFinder;
 using System.Collections.Generic;
+using GeeksAddin.FileFinder;
 
 namespace Geeks.GeeksProductivityTools.FileFinder
 {

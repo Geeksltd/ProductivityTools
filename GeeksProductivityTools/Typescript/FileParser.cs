@@ -71,7 +71,6 @@ namespace Geeks.GeeksProductivityTools.TypeScript
                 staticResult.Add(item);
             }
 
-
             foreach (var p in staticResult)
             {
                 result.AddRange(FindAllReferenceFiles(p, includeDeclarations, collectedFiles));
@@ -79,7 +78,6 @@ namespace Geeks.GeeksProductivityTools.TypeScript
 
             return result;
         }
-
 
         /// <summary>
         /// Returns a string of the reference part if any (i.e. &lt;reference path="xxxxxxxxx"/>).
@@ -99,6 +97,5 @@ namespace Geeks.GeeksProductivityTools.TypeScript
         {
             return XElement.Parse(reference).Attribute("path");
         }
-
     }
 }

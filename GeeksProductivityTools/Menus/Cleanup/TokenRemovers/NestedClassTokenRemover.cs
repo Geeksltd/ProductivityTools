@@ -1,4 +1,3 @@
-﻿using Geeks.GeeksProductivityTools.Extensions;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 

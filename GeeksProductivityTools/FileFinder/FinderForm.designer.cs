@@ -147,7 +147,6 @@ namespace GeeksAddin.FileFinder
             this.Load += new System.EventHandler(this.FinderForm_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
-
         }
 
         #endregion

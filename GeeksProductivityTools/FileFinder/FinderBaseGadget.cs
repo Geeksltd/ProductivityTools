@@ -1,11 +1,11 @@
+using System;
+using System.Drawing;
+using System.Linq;
 using EnvDTE;
 using EnvDTE80;
 using Geeks.GeeksProductivityTools;
 using Geeks.GeeksProductivityTools.FileFinder;
 using Geeks.GeeksProductivityTools.Properties;
-using System;
-using System.Drawing;
-using System.Linq;
 
 namespace GeeksAddin.FileFinder
 {
@@ -58,7 +58,6 @@ namespace GeeksAddin.FileFinder
 
                     if (Settings.Default.TrackItemInSolutionExplorer)
                         TrackInSolutionExplorer(app, item);
-
                 }
             }
             catch (Exception err)

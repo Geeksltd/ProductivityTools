@@ -1,10 +1,10 @@
-using Geeks.GeeksProductivityTools.Definition;
-using Geeks.GeeksProductivityTools.Properties;
 using System;
 using System.ComponentModel;
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
+using Geeks.GeeksProductivityTools.Definition;
+using Geeks.GeeksProductivityTools.Properties;
 
 namespace GeeksAddin.FileFinder
 {
@@ -133,7 +133,6 @@ namespace GeeksAddin.FileFinder
                         lstFiles.SelectedIndex++;
                     e.Handled = true;
                     break;
-
             }
 
             if ((e.KeyCode == Keys.Back) && e.Control)

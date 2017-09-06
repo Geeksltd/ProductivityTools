@@ -1,7 +1,7 @@
-﻿using Geeks.GeeksProductivityTools.FileFinder.FinderDrawerUtility;
-using GeeksAddin.FileFinder;
 using System.Drawing;
 using System.Windows.Forms;
+using Geeks.GeeksProductivityTools.FileFinder.FinderDrawerUtility;
+using GeeksAddin.FileFinder;
 
 namespace Geeks.GeeksProductivityTools.FileFinder.FileDrawers
 {

@@ -1,9 +1,9 @@
-using Geeks.GeeksProductivityTools.TypeScript;
-using Microsoft.VisualStudio.Shell;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
 using System.Linq;
+using Geeks.GeeksProductivityTools.TypeScript;
+using Microsoft.VisualStudio.Shell;
 
 namespace Geeks.GeeksProductivityTools.Menus
 {
@@ -22,7 +22,6 @@ namespace Geeks.GeeksProductivityTools.Menus
             OleMenuCommand menuItem = new OleMenuCommand(MenuItemCallback, menuCommandID);
             menuItem.BeforeQueryStatus += menuItem_BeforeQueryStatus;
             Menu.AddCommand(menuItem);
-
         }
 
         void MenuItemCallback(object sender, EventArgs e)
@@ -94,7 +93,6 @@ namespace Geeks.GeeksProductivityTools.Menus
             {
                 Geeks.GeeksProductivityTools.TypeScript.TypescriptCompiler.Compile(filesToCompile);
             });
-
         }
     }
 }

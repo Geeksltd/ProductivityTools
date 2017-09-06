@@ -1,6 +1,6 @@
-﻿using GeeksAddin;
 using System;
 using System.IO;
+using GeeksAddin;
 
 namespace Geeks.GeeksProductivityTools.Menus.OpenInMSharp
 {

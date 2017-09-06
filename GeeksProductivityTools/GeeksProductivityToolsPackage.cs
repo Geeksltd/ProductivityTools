@@ -1,12 +1,12 @@
+using System;
+using System.ComponentModel.Design;
+using System.Runtime.InteropServices;
 using EnvDTE80;
 using GeeksAddin;
 using GeeksAddin.Attacher;
 using GeeksAddin.FileFinder;
 using GeeksAddin.FileToggle;
 using Microsoft.VisualStudio.Shell;
-using System;
-using System.ComponentModel.Design;
-using System.Runtime.InteropServices;
 
 namespace Geeks.GeeksProductivityTools
 {

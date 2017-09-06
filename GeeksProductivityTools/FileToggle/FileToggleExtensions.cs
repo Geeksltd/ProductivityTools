@@ -1,7 +1,7 @@
-﻿using Geeks.GeeksProductivityTools.Definition;
 using System;
 using System.IO;
 using System.Linq;
+using Geeks.GeeksProductivityTools.Definition;
 
 namespace Geeks.GeeksProductivityTools.FileToggle
 {

@@ -1,4 +1,4 @@
-﻿using EnvDTE;
+using EnvDTE;
 using Geeks.GeeksProductivityTools.Extensions;
 using static Geeks.GeeksProductivityTools.Menus.ActionsOnCSharp.CSharpActionDelegate;
 

@@ -1,10 +1,10 @@
-using EnvDTE;
-using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.CSharp;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using EnvDTE;
+using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CSharp;
 
 namespace Geeks.GeeksProductivityTools.Menus.Cleanup
 {

@@ -1,4 +1,4 @@
-﻿namespace Geeks.GeeksProductivityTools.Definition
+namespace Geeks.GeeksProductivityTools.Definition
 {
     public enum OrganizeUsingLevel
     {

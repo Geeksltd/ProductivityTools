@@ -1,11 +1,10 @@
-using Geeks.GeeksProductivityTools.Definition;
 using System;
 using System.IO;
 using System.Linq;
+using Geeks.GeeksProductivityTools.Definition;
 
 namespace GeeksAddin.FileFinder
 {
-
     internal class Item : IEquatable<Item>
     {
         public Item(string projectBasePath, string fullFileName)

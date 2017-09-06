@@ -1,7 +1,7 @@
+using System.Collections.Generic;
 using GeeksAddin.Attacher;
 using GeeksAddin.FileFinder;
 using GeeksAddin.FileToggle;
-using System.Collections.Generic;
 
 namespace GeeksAddin
 {
@@ -27,7 +27,6 @@ namespace GeeksAddin
                 }
                 return _Gadgets;
             }
-
         }
     }
 }

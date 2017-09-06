@@ -129,6 +129,5 @@ namespace GeeksAddin.FileFinder
             if (handler != null)
                 handler(this, EventArgs.Empty);
         }
-
     }
 }
