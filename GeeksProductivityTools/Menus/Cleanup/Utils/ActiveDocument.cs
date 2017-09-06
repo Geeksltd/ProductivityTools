@@ -1,5 +1,5 @@
-﻿using EnvDTE;
-using System.IO;
+﻿using System.IO;
+using EnvDTE;
 
 namespace Geeks.GeeksProductivityTools.Menus.Cleanup
 {

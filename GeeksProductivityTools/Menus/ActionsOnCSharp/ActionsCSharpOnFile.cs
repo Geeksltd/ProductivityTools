@@ -1,8 +1,8 @@
-﻿using EnvDTE;
+﻿using System;
+using EnvDTE;
 using Geeks.GeeksProductivityTools.Definition;
 using Geeks.GeeksProductivityTools.Menus.Cleanup;
 using Geeks.GeeksProductivityTools.Utils;
-using System;
 
 namespace Geeks.GeeksProductivityTools.Menus.ActionsOnCSharp
 {

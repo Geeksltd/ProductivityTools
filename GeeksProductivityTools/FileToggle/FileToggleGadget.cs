@@ -1,8 +1,8 @@
-﻿using EnvDTE80;
+﻿using System;
+using System.IO;
+using EnvDTE80;
 using Geeks.GeeksProductivityTools;
 using Geeks.GeeksProductivityTools.FileToggle;
-using System;
-using System.IO;
 
 namespace GeeksAddin.FileToggle
 {

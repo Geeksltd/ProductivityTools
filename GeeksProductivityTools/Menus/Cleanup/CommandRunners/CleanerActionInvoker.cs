@@ -1,6 +1,6 @@
-﻿using EnvDTE;
+﻿using System.Threading.Tasks;
+using EnvDTE;
 using Geeks.GeeksProductivityTools.Definition;
-using System.Threading.Tasks;
 
 namespace Geeks.GeeksProductivityTools.Menus.Cleanup
 {

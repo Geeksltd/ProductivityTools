@@ -1,6 +1,6 @@
-﻿using EnvDTE;
+﻿using System;
+using EnvDTE;
 using Geeks.GeeksProductivityTools.Utils;
-using System;
 using static Geeks.GeeksProductivityTools.Menus.ActionsOnCSharp.CSharpActionDelegate;
 
 namespace Geeks.GeeksProductivityTools.Menus.ActionsOnCSharp

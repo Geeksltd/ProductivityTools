@@ -1,6 +1,6 @@
-﻿using EnvDTE80;
+﻿using System;
+using EnvDTE80;
 using Microsoft.VisualStudio.Shell.Interop;
-using System;
 
 namespace Geeks.GeeksProductivityTools
 {

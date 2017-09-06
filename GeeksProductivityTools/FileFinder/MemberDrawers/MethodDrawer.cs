@@ -1,10 +1,10 @@
-using Geeks.GeeksProductivityTools.FileFinder.FinderDrawerUtility;
-using Geeks.GeeksProductivityTools.Properties;
 using System;
 using System.Drawing;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
+using Geeks.GeeksProductivityTools.FileFinder.FinderDrawerUtility;
+using Geeks.GeeksProductivityTools.Properties;
 
 namespace Geeks.GeeksProductivityTools.FileFinder.MemberDrawers
 {

@@ -1,5 +1,5 @@
-﻿using Geeks.GeeksProductivityTools.Utils;
-using System;
+﻿using System;
+using Geeks.GeeksProductivityTools.Utils;
 using static Geeks.GeeksProductivityTools.Menus.ActionsOnCSharp.CSharpActionDelegate;
 
 namespace Geeks.GeeksProductivityTools.Menus.ActionsOnCSharp

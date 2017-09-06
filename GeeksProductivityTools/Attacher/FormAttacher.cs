@@ -1,12 +1,12 @@
-using EnvDTE;
-using EnvDTE80;
-using Geeks.GeeksProductivityTools;
-using Geeks.GeeksProductivityTools.Properties;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Windows.Forms;
+using EnvDTE;
+using EnvDTE80;
+using Geeks.GeeksProductivityTools;
+using Geeks.GeeksProductivityTools.Properties;
 
 namespace GeeksAddin.Attacher
 {

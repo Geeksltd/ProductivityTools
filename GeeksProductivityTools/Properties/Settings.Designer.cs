@@ -8,139 +8,173 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Geeks.GeeksProductivityTools.Properties {
-    
-    
+namespace Geeks.GeeksProductivityTools.Properties
+{
+
+
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "15.1.0.0")]
-    internal sealed partial class Settings : global::System.Configuration.ApplicationSettingsBase {
-        
+    internal sealed partial class Settings : global::System.Configuration.ApplicationSettingsBase
+    {
+
         private static Settings defaultInstance = ((Settings)(global::System.Configuration.ApplicationSettingsBase.Synchronized(new Settings())));
-        
-        public static Settings Default {
-            get {
+
+        public static Settings Default
+        {
+            get
+            {
                 return defaultInstance;
             }
         }
-        
+
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("True")]
-        public bool ExcludeResources {
-            get {
+        public bool ExcludeResources
+        {
+            get
+            {
                 return ((bool)(this["ExcludeResources"]));
             }
-            set {
+            set
+            {
                 this["ExcludeResources"] = value;
             }
         }
-        
+
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("True")]
-        public bool TrackItemInSolutionExplorer {
-            get {
+        public bool TrackItemInSolutionExplorer
+        {
+            get
+            {
                 return ((bool)(this["TrackItemInSolutionExplorer"]));
             }
-            set {
+            set
+            {
                 this["TrackItemInSolutionExplorer"] = value;
             }
         }
-        
+
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute(".gif;.jpg;.png;.bmp;.resx;.ico;.bat;.tif;.psd;.sln;.suo;.csproj;.user;.cd;.lic;_r" +
             "eset.css;.html;.jsm;.map;.cache;vsdoc;.dat;.force;.map;.md;.rtf;.tmp")]
-        public string ResourceFileTypes {
-            get {
+        public string ResourceFileTypes
+        {
+            get
+            {
                 return ((string)(this["ResourceFileTypes"]));
             }
-            set {
+            set
+            {
                 this["ResourceFileTypes"] = value;
             }
         }
-        
+
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("@Temp\\Validation;@CuteSoft;@Coder.Meta;.svn;node_modules;bower_components;public;" +
             "obj\r\n")]
-        public string ExcludedDirectories {
-            get {
+        public string ExcludedDirectories
+        {
+            get
+            {
                 return ((string)(this["ExcludedDirectories"]));
             }
-            set {
+            set
+            {
                 this["ExcludedDirectories"] = value;
             }
         }
-        
+
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("False")]
-        public bool ShowMethodParameters {
-            get {
+        public bool ShowMethodParameters
+        {
+            get
+            {
                 return ((bool)(this["ShowMethodParameters"]));
             }
-            set {
+            set
+            {
                 this["ShowMethodParameters"] = value;
             }
         }
-        
+
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("True")]
-        public bool ShowMethods {
-            get {
+        public bool ShowMethods
+        {
+            get
+            {
                 return ((bool)(this["ShowMethods"]));
             }
-            set {
+            set
+            {
                 this["ShowMethods"] = value;
             }
         }
-        
+
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("False")]
-        public bool ShowMethodReturnTypes {
-            get {
+        public bool ShowMethodReturnTypes
+        {
+            get
+            {
                 return ((bool)(this["ShowMethodReturnTypes"]));
             }
-            set {
+            set
+            {
                 this["ShowMethodReturnTypes"] = value;
             }
         }
-        
+
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("False")]
-        public bool ShowClassNames {
-            get {
+        public bool ShowClassNames
+        {
+            get
+            {
                 return ((bool)(this["ShowClassNames"]));
             }
-            set {
+            set
+            {
                 this["ShowClassNames"] = value;
             }
         }
-        
+
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("True")]
-        public bool ShowProperties {
-            get {
+        public bool ShowProperties
+        {
+            get
+            {
                 return ((bool)(this["ShowProperties"]));
             }
-            set {
+            set
+            {
                 this["ShowProperties"] = value;
             }
         }
-        
+
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("")]
-        public string RemoteMachines {
-            get {
+        public string RemoteMachines
+        {
+            get
+            {
                 return ((string)(this["RemoteMachines"]));
             }
-            set {
+            set
+            {
                 this["RemoteMachines"] = value;
             }
         }

@@ -1,11 +1,10 @@
-﻿using Microsoft.VisualStudio.Shell;
+﻿using System;
 using System.ComponentModel.Design;
-using System;
-using Geeks.GeeksProductivityTools.Utility;
 using System.Windows.Forms;
-using static Geeks.GeeksProductivityTools.Menus.ActionsOnCSharp.CSharpActionDelegate;
 using Geeks.GeeksProductivityTools.Menus.ActionsOnCSharp;
-using Geeks.GeeksProductivityTools.Definition;
+using Geeks.GeeksProductivityTools.Utility;
+using Microsoft.VisualStudio.Shell;
+using static Geeks.GeeksProductivityTools.Menus.ActionsOnCSharp.CSharpActionDelegate;
 
 namespace Geeks.GeeksProductivityTools.Menus.Cleanup
 {

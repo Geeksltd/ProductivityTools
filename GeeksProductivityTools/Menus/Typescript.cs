@@ -1,9 +1,9 @@
-using Geeks.GeeksProductivityTools.TypeScript;
-using Microsoft.VisualStudio.Shell;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
 using System.Linq;
+using Geeks.GeeksProductivityTools.TypeScript;
+using Microsoft.VisualStudio.Shell;
 
 namespace Geeks.GeeksProductivityTools.Menus
 {

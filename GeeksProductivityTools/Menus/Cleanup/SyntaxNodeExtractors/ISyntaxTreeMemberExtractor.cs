@@ -1,6 +1,6 @@
-﻿using Microsoft.CodeAnalysis;
+﻿using System.Collections.Generic;
+using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
-using System.Collections.Generic;
 
 namespace Geeks.GeeksProductivityTools.Menus.Cleanup
 {

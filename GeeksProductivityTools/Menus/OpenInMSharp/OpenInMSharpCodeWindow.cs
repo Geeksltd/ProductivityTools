@@ -1,7 +1,7 @@
-using Microsoft.VisualStudio.Shell;
 using System;
 using System.ComponentModel.Design;
 using System.Diagnostics;
+using Microsoft.VisualStudio.Shell;
 
 namespace Geeks.GeeksProductivityTools.Menus.OpenInMSharp
 {

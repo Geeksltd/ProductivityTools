@@ -1,6 +1,6 @@
-using Geeks.GeeksProductivityTools.Properties;
 using System;
 using System.Windows.Forms;
+using Geeks.GeeksProductivityTools.Properties;
 
 namespace GeeksAddin.FileFinder
 {
