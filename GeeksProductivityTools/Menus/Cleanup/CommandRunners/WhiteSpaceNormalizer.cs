@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using EnvDTE;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace Geeks.GeeksProductivityTools.Menus.Cleanup
 {
@@ -18,33 +19,66 @@ namespace Geeks.GeeksProductivityTools.Menus.Cleanup
 
             initialSource = new Rewriter().Visit(initialSource);
 
-            initialSource.WriteSourceTo(item.ToFullPathPropertyValue());
+            initialSource = InsertABlankLineAfterLastUsing(new OutterUsingRewriter(), initialSource);
 
-            //var childs = initialSource.ChildNodes().ToList();
-            //var newList = new SyntaxNodeOrTokenList();
-            //for (int i = 0; i < childs.Count; i++)
-            //{
-            //    var syntaxNode = childs[i];
-            //    var newRoot0 = new Rewriter().Visit(syntaxNode);
-            //    if (i + 1 < childs.Count && !childs[i + 1].IsKind(SyntaxKind.UsingDirective))
-            //    {
-            //        newRoot0 = newRoot0.InsertTriviaAfter(newRoot0.DescendantTrivia(descendIntoTrivia: true).Last(),
-            //            new SyntaxTrivia[]
-            //            {
-            //                initialSource.DescendantTrivia().First(x => x.IsKind(SyntaxKind.EndOfLineTrivia)),
-            //            }
-            //        );
-            //    }
-            //    newList.Add(newRoot0);
-            //    initialSource = initialSource.ReplaceNode(syntaxNode, newRoot0);
-            //}
-            //new SyntaxNodeOrToken().
-            //    initialSource.WriteSourceTo(item.ToFullPathPropertyValue());
+            initialSource.WriteSourceTo(item.ToFullPathPropertyValue());
+        }
+
+        private static SyntaxNode InsertABlankLineAfterLastUsing(UsingRewriterBase usingRewriter, SyntaxNode initialSource)
+        {
+            var lastUsing = initialSource.ChildNodes().OfType<UsingDirectiveSyntax>().LastOrDefault();
+            if (lastUsing != null)
+            {
+                var lastToken = lastUsing.ChildTokens().Last();
+                var newToken = usingRewriter.VisitToken(lastToken);
+
+                initialSource = initialSource.ReplaceToken(lastToken, newToken);
+            }
+            foreach (var namespaceDeclarationSyntax in initialSource.ChildNodes().OfType<NamespaceDeclarationSyntax>())
+            {
+                var newNameSpace = InsertABlankLineAfterLastUsing(new InnerUsingRewriter(), namespaceDeclarationSyntax);
+                initialSource = initialSource.ReplaceNode(namespaceDeclarationSyntax, newNameSpace);
+            }
+            return initialSource;
+        }
+
+        abstract class UsingRewriterBase : CSharpSyntaxRewriter
+        {
+            protected SyntaxTriviaList FormatUsings(SyntaxTriviaList list, int limit)
+            {
+                list = base.VisitList(list);
+
+                var lineBreaksAtBeginning = list.TakeWhile(t => t.IsKind(SyntaxKind.EndOfLineTrivia)).Count();
+                var line = list.First().SyntaxTree.GetRoot().DescendantTrivia().First(x => x.IsKind(SyntaxKind.EndOfLineTrivia));
+                if (lineBreaksAtBeginning < limit)
+                {
+                    list = list.Add(line);
+                }
+
+                return list;
+            }
+        }
+
+        class OutterUsingRewriter : UsingRewriterBase
+        {
+            public override SyntaxTriviaList VisitList(SyntaxTriviaList list)
+            {
+                return FormatUsings(list, 2);
+            }
+
+        }
+        class InnerUsingRewriter : UsingRewriterBase
+        {
+            public override SyntaxTriviaList VisitList(SyntaxTriviaList list)
+            {
+                return FormatUsings(list, 2);
+            }
         }
 
         class Rewriter : CSharpSyntaxRewriter
         {
             bool _lastTokenIsAOpenBrace = false;
+            bool _lastTokenIsACloseBrace = false;
 
             public override SyntaxTriviaList VisitList(SyntaxTriviaList list)
             {
@@ -52,6 +86,11 @@ namespace Geeks.GeeksProductivityTools.Menus.Cleanup
 
                 if (list.Count == 1)
                 {
+                    if (list[0].Token.IsKind(SyntaxKind.NamespaceKeyword) && list[0].IsKind(SyntaxKind.EndOfLineTrivia))
+                    {
+                        return SyntaxFactory.TriviaList();
+                    }
+
                     _lastTokenIsAOpenBrace = list[0].Token.IsKind(SyntaxKind.OpenBraceToken);
                     return list;
                 }
@@ -60,23 +99,43 @@ namespace Geeks.GeeksProductivityTools.Menus.Cleanup
 
                 var searchedComments = FindSpecialTrivias(newList);
 
-                if (newList.First().Token.IsKind(SyntaxKind.CloseBraceToken))
+                var firstTrivia = newList.First();
+
+                if (firstTrivia.Token.IsKind(SyntaxKind.CloseBraceToken))
                 {
+                    _lastTokenIsACloseBrace = true;
                     return SyntaxFactory.TriviaList(ProcessSpecialTrivias(newList, searchedComments, itsForCloseBrace: true));
                 }
+
                 if (_lastTokenIsAOpenBrace)
                 {
-                    var lineBreaksAtBeginning = newList.TakeWhile(t => t.IsKind(SyntaxKind.EndOfLineTrivia)).Count();
-
-                    newList = newList.Skip(lineBreaksAtBeginning).ToList();
+                    newList = CleanUpList(newList);
 
                     _lastTokenIsAOpenBrace = false;
                 }
 
+                if
+                (
+                    !_lastTokenIsACloseBrace &&
+                    (firstTrivia.Token.IsKind(SyntaxKind.NamespaceKeyword) || firstTrivia.Token.IsKind(SyntaxKind.ClassKeyword))
+                )
+                {
+                    newList = CleanUpList(newList);
+                }
+
                 newList = ProcessSpecialTrivias(newList, searchedComments, itsForCloseBrace: false);
+
+                _lastTokenIsACloseBrace = false;
 
                 list = SyntaxFactory.TriviaList(newList);
                 return list;
+            }
+
+            private List<SyntaxTrivia> CleanUpList(List<SyntaxTrivia> newList)
+            {
+                var lineBreaksAtBeginning = newList.TakeWhile(t => t.IsKind(SyntaxKind.EndOfLineTrivia)).Count();
+
+                return newList.Skip(lineBreaksAtBeginning).ToList();
             }
 
             List<SyntaxTrivia> FindSpecialTrivias(IEnumerable<SyntaxTrivia> newList)
@@ -150,7 +209,7 @@ namespace Geeks.GeeksProductivityTools.Menus.Cleanup
                     {
                         outputTriviasList.Add(newList[i]);
                         i++;
-                        if (newList[i].IsKind(SyntaxKind.EndOfLineTrivia))
+                        if (i < newList.Count && newList[i].IsKind(SyntaxKind.EndOfLineTrivia))
                         {
                             outputTriviasList.Add(newList[i]);
                         }
