@@ -19,7 +19,7 @@ namespace Geeks.GeeksProductivityTools.Menus.Cleanup
 
             initialSource = new Rewriter().Visit(initialSource);
 
-            initialSource = InsertABlankLineAfterLastUsing(new OutterUsingRewriter(), initialSource);
+            initialSource = InsertABlankLineAfterLastUsing(new UsingRewriterBase(), initialSource);
 
             initialSource.WriteSourceTo(item.ToFullPathPropertyValue());
         }
@@ -36,14 +36,16 @@ namespace Geeks.GeeksProductivityTools.Menus.Cleanup
             }
             foreach (var namespaceDeclarationSyntax in initialSource.ChildNodes().OfType<NamespaceDeclarationSyntax>())
             {
-                var newNameSpace = InsertABlankLineAfterLastUsing(new InnerUsingRewriter(), namespaceDeclarationSyntax);
+                var newNameSpace = InsertABlankLineAfterLastUsing(new UsingRewriterBase(), namespaceDeclarationSyntax);
                 initialSource = initialSource.ReplaceNode(namespaceDeclarationSyntax, newNameSpace);
             }
             return initialSource;
         }
 
-        abstract class UsingRewriterBase : CSharpSyntaxRewriter
+        class UsingRewriterBase : CSharpSyntaxRewriter
         {
+            public override SyntaxTriviaList VisitList(SyntaxTriviaList list) => FormatUsings(list, 2);
+
             protected SyntaxTriviaList FormatUsings(SyntaxTriviaList list, int limit)
             {
                 list = base.VisitList(list);
@@ -59,21 +61,21 @@ namespace Geeks.GeeksProductivityTools.Menus.Cleanup
             }
         }
 
-        class OutterUsingRewriter : UsingRewriterBase
-        {
-            public override SyntaxTriviaList VisitList(SyntaxTriviaList list)
-            {
-                return FormatUsings(list, 2);
-            }
+        //class OutterUsingRewriter : UsingRewriterBase
+        //{
+        //    public override SyntaxTriviaList VisitList(SyntaxTriviaList list)
+        //    {
+        //        return FormatUsings(list, 2);
+        //    }
 
-        }
-        class InnerUsingRewriter : UsingRewriterBase
-        {
-            public override SyntaxTriviaList VisitList(SyntaxTriviaList list)
-            {
-                return FormatUsings(list, 2);
-            }
-        }
+        //}
+        //class InnerUsingRewriter : UsingRewriterBase
+        //{
+        //    public override SyntaxTriviaList VisitList(SyntaxTriviaList list)
+        //    {
+        //        return FormatUsings(list, 2);
+        //    }
+        //}
 
         class Rewriter : CSharpSyntaxRewriter
         {
@@ -97,14 +99,14 @@ namespace Geeks.GeeksProductivityTools.Menus.Cleanup
 
                 var newList = list.ToList();
 
-                var searchedComments = FindSpecialTrivias(newList);
+                var specialTriviasCount = FindSpecialTriviasCount(newList);
 
                 var firstTrivia = newList.First();
 
                 if (firstTrivia.Token.IsKind(SyntaxKind.CloseBraceToken))
                 {
                     _lastTokenIsACloseBrace = true;
-                    return SyntaxFactory.TriviaList(ProcessSpecialTrivias(newList, searchedComments, itsForCloseBrace: true));
+                    return SyntaxFactory.TriviaList(ProcessSpecialTrivias(newList, specialTriviasCount, itsForCloseBrace: true));
                 }
 
                 if (_lastTokenIsAOpenBrace)
@@ -123,7 +125,7 @@ namespace Geeks.GeeksProductivityTools.Menus.Cleanup
                     newList = CleanUpList(newList);
                 }
 
-                newList = ProcessSpecialTrivias(newList, searchedComments, itsForCloseBrace: false);
+                newList = ProcessSpecialTrivias(newList, specialTriviasCount, itsForCloseBrace: false);
 
                 _lastTokenIsACloseBrace = false;
 
@@ -131,25 +133,24 @@ namespace Geeks.GeeksProductivityTools.Menus.Cleanup
                 return list;
             }
 
-            private List<SyntaxTrivia> CleanUpList(List<SyntaxTrivia> newList)
+            private List<SyntaxTrivia> CleanUpList(IEnumerable<SyntaxTrivia> newList)
             {
                 var lineBreaksAtBeginning = newList.TakeWhile(t => t.IsKind(SyntaxKind.EndOfLineTrivia)).Count();
 
                 return newList.Skip(lineBreaksAtBeginning).ToList();
             }
 
-            List<SyntaxTrivia> FindSpecialTrivias(IEnumerable<SyntaxTrivia> newList)
+            int FindSpecialTriviasCount(IEnumerable<SyntaxTrivia> newList)
             {
                 return
                     newList
 
-                        .Where(t =>
-                                t.IsKind(SyntaxKind.RegionDirectiveTrivia) ||
-                                t.IsKind(SyntaxKind.EndRegionDirectiveTrivia) ||
-                                t.IsKind(SyntaxKind.SingleLineCommentTrivia) ||
-                                t.IsKind(SyntaxKind.MultiLineCommentTrivia)
-                        )
-                        .ToList();
+                        .Count(t =>
+                            t.IsKind(SyntaxKind.RegionDirectiveTrivia) ||
+                            t.IsKind(SyntaxKind.EndRegionDirectiveTrivia) ||
+                            t.IsKind(SyntaxKind.SingleLineCommentTrivia) ||
+                            t.IsKind(SyntaxKind.MultiLineCommentTrivia)
+                        );
             }
 
             bool RemoveBlankDuplication(ref List<SyntaxTrivia> newList, SyntaxKind kind, int iterationIndex)
@@ -164,7 +165,7 @@ namespace Geeks.GeeksProductivityTools.Menus.Cleanup
                 }
                 return lineBreaksAtBeginning > 0;
             }
-            List<SyntaxTrivia> ProcessSpecialTrivias(IList<SyntaxTrivia> syntaxTrivias, IList<SyntaxTrivia> searchedComments, bool itsForCloseBrace)
+            List<SyntaxTrivia> ProcessSpecialTrivias(IList<SyntaxTrivia> syntaxTrivias, int specialTriviasCount, bool itsForCloseBrace)
             {
                 var newList = syntaxTrivias.ToList();
 
@@ -174,7 +175,7 @@ namespace Geeks.GeeksProductivityTools.Menus.Cleanup
 
                 for (int i = 0; i < newList.Count; i++)
                 {
-                    if (specialTiviasCount == searchedComments.Count)
+                    if (specialTiviasCount == specialTriviasCount)
                     {
                         if (itsForCloseBrace)
                         {
