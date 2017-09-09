@@ -40,7 +40,6 @@ namespace Geeks.GeeksProductivityTools.Menus.Cleanup
             bool _lastTokenIsAOpenBrace = false;
             object _endOfLineTrivia;
 
-            //Stack<SyntaxKind> _myStack = new Stack<SyntaxKind>();
             private SyntaxKind _lastSpecialSyntax = SyntaxKind.None;
             public override SyntaxNode Visit(SyntaxNode node)
             {
@@ -51,10 +50,13 @@ namespace Geeks.GeeksProductivityTools.Menus.Cleanup
                             .SyntaxTree
                             .GetRoot()
                             .DescendantTrivia(descendIntoTrivia: true)
-                            .First(x => x.IsKind(SyntaxKind.EndOfLineTrivia));
+                            .FirstOrDefault(x => x.IsKind(SyntaxKind.EndOfLineTrivia));
                 }
                 if (node is UsingDirectiveSyntax)
                 {
+                    var output = CleanUpList(node.GetLeadingTrivia().ToList(), 0);
+                    node = node.WithLeadingTrivia(output);
+
                     _lastSpecialSyntax = SyntaxKind.UsingKeyword;
                 }
                 else if (node is NamespaceDeclarationSyntax)
@@ -65,6 +67,14 @@ namespace Geeks.GeeksProductivityTools.Menus.Cleanup
                 {
                     node = CheckSyntaxNodeAfterUsingNode(node, SyntaxKind.ClassKeyword);
                 }
+                //else if (node != null)
+                //{
+                //    if (node.GetLeadingTrivia().Count > 1)
+                //    {
+                //        var output = CleanUpList(node.GetLeadingTrivia().ToList());
+                //        node = node.WithLeadingTrivia(output);
+                //    }
+                //}
                 return base.Visit(node);
             }
 
@@ -100,42 +110,47 @@ namespace Geeks.GeeksProductivityTools.Menus.Cleanup
                     var newList = CleanUpOpenBrace(oldList);
                     token = token.WithLeadingTrivia(newList);
                     _lastTokenIsAOpenBrace = false;
-                    return base.VisitToken(token);
                 }
-                if (token.IsKind(SyntaxKind.OpenBraceToken))
+                else if (token.IsKind(SyntaxKind.OpenBraceToken))
                 {
                     _lastTokenIsAOpenBrace = true;
                 }
-                if (token.IsKind(SyntaxKind.CloseBraceToken))
+                else if (token.IsKind(SyntaxKind.CloseBraceToken))
                 {
                     var oldList = token.LeadingTrivia.ToList();
                     var newList = CleanUpCloseBrace(oldList);
                     token = token.WithLeadingTrivia(newList);
-                    return base.VisitToken(token);
                 }
+                else if (token.LeadingTrivia.Count > 1)
+                {
+                    var output = CleanUpList(token.LeadingTrivia.ToList());
+                    token = token.WithLeadingTrivia(output);
+                }
+
                 return base.VisitToken(token);
             }
 
-            public override SyntaxTriviaList VisitList(SyntaxTriviaList list)
-            {
-                list = base.VisitList(list);
-                if (list.Count == 1)
-                {
-                    _lastTokenIsAOpenBrace = list[0].Token.IsKind(SyntaxKind.OpenBraceToken);
-                    return list;
-                }
+            //public override SyntaxTriviaList VisitList(SyntaxTriviaList list)
+            //{
+            //    list = base.VisitList(list);
+            //    return list;
+            //    //if (list.Count == 1)
+            //    //{
+            //    //    _lastTokenIsAOpenBrace = list[0].Token.IsKind(SyntaxKind.OpenBraceToken);
+            //    //    return list;
+            //    //}
 
-                var newList = list.ToList();
+            //    //var newList = list.ToList();
 
-                var specialTriviasCount = FindSpecialTriviasCount(newList);
+            //    //var specialTriviasCount = FindSpecialTriviasCount(newList);
 
-                newList = CleanUpList(newList);
+            //    //newList = CleanUpList(newList);
 
-                newList = ProcessSpecialTrivias(newList, specialTriviasCount, itsForCloseBrace: false);
+            //    //newList = ProcessSpecialTrivias(newList, specialTriviasCount, itsForCloseBrace: false);
 
-                list = SyntaxFactory.TriviaList(newList);
-                return list;
-            }
+            //    //list = SyntaxFactory.TriviaList(newList);
+            //    //return list;
+            //}
 
             //private List<SyntaxTrivia> CleanUpList(List<SyntaxTrivia> newList)
             //{
