@@ -22,14 +22,14 @@ namespace Geeks.GeeksProductivityTools.Menus.Cleanup
 
             initialSource.WriteSourceTo(item.ToFullPathPropertyValue());
         }
-        //public static void NormalizeWhiteSpace(string address)
-        //{
-        //    var initialSource = CSharpSyntaxTree.ParseText(File.ReadAllText(address)).GetRoot();
+        public static void NormalizeWhiteSpace(string address)
+        {
+            var initialSource = CSharpSyntaxTree.ParseText(File.ReadAllText(address)).GetRoot();
 
-        //    initialSource = RevomeDuplicaterBlank(initialSource);
+            initialSource = RevomeDuplicaterBlank(initialSource);
 
-        //    initialSource.WriteSourceTo(address);
-        //}
+            initialSource.WriteSourceTo(address);
+        }
         static SyntaxNode RevomeDuplicaterBlank(SyntaxNode initialSource)
         {
             initialSource = new Rewriter().Visit(initialSource);
@@ -72,6 +72,7 @@ namespace Geeks.GeeksProductivityTools.Menus.Cleanup
                 //    if (node.GetLeadingTrivia().Count > 1)
                 //    {
                 //        var output = CleanUpList(node.GetLeadingTrivia().ToList());
+                //        output = ProcessSpecialTrivias(output, FindSpecialTriviasCount(output), itsForCloseBrace: false);
                 //        node = node.WithLeadingTrivia(output);
                 //    }
                 //}
@@ -86,18 +87,6 @@ namespace Geeks.GeeksProductivityTools.Menus.Cleanup
                     node = node.WithLeadingTrivia(output);
                 }
                 _lastSpecialSyntax = syntaxNodeKind;
-                //if (_myStack.Any())
-                //{
-                //    var topItem = _myStack.Pop();
-                //    if (topItem == SyntaxKind.UsingKeyword)
-                //    {
-                //        var output = CleanUpListUsings(node.GetLeadingTrivia().ToList());
-                //        node = node.WithLeadingTrivia(output);
-                //        _myStack.Push(syntaxNodeKind);
-                //    }
-                //    else if (topItem != syntaxNodeKind) _myStack.Push(syntaxNodeKind);
-                //}
-                //else if (_myStack.Count == 0) _myStack.Push(syntaxNodeKind);
 
                 return node;
             }
@@ -124,59 +113,12 @@ namespace Geeks.GeeksProductivityTools.Menus.Cleanup
                 else if (token.LeadingTrivia.Count > 1)
                 {
                     var output = CleanUpList(token.LeadingTrivia.ToList());
+                    output = ProcessSpecialTrivias(output, FindSpecialTriviasCount(output), itsForCloseBrace: false);
                     token = token.WithLeadingTrivia(output);
                 }
 
                 return base.VisitToken(token);
             }
-
-            //public override SyntaxTriviaList VisitList(SyntaxTriviaList list)
-            //{
-            //    list = base.VisitList(list);
-            //    return list;
-            //    //if (list.Count == 1)
-            //    //{
-            //    //    _lastTokenIsAOpenBrace = list[0].Token.IsKind(SyntaxKind.OpenBraceToken);
-            //    //    return list;
-            //    //}
-
-            //    //var newList = list.ToList();
-
-            //    //var specialTriviasCount = FindSpecialTriviasCount(newList);
-
-            //    //newList = CleanUpList(newList);
-
-            //    //newList = ProcessSpecialTrivias(newList, specialTriviasCount, itsForCloseBrace: false);
-
-            //    //list = SyntaxFactory.TriviaList(newList);
-            //    //return list;
-            //}
-
-            //private List<SyntaxTrivia> CleanUpList(List<SyntaxTrivia> newList)
-            //{
-            //    var lineBreaksAtBeginning = newList.TakeWhile(t => t.IsKind(SyntaxKind.EndOfLineTrivia)).Count();
-
-            //    int numberOfBlankLine = 1;
-
-            //    if (_lastTokenIsAOpenBrace)
-            //    {
-            //        _lastTokenIsAOpenBrace = false;
-            //        newList = newList.Skip(lineBreaksAtBeginning).ToList();
-            //    }
-            //    //else if (mustCleanUpTopOfTrivialsList)
-            //    //{
-            //    //    if (lineBreaksAtBeginning > 1)
-            //    //    {
-            //    //        newList = newList.Skip(lineBreaksAtBeginning - 1).ToList();
-            //    //    }
-            //    //    else if (lineBreaksAtBeginning < 1)
-            //    //    {
-            //    //        newList.Insert(0, (SyntaxTrivia)_endOfLineTrivia);
-            //    //    }
-            //    //    mustCleanUpTopOfTrivialsList = false;
-            //    //}
-            //    return newList;
-            //}
             List<SyntaxTrivia> CleanUpList(List<SyntaxTrivia> newList)
             {
                 var lineBreaksAtBeginning = newList.TakeWhile(t => t.IsKind(SyntaxKind.EndOfLineTrivia)).Count();
