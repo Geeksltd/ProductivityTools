@@ -8,6 +8,7 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 using System.IO;
 using Microsoft.CodeAnalysis.Formatting;
 using Microsoft.CodeAnalysis.Options;
+using System;
 
 namespace Geeks.GeeksProductivityTools.Menus.Cleanup
 {
@@ -18,6 +19,7 @@ namespace Geeks.GeeksProductivityTools.Menus.Cleanup
 
 		static void NormalizeWhiteSpace(ProjectItem item)
 		{
+
 			var initialSource = item.ToSyntaxNode();
 
 			initialSource = Formatter.Format(initialSource, GeeksProductivityToolsPackage.Instance.VsWorkspace);
@@ -25,7 +27,8 @@ namespace Geeks.GeeksProductivityTools.Menus.Cleanup
 			initialSource = RevomeDuplicaterBlank(initialSource);
 
 			initialSource.WriteSourceTo(item.ToFullPathPropertyValue());
-		}
+
+        }
 		public static void NormalizeWhiteSpace(string address)
 		{
 			var initialSource = CSharpSyntaxTree.ParseText(File.ReadAllText(address)).GetRoot();
@@ -73,16 +76,20 @@ namespace Geeks.GeeksProductivityTools.Menus.Cleanup
 				{
 					node = CheckSyntaxNodeAfterUsingNode(node, SyntaxKind.ClassKeyword);
 				}
-				//else if (node != null)
-				//{
-				//    if (node.GetLeadingTrivia().Count > 1)
-				//    {
-				//        var output = CleanUpList(node.GetLeadingTrivia().ToList());
-				//        output = ProcessSpecialTrivias(output, FindSpecialTriviasCount(output), itsForCloseBrace: false);
-				//        node = node.WithLeadingTrivia(output);
-				//    }
-				//}
-				return base.Visit(node);
+                else if (node is MethodDeclarationSyntax)
+                {
+                    node = CheckSyntaxNodeAfterUsingNode(node, SyntaxKind.MethodKeyword);
+                }
+                //else if (node != null)
+                //{
+                //    if (node.GetLeadingTrivia().Count > 1)
+                //    {
+                //        var output = CleanUpList(node.GetLeadingTrivia().ToList());
+                //        output = ProcessSpecialTrivias(output, FindSpecialTriviasCount(output), itsForCloseBrace: false);
+                //        node = node.WithLeadingTrivia(output);
+                //    }
+                //}
+                return base.Visit(node);
 			}
 
 			SyntaxNode CheckSyntaxNodeAfterUsingNode(SyntaxNode node, SyntaxKind syntaxNodeKind)
@@ -92,7 +99,13 @@ namespace Geeks.GeeksProductivityTools.Menus.Cleanup
 					var output = CleanUpListUsings(node.GetLeadingTrivia().ToList());
 					node = node.WithLeadingTrivia(output);
 				}
-				_lastSpecialSyntax = syntaxNodeKind;
+                else if (_lastSpecialSyntax == SyntaxKind.MethodKeyword)
+                {
+                    var output = CleanUpList(node.GetLeadingTrivia().ToList(), 1);
+                    node = node.WithLeadingTrivia(output);
+                }
+
+                _lastSpecialSyntax = syntaxNodeKind;
 
 				return node;
 			}
