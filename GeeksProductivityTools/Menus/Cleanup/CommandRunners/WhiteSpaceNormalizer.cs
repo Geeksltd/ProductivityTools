@@ -71,6 +71,10 @@ namespace Geeks.GeeksProductivityTools.Menus.Cleanup
                 {
                     node = CheckSyntaxNodeAfterUsingNode(node, SyntaxKind.ClassKeyword);
                 }
+                else if (node is MethodDeclarationSyntax)
+                {
+                    node = CheckSyntaxNodeAfterUsingNode(node, SyntaxKind.MethodKeyword);
+                }
                 //else if (node != null)
                 //{
                 //    if (node.GetLeadingTrivia().Count > 1)
@@ -90,6 +94,12 @@ namespace Geeks.GeeksProductivityTools.Menus.Cleanup
                     var output = CleanUpListUsings(node.GetLeadingTrivia().ToList());
                     node = node.WithLeadingTrivia(output);
                 }
+                else if (_lastSpecialSyntax == SyntaxKind.MethodKeyword)
+                {
+                    var output = CleanUpList(node.GetLeadingTrivia().ToList(), 1);
+                    node = node.WithLeadingTrivia(output);
+                }
+
                 _lastSpecialSyntax = syntaxNodeKind;
 
                 return node;
