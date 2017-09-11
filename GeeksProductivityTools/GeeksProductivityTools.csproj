@@ -123,7 +123,7 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.VisualStudio.LanguageServices, Version=2.2.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\..\..\Users\Bonyad\Documents\Visual Studio 2017\Projects\ConsoleApp1\packages\Microsoft.VisualStudio.LanguageServices.2.2.0\lib\net46\Microsoft.VisualStudio.LanguageServices.dll</HintPath>
+      <HintPath>..\packages\Microsoft.VisualStudio.LanguageServices.2.2.0\lib\net46\Microsoft.VisualStudio.LanguageServices.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.VisualStudio.OLE.Interop, Version=7.1.40304.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
       <HintPath>..\packages\Microsoft.VisualStudio.OLE.Interop.7.10.6070\lib\Microsoft.VisualStudio.OLE.Interop.dll</HintPath>
