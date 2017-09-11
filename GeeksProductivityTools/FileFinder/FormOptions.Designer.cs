@@ -53,7 +53,7 @@ namespace GeeksAddin.FileFinder
             // 
             // txtExcludedDirectories
             // 
-            this.txtExcludedDirectories.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.txtExcludedDirectories.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
             | System.Windows.Forms.AnchorStyles.Right)));
             this.txtExcludedDirectories.DataBindings.Add(new System.Windows.Forms.Binding("Text", global::Geeks.GeeksProductivityTools.Properties.Settings.Default, "ExcludedDirectories", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
             this.txtExcludedDirectories.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -74,7 +74,7 @@ namespace GeeksAddin.FileFinder
             // 
             // txtResources
             // 
-            this.txtResources.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.txtResources.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
             | System.Windows.Forms.AnchorStyles.Right)));
             this.txtResources.DataBindings.Add(new System.Windows.Forms.Binding("Text", global::Geeks.GeeksProductivityTools.Properties.Settings.Default, "ResourceFileTypes", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
             this.txtResources.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));

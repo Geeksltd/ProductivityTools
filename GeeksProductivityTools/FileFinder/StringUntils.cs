@@ -12,7 +12,7 @@ namespace GeeksAddin.FileFinder
         /// </summary>
         public static string ToValidFileName(string text)
         {
-            return new string(text.ToArray().Select(c => (char.IsLetterOrDigit(c) || c=='.' || c=='\\') ? c : ' ').ToArray());
+            return new string(text.ToArray().Select(c => (char.IsLetterOrDigit(c) || c == '.' || c == '\\') ? c : ' ').ToArray());
         }
 
         public static List<WordRange> BreakToRanges(string text, string[] words)
