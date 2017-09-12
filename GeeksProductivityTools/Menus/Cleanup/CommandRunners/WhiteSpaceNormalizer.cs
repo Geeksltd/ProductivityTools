@@ -14,10 +14,6 @@ namespace Geeks.GeeksProductivityTools.Menus.Cleanup
     public class WhiteSpaceNormalizer : ICodeCleaner
     {
         public void Run(ProjectItem item) => Task.Run(() => NormalizeWhiteSpace(item));
-        //{
-        //    NormalizeWhiteSpace(item);
-        //    //Task.Run(() => NormalizeWhiteSpace(item));
-        //}
 
         static void NormalizeWhiteSpace(ProjectItem item)
         {
