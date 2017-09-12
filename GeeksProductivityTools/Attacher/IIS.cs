@@ -20,7 +20,7 @@ namespace GeeksAddin.Attacher
             }
         }
 
-        public bool CanUseIIS => ServerManager != null; 
+        public bool CanUseIIS => ServerManager != null;
 
         public string GetPhysicalPath(string poolName)
         {
@@ -35,9 +35,7 @@ namespace GeeksAddin.Attacher
 
                 return application.VirtualDirectories["/"].PhysicalPath;
             }
-            catch
-            {
-            }
+            catch { }
 
             return null;
         }

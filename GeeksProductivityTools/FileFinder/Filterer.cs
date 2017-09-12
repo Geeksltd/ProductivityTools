@@ -111,9 +111,7 @@ namespace GeeksAddin.FileFinder
         public event EventHandler<ItemsEventArgs> ItemsFound;
         protected virtual void OnItemsFound(IEnumerable<Item> items)
         {
-            var handler = ItemsFound;
-            if (handler != null)
-                handler(this, new ItemsEventArgs { Items = items });
+            ItemsFound?.Invoke(this, new ItemsEventArgs { Items = items });
         }
 
         public event EventHandler AnnouncementOfExistingItemsFinished;
