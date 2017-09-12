@@ -58,25 +58,23 @@ namespace Geeks.GeeksProductivityTools.Menus.Cleanup
 
                 if (node is MethodDeclarationSyntax && node.Parent is ClassDeclarationSyntax)
                 {
-                    node = CheckMethodForSingleReturnStatement(node as MethodDeclarationSyntax);
+                    node = ConvertMethodToExpressionBodied(node as MethodDeclarationSyntax);
                 }
                 else if (node is PropertyDeclarationSyntax)
                 {
-                    node = CheckForReadOnlyProperties(node as PropertyDeclarationSyntax);
+                    node = ConvertPropertyToExpressionBodied(node as PropertyDeclarationSyntax);
                 }
 
                 return base.Visit(node);
             }
 
             static SyntaxTrivia[] _spaceTrivia = { SyntaxFactory.SyntaxTrivia(SyntaxKind.WhitespaceTrivia, " ") };
-            MethodDeclarationSyntax CheckMethodForSingleReturnStatement(MethodDeclarationSyntax methodDeclaration)
+            MethodDeclarationSyntax ConvertMethodToExpressionBodied(MethodDeclarationSyntax methodDeclaration)
             {
-                if ((methodDeclaration.ReturnType is PredefinedTypeSyntax) && (methodDeclaration.ReturnType as PredefinedTypeSyntax).Keyword.IsKind(SyntaxKind.VoidKeyword)) return methodDeclaration;
-                if (methodDeclaration.Body == null) return methodDeclaration;
-                if (methodDeclaration.Body.Statements.Count > 1) return methodDeclaration;
-                var returnStatements = methodDeclaration.Body.Statements.OfType<ReturnStatementSyntax>();
-                if (returnStatements.Count() != 1) return methodDeclaration;
-                var expression = returnStatements.First().Expression.WithoutLeadingTrivia();
+                var expression = AnalyzeMethods(methodDeclaration);
+
+                if (expression == null) return methodDeclaration;
+
                 var length =
                     expression.WithoutTrivia().Span.Length +
                     methodDeclaration.Span.Length -
@@ -101,7 +99,40 @@ namespace Geeks.GeeksProductivityTools.Menus.Cleanup
 
                 return newMethod;
             }
-            PropertyDeclarationSyntax CheckForReadOnlyProperties(PropertyDeclarationSyntax propertyDeclaration)
+            ExpressionSyntax AnalyzeMethods(MethodDeclarationSyntax method)
+            {
+                var classDeclaration = method.Parent as ClassDeclarationSyntax;
+
+                if (classDeclaration == null) return null;
+                ////if (classDeclaration?.As<ClassDeclarationSyntax>()?.Identifier.ValueText == "TaskManager") return false;
+                //////var methodInfo = context.SemanticModel.GetDeclaredSymbol(method);
+                if (method.Body == null) return null;
+                if (method.Body.Statements.Count != 1) return null;
+                //if (method.Body.ChildNodes().OfType<StatementSyntax>().IsSingle() == false) return;
+
+                var singleStatement = method.Body.Statements.First();
+                if (singleStatement is IfStatementSyntax) return null;
+                if (singleStatement is ThrowStatementSyntax) return null;
+                if (singleStatement is YieldStatementSyntax) return null;
+                if (method.Modifiers.Any(x => x.IsKind(SyntaxKind.VirtualKeyword))) return null;
+
+                var expression =
+                    (
+                        (singleStatement is ReturnStatementSyntax) ?
+                        (singleStatement as ReturnStatementSyntax).Expression
+                        :
+                        (singleStatement as ExpressionStatementSyntax).Expression
+                    )
+                    .WithoutLeadingTrivia();
+
+                var length = expression.WithoutTrivia().Span.Length + method.Span.Length - method.Body.FullSpan.Length;
+                if (length > 100) return null;
+                if (method.Body.ChildNodes().OfType<UsingStatementSyntax>().Any()) return null;
+
+                return expression;
+            }
+
+            PropertyDeclarationSyntax ConvertPropertyToExpressionBodied(PropertyDeclarationSyntax propertyDeclaration)
             {
                 if (propertyDeclaration.AccessorList == null) return propertyDeclaration;
                 var getNode = propertyDeclaration.AccessorList.Accessors.FirstOrDefault(x => x.Keyword.IsKind(SyntaxKind.GetKeyword));
@@ -134,7 +165,12 @@ namespace Geeks.GeeksProductivityTools.Menus.Cleanup
             }
             SyntaxToken GetSemicolon(BlockSyntax block)
             {
-                var semicolon = ((ReturnStatementSyntax)block.Statements[0]).SemicolonToken;
+                var statement = block.Statements.First();
+
+                var semicolon =
+                    (statement is ExpressionStatementSyntax) ?
+                    (statement as ExpressionStatementSyntax).SemicolonToken :
+                    (statement as ReturnStatementSyntax).SemicolonToken;
 
                 var trivia = semicolon.TrailingTrivia.AsEnumerable();
                 trivia = trivia.Where(t => !t.IsKind(SyntaxKind.EndOfLineTrivia));
