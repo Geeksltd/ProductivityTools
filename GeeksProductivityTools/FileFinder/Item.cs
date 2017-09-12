@@ -73,7 +73,7 @@ namespace GeeksAddin.FileFinder
             }
         }
 
-        public bool Exists() { return File.Exists(FullPath); }
+        public bool Exists() => File.Exists(FullPath); 
 
         #region IEquatable<Item> Members
 

@@ -63,10 +63,7 @@ namespace Geeks.GeeksProductivityTools.FileFinder.FileDrawers
             ColorizePathValue(text, string.Empty, e, ref position);
         }
 
-        static bool IsNestedClass(string text)
-        {
-            return text.Contains(PathIndicator);
-        }
+        static bool IsNestedClass(string text) => text.Contains(PathIndicator);
 
         static void ColorizeClassName(Point position,
                                               string className,

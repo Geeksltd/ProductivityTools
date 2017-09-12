@@ -17,14 +17,8 @@ namespace GeeksAddin.FileFinder
             return new MemberLoaderAgent(basePaths, repository);
         }
 
-        public override System.Drawing.Color GetColor()
-        {
-            return System.Drawing.Color.FromArgb(0xE3, 0xEB, 0xF0);
-        }
+        public override System.Drawing.Color GetColor() => System.Drawing.Color.FromArgb(0xE3, 0xEB, 0xF0);
 
-        public override string GetTitle()
-        {
-            return FinderLiterals.MemberFinderGadgetTitle;
-        }
+        public override string GetTitle() => FinderLiterals.MemberFinderGadgetTitle;
     }
 }

@@ -17,14 +17,8 @@ namespace GeeksAddin.FileFinder
             return new StyleLoaderAgent(basePaths, repository);
         }
 
-        public override System.Drawing.Color GetColor()
-        {
-            return System.Drawing.Color.FromArgb(0xF0, 0xE3, 0xE5);
-        }
+        public override System.Drawing.Color GetColor() => System.Drawing.Color.FromArgb(0xF0, 0xE3, 0xE5);
 
-        public override string GetTitle()
-        {
-            return FinderLiterals.StyleFinderGadgetTitle;
-        }
+        public override string GetTitle() => FinderLiterals.StyleFinderGadgetTitle;
     }
 }

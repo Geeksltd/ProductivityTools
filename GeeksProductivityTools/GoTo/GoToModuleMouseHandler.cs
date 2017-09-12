@@ -330,6 +330,7 @@ namespace Geeks.GeeksProductivityTools
         }
 
         static bool HasInvalidFileExtension(SnapshotSpan span) => !span.GetText().StripQuotation().ToLower().EndsWithAny(".master", ".ascx");
+
         static Func<ClassificationSpan, bool> FilterBasedOnContentType(string typeName)
         {
             switch (typeName)
@@ -443,6 +444,7 @@ namespace Geeks.GeeksProductivityTools
         }
 
         string[] GetDirectoryFiles(string path, string key) => Directory.GetFiles(path, key, SearchOption.AllDirectories);
+
         bool IsZebbleModule(string value) => value.StartsWith("Modules") || value.StartsWith("Menu") || value.EndsWith("Tabs");
 
         #endregion

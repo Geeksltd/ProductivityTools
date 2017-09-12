@@ -10,13 +10,7 @@ namespace Geeks.GeeksProductivityTools.FileFinder.FinderDrawerUtility
     {
         const string pathIndicator = "----->";
 
-        protected static string PathIndicator
-        {
-            get
-            {
-                return pathIndicator;
-            }
-        }
+        protected static string PathIndicator => pathIndicator;
 
         protected static int CalculateStringWidth(string value, DrawItemEventArgs e)
         {

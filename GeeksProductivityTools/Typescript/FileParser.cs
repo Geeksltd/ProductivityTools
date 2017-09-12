@@ -93,9 +93,6 @@ namespace Geeks.GeeksProductivityTools.TypeScript
             return xmlText;
         }
 
-        static XAttribute GetPathAttribute(string reference)
-        {
-            return XElement.Parse(reference).Attribute("path");
-        }
+        static XAttribute GetPathAttribute(string reference) => XElement.Parse(reference).Attribute("path");
     }
 }

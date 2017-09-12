@@ -20,10 +20,7 @@ namespace GeeksAddin.Attacher
             }
         }
 
-        public bool CanUseIIS
-        {
-            get { return ServerManager != null; }
-        }
+        public bool CanUseIIS => ServerManager != null; 
 
         public string GetPhysicalPath(string poolName)
         {

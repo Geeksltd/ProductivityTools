@@ -16,13 +16,7 @@ namespace Geeks.GeeksProductivityTools.Properties
     {
         static Settings defaultInstance = ((Settings)(global::System.Configuration.ApplicationSettingsBase.Synchronized(new Settings())));
 
-        public static Settings Default
-        {
-            get
-            {
-                return defaultInstance;
-            }
-        }
+        public static Settings Default => defaultInstance;
 
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]

@@ -185,6 +185,7 @@ namespace GeeksAddin.FileFinder
                     break;
             }
         }
+
         #endregion
 
         void lstFiles_DoubleClick(object sender, EventArgs e)
@@ -229,8 +230,8 @@ namespace GeeksAddin.FileFinder
 
         void option_Click(object sender, EventArgs e)
         {
-            bool searchAgain = false;
-            bool loadAgain = false;
+            var searchAgain = false;
+            var loadAgain = false;
             Loader.OptionClicked((ToolStripMenuItem)sender, ref searchAgain, ref loadAgain);
             if (loadAgain)
             {

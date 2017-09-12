@@ -63,10 +63,7 @@ namespace Geeks.GeeksProductivityTools.Menus
             return directory;
         }
 
-        bool ContainsProjectFile(string directory)
-        {
-            return Directory.GetFiles(directory, "*.csproj").Any();
-        }
+        bool ContainsProjectFile(string directory) => Directory.GetFiles(directory, "*.csproj").Any();
 
         void BeforeQueryStatus(object sender, EventArgs e)
         {

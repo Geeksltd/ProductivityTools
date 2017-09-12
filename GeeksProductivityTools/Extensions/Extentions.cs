@@ -22,10 +22,7 @@ namespace System
             }
         }
 
-        public static bool HasValue(this string text)
-        {
-            return !string.IsNullOrEmpty(text);
-        }
+        public static bool HasValue(this string text) => !string.IsNullOrEmpty(text);
 
         public static string TrimStart(this string text, string textToTrim, bool ignoreCase = false)
         {
@@ -65,10 +62,7 @@ namespace System
             return text.Substring(0, text.Length - numberOfCharacters);
         }
 
-        public static bool IsEmpty(this string text)
-        {
-            return string.IsNullOrEmpty(text);
-        }
+        public static bool IsEmpty(this string text) => string.IsNullOrEmpty(text);
 
         public static string Remove(this string text, params string[] substringsToExclude)
         {
@@ -115,10 +109,7 @@ namespace System
             return result.ToString();
         }
 
-        public static bool IsEmpty<T>(this IEnumerable<T> list)
-        {
-            return list == null || list.Count() == 0;
-        }
+        public static bool IsEmpty<T>(this IEnumerable<T> list) => list == null || list.Count() == 0;
 
         public static bool EndsWithAny(this string input, params string[] listOfEndings)
         {

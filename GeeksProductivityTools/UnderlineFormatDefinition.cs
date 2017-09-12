@@ -90,7 +90,7 @@ namespace Geeks.GeeksProductivityTools
 
         #region UnderlineClassification public members
 
-        public SnapshotSpan? CurrentUnderlineSpan { get { return _underlineSpan; } }
+        public SnapshotSpan? CurrentUnderlineSpan => _underlineSpan; 
 
         public void SetUnderlineSpan(SnapshotSpan? span)
         {
