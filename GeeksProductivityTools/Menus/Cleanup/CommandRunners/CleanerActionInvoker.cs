@@ -14,12 +14,13 @@ namespace Geeks.GeeksProductivityTools.Menus.Cleanup
             var organizeUsingDirectiveTask = Task.Run(() => InvokeUsingDirectiveOrganizer());
             var whiteSpaceNormalizerTask = organizeUsingDirectiveTask.ContinueWith(antecedentTask => InvokeWhiteSpaceNormalizer());
             var privateModifiersRemoverTask = whiteSpaceNormalizerTask.ContinueWith(antecedentTask => InvokePrivateModifierRemover());
+            var smallMembersToExpressionBodyTask = organizeUsingDirectiveTask.ContinueWith(antecedentTask => InvokeSmallMembersToExpressionBody());
 
             //var privateModifiersRemoverTask = Task.Run(() => InvokePrivateModifierRemover());
             //var whiteSpaceNormalizerTask = privateModifiersRemoverTask.ContinueWith(antecedentTask => InvokeWhiteSpaceNormalizer());
             //var organizeUsingDirectiveTask = whiteSpaceNormalizerTask.ContinueWith(antecedentTask => InvokeUsingDirectiveOrganizer());
 
-            Task.WaitAll(new[] { whiteSpaceNormalizerTask, privateModifiersRemoverTask, organizeUsingDirectiveTask });
+            Task.WaitAll(new[] { whiteSpaceNormalizerTask, smallMembersToExpressionBodyTask, privateModifiersRemoverTask, organizeUsingDirectiveTask });
         }
 
         public void InvokePrivateModifierRemover()
@@ -31,6 +32,12 @@ namespace Geeks.GeeksProductivityTools.Menus.Cleanup
         public void InvokeWhiteSpaceNormalizer()
         {
             var instance = CodeCleanerFactory.Create(CodeCleanerType.NormalizeWhiteSpaces);
+            new CodeCleaner(instance, Item).Run();
+        }
+
+        public void InvokeSmallMembersToExpressionBody()
+        {
+            var instance = CodeCleanerFactory.Create(CodeCleanerType.SmallMembersToExpressionBodied);
             new CodeCleaner(instance, Item).Run();
         }
 

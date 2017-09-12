@@ -85,7 +85,8 @@ namespace Geeks.GeeksProductivityTools
 				new Menus.RunBatchFiles(menuCommandService).SetupCommands();
 
 				new Menus.Cleanup.PrivateModifier(menuCommandService).SetupCommands();
-				new Menus.Cleanup.NormalizeWhiteSpace(menuCommandService).SetupCommands();
+				new Menus.Cleanup.NormalizeWhiteSpaceCommand(menuCommandService).SetupCommands();
+				new Menus.Cleanup.ConvertSmallMembersToExpressionBodiedCommand(menuCommandService).SetupCommands();
 				new Menus.Cleanup.OrganizeUsingDirectives(menuCommandService).SetupCommands();
 				new Menus.Cleanup.ActionAllCodeCleanup(menuCommandService).SetupCommands();
 			}

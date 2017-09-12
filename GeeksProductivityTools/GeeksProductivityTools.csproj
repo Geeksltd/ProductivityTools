@@ -367,8 +367,10 @@
     <Compile Include="Menus\ActionsOnCSharp\DteServiceProvider.cs" />
     <Compile Include="Menus\Cleanup\CommandRunners\CleanerActionInvoker.cs" />
     <Compile Include="Menus\Cleanup\CommandRunners\UsingDirectiveOrganizer.cs" />
+    <Compile Include="Menus\Cleanup\CommandRunners\SmallMembersToExpressionBodied.cs" />
     <Compile Include="Menus\Cleanup\CommandsHandlers\ActionAllCodeCleanup.cs" />
-    <Compile Include="Menus\Cleanup\CommandsHandlers\NormalizeWhiteSpace.cs" />
+    <Compile Include="Menus\Cleanup\CommandsHandlers\SmallMembersToExpressionBodiedCommand.cs" />
+    <Compile Include="Menus\Cleanup\CommandsHandlers\NormalizeWhiteSpaceCommand.cs" />
     <Compile Include="Menus\Cleanup\CommandsHandlers\OrganizeUsingDirectives.cs" />
     <Compile Include="Menus\Cleanup\CommandsHandlers\PrivateModifier.cs" />
     <Compile Include="Menus\Cleanup\Utils\ActiveDocument.cs" />

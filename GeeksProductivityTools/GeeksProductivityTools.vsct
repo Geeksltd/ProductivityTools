@@ -82,7 +82,13 @@
           <ButtonText>Remove explicit private access modifiers</ButtonText>
         </Strings>
       </Button>
-      <Button guid="GuidCleanupCmdSet" id="AllCleanUpCommand" priority="0x0103" type="Button">
+      <Button guid="GuidCleanupCmdSet" id="ConvertSmallMembersToExpressionBodiedCommand" priority="0x0103" type="Button">
+        <Parent guid="GuidCleanupCmdSet" id="MySubMenuGroup" />
+        <Strings>
+          <ButtonText>Convert Small Members To Expression Bodied</ButtonText>
+        </Strings>
+      </Button>
+      <Button guid="GuidCleanupCmdSet" id="AllCleanUpCommand" priority="0x0135" type="Button">
         <Parent guid="GuidCleanupCmdSet" id="MySubMenuGroup" />
         <Strings>
           <ButtonText>All</ButtonText>
@@ -216,9 +222,10 @@
       <IDSymbol name="WhiteSpaceNormalizerCommand" value="0x0100" />
       <IDSymbol name="OrganizeUsingDirectivesCommand" value="0x0101" />
       <IDSymbol name="PrivateRemoverCommand" value="0x0102" />
-      <IDSymbol name="AllCleanUpCommand" value="0x0103" />
-      <IDSymbol name="MyMenuController" value="0x0104" />
-      <IDSymbol name="MySubMenuGroup" value="0x0105" />
+      <IDSymbol name="ConvertSmallMembersToExpressionBodiedCommand" value="0x0103" />
+      <IDSymbol name="AllCleanUpCommand" value="0x0135" />
+      <IDSymbol name="MyMenuController" value="0x0136" />
+      <IDSymbol name="MySubMenuGroup" value="0x0137" />
     </GuidSymbol>
 
     <!--/Clean-up-->
