@@ -114,7 +114,6 @@ namespace Geeks.GeeksProductivityTools.Menus.Cleanup
                 if (singleStatement is IfStatementSyntax) return null;
                 if (singleStatement is ThrowStatementSyntax) return null;
                 if (singleStatement is YieldStatementSyntax) return null;
-                if (method.Modifiers.Any(x => x.IsKind(SyntaxKind.VirtualKeyword))) return null;
 
                 var expression =
                     (
