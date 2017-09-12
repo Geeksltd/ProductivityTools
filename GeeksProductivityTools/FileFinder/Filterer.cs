@@ -35,13 +35,7 @@ namespace GeeksAddin.FileFinder
 
         List<Item> _FoundItems;
 
-        public List<Item> FoundItems
-        {
-            get
-            {
-                return _FoundItems;
-            }
-        }
+        public List<Item> FoundItems => _FoundItems;
 
         public void SetFilter(string filter)
         {
@@ -89,7 +83,7 @@ namespace GeeksAddin.FileFinder
         bool ItemIsExcluded(Item item)
         {
             if (ExcludedFileTypes != null)
-                return (item.FileName.ToLower().EndsWithAny(ExcludedFileTypes.Select(t => t.ToLower()).ToArray()));
+                return item.FileName.ToLower().EndsWithAny(ExcludedFileTypes.Select(t => t.ToLower()).ToArray());
             return false;
         }
 
@@ -117,9 +111,7 @@ namespace GeeksAddin.FileFinder
         public event EventHandler<ItemsEventArgs> ItemsFound;
         protected virtual void OnItemsFound(IEnumerable<Item> items)
         {
-            var handler = ItemsFound;
-            if (handler != null)
-                handler(this, new ItemsEventArgs { Items = items });
+            ItemsFound?.Invoke(this, new ItemsEventArgs { Items = items });
         }
 
         public event EventHandler AnnouncementOfExistingItemsFinished;

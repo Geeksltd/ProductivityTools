@@ -30,10 +30,7 @@ namespace Geeks.GeeksProductivityTools.FileFinder.MemberDrawers
             ColorizePathValue(text, e, ref position);
         }
 
-        static bool HasMultipleArguments(string methodArgumentType)
-        {
-            return methodArgumentType.Contains(',');
-        }
+        static bool HasMultipleArguments(string methodArgumentType) => methodArgumentType.Contains(',');
 
         static void ColorizeMethod(string sourceString,
                                             DrawItemEventArgs e,

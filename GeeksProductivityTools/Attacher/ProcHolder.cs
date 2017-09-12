@@ -29,11 +29,11 @@ namespace GeeksAddin.Attacher
             Process = prc;
             try
             {
-                using (ManagementObjectSearcher mos = new ManagementObjectSearcher(
+                using (var mos = new ManagementObjectSearcher(
                     @"\\{0}\root\cimv2".FormatWith(prc.TransportQualifier.Replace("Geeks@", "")),
                     "SELECT CommandLine FROM Win32_Process WHERE ProcessId = " + prc.ProcessID))
                 {
-                    foreach (ManagementObject mo in mos.Get())
+                    foreach (var mo in mos.Get())
                     {
                         var commandLine = mo["CommandLine"];
                         if (commandLine != null)

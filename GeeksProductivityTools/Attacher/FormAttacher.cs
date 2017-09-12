@@ -163,12 +163,8 @@ namespace GeeksAddin.Attacher
         {
             DisableAllButtons();
             foreach (ProcHolder holder in listBoxProcess.SelectedItems)
-            {
                 if (holder.Process != null)
-                {
                     holder.Process.Attach();
-                }
-            }
             Close();
         }
 

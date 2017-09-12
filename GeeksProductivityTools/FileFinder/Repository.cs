@@ -15,12 +15,9 @@ namespace GeeksAddin.FileFinder
             //BasePaths = basePaths;
         }
 
-        public Item ItemAt(int index)
-        {
-            return Items[index];
-        }
+        public Item ItemAt(int index) => Items[index];
 
-        public int Length { get { return Items.Count; } }
+        public int Length => Items.Count; 
 
         public void AppendRange(IEnumerable<Item> items)
         {

@@ -21,9 +21,6 @@ namespace GeeksAddin.FileFinder
             return System.Drawing.Color.FromArgb(0xE1, 0xE6, 0xDA); // 0xEB, 0xF0, 0xE3   0xCD,0xDA,0xC9
         }
 
-        public override string GetTitle()
-        {
-            return FinderLiterals.FileFinderGadgetTitle;
-        }
+        public override string GetTitle() => FinderLiterals.FileFinderGadgetTitle;
     }
 }

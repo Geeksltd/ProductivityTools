@@ -88,7 +88,9 @@ namespace GeeksAddin.FileFinder
         ToolStripMenuItem trackFoundIteToolStripMenuItem = new ToolStripMenuItem("Track Found Item");
 
         public override void LoadOptions() => trackFoundIteToolStripMenuItem.Checked = Settings.Default.TrackItemInSolutionExplorer;
+
         public override void DisplayOptions(ContextMenuStrip mnuOptions) => mnuOptions.Items.Add(trackFoundIteToolStripMenuItem);
+
         public override void OptionClicked(ToolStripMenuItem toolStripMenuItem, ref bool searchAgain, ref bool loadAgain)
         {
             if (toolStripMenuItem == trackFoundIteToolStripMenuItem)

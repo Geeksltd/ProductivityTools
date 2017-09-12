@@ -42,10 +42,7 @@ namespace Geeks.GeeksProductivityTools.TypeScript
         /// </summary>
         /// <param name="name">The name.</param>
         /// <returns></returns>
-        public static bool IsValidTsFile(string name)
-        {
-            return name.EndsWith(".ts") && !name.EndsWith(".d.ts");
-        }
+        public static bool IsValidTsFile(string name) => name.EndsWith(".ts") && !name.EndsWith(".d.ts");
 
         public static string GetFullPathFromRelativePath(string relativePath)
         {

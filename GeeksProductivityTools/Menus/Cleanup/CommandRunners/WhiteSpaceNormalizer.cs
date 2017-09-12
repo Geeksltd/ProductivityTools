@@ -21,10 +21,11 @@ namespace Geeks.GeeksProductivityTools.Menus.Cleanup
 
             initialSource = Formatter.Format(initialSource, GeeksProductivityToolsPackage.Instance.VsWorkspace);
 
-            initialSource = RevomeDuplicaterBlank(initialSource);//.NormalizeWhitespace();
+            initialSource = RevomeDuplicaterBlank(initialSource);
 
             initialSource.WriteSourceTo(item.ToFullPathPropertyValue());
         }
+
         public static void NormalizeWhiteSpace(string address)
         {
             var initialSource = CSharpSyntaxTree.ParseText(File.ReadAllText(address)).GetRoot();
@@ -33,6 +34,7 @@ namespace Geeks.GeeksProductivityTools.Menus.Cleanup
 
             initialSource.WriteSourceTo(address);
         }
+
         static SyntaxNode RevomeDuplicaterBlank(SyntaxNode initialSource)
         {
             initialSource = new Rewriter(initialSource).Visit(initialSource);
@@ -40,6 +42,7 @@ namespace Geeks.GeeksProductivityTools.Menus.Cleanup
         }
         class Rewriter : CSharpSyntaxRewriter
         {
+            const int MAX_EXPRESSION_BODIED_MEMBER_LENGTH = 90;
             bool _lastTokenIsAOpenBrace = false;
             SyntaxKind _lastSpecialSyntax = SyntaxKind.None;
             MethodDeclarationSyntax _lastMthodDeclarationNode = null;
@@ -133,6 +136,7 @@ namespace Geeks.GeeksProductivityTools.Menus.Cleanup
 
                 return node;
             }
+
             SyntaxNode CheckMethodDeclaration(SyntaxNode node)
             {
                 node = CheckMethodForSingleReturnStatement(node as MethodDeclarationSyntax);
@@ -163,7 +167,7 @@ namespace Geeks.GeeksProductivityTools.Menus.Cleanup
                     methodDeclaration.Span.Length -
                     methodDeclaration.Body.FullSpan.Length;
 
-                if (length >= 100) return methodDeclaration;
+                if (length >= MAX_EXPRESSION_BODIED_MEMBER_LENGTH) return methodDeclaration;
 
                 var closeParen = methodDeclaration.DescendantTokens().FirstOrDefault(x => x.IsKind(SyntaxKind.CloseParenToken));
                 if (closeParen != null)
@@ -179,9 +183,9 @@ namespace Geeks.GeeksProductivityTools.Menus.Cleanup
                         .WithSemicolonToken(GetSemicolon(methodDeclaration.Body))
                         .WithAdditionalAnnotations(Formatter.Annotation);
 
-
                 return newMethod;
             }
+
             PropertyDeclarationSyntax CheckForReadOnlyProperties(PropertyDeclarationSyntax propertyDeclaration)
             {
                 if (propertyDeclaration.AccessorList == null) return propertyDeclaration;
@@ -200,7 +204,7 @@ namespace Geeks.GeeksProductivityTools.Menus.Cleanup
                     propertyDeclaration.Span.Length -
                     propertyDeclaration.AccessorList.FullSpan.Length;
 
-                if (length >= 100) return propertyDeclaration;
+                if (length >= MAX_EXPRESSION_BODIED_MEMBER_LENGTH) return propertyDeclaration;
 
                 propertyDeclaration =
                     propertyDeclaration
@@ -226,6 +230,7 @@ namespace Geeks.GeeksProductivityTools.Menus.Cleanup
 
                 return semicolon.WithTrailingTrivia(trivia);
             }
+
             SyntaxToken GetSemicolon(AccessorListSyntax accessorList)
             {
                 var semicolon = ((ReturnStatementSyntax)accessorList.Accessors[0].Body.Statements[0]).SemicolonToken;
@@ -238,6 +243,7 @@ namespace Geeks.GeeksProductivityTools.Menus.Cleanup
 
                 return semicolon.WithTrailingTrivia(trivia);
             }
+
             IList<SyntaxTrivia> CleanUpList(IList<SyntaxTrivia> newList)
             {
                 var lineBreaksAtBeginning = newList.TakeWhile(t => t.IsKind(SyntaxKind.EndOfLineTrivia)).Count();
@@ -249,6 +255,7 @@ namespace Geeks.GeeksProductivityTools.Menus.Cleanup
 
                 return newList;
             }
+
             IList<SyntaxTrivia> CleanUpList(IList<SyntaxTrivia> syntaxTrivias, int exactNumberOfBlanks)
             {
                 var lineBreaksAtBeginning = syntaxTrivias.TakeWhile(t => t.IsKind(SyntaxKind.EndOfLineTrivia)).Count();
@@ -259,7 +266,7 @@ namespace Geeks.GeeksProductivityTools.Menus.Cleanup
                 }
                 else if (lineBreaksAtBeginning < exactNumberOfBlanks)
                 {
-                    for (int i = lineBreaksAtBeginning; i <= exactNumberOfBlanks; i++)
+                    for (var i = lineBreaksAtBeginning; i <= exactNumberOfBlanks; i++)
                     {
                         syntaxTrivias.Insert(0, _endOfLineTrivia);
                     }
@@ -267,6 +274,7 @@ namespace Geeks.GeeksProductivityTools.Menus.Cleanup
 
                 return syntaxTrivias;
             }
+
             IList<SyntaxTrivia> CleanUpListUsings(IList<SyntaxTrivia> syntaxTrivias)
             {
                 return CleanUpList(syntaxTrivias, 1);
@@ -276,10 +284,12 @@ namespace Geeks.GeeksProductivityTools.Menus.Cleanup
             {
                 return ProcessSpecialTrivias(CleanUpList(syntaxTrivias, 0), itsForCloseBrace: false);
             }
+
             IList<SyntaxTrivia> CleanUpCloseBrace(IList<SyntaxTrivia> syntaxTrivias)
             {
                 return ProcessSpecialTrivias(CleanUpList(syntaxTrivias), itsForCloseBrace: true);
             }
+
             int RemoveBlankDuplication(IList<SyntaxTrivia> syntaxTrivias, SyntaxKind kind, int iterationIndex)
             {
                 if (iterationIndex >= syntaxTrivias.Count) return -1;
@@ -288,6 +298,7 @@ namespace Geeks.GeeksProductivityTools.Menus.Cleanup
 
                 return lineBreaksAtBeginning - 1;
             }
+
             int FindSpecialTriviasCount(IEnumerable<SyntaxTrivia> newList)
             {
                 return
@@ -300,18 +311,19 @@ namespace Geeks.GeeksProductivityTools.Menus.Cleanup
                             t.IsKind(SyntaxKind.MultiLineCommentTrivia)
                         );
             }
+
             IList<SyntaxTrivia> ProcessSpecialTrivias(IList<SyntaxTrivia> syntaxTrivias, bool itsForCloseBrace)
             {
                 if (CheckShortSyntax(syntaxTrivias, itsForCloseBrace)) return syntaxTrivias;
                 var specialTriviasCount = FindSpecialTriviasCount(syntaxTrivias);
 
                 var outputTriviasList = new List<SyntaxTrivia>();
-                int specialTiviasCount = 0;
-                bool bAddedBlankLine = false;
+                var specialTiviasCount = 0;
+                var bAddedBlankLine = false;
 
-                for (int i = 0; i < syntaxTrivias.Count; i++)
+                for (var i = 0; i < syntaxTrivias.Count; i++)
                 {
-                    int countOfChars = 0;
+                    var countOfChars = 0;
 
                     if (specialTiviasCount == specialTriviasCount)
                     {
@@ -373,6 +385,7 @@ namespace Geeks.GeeksProductivityTools.Menus.Cleanup
                 }
                 return outputTriviasList;
             }
+
             bool CheckShortSyntax(IList<SyntaxTrivia> syntaxTrivias, bool itsForCloseBrace)
             {
                 if (itsForCloseBrace) return false;
