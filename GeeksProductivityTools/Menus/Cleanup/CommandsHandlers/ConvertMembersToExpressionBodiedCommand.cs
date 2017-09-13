@@ -8,15 +8,15 @@ using static Geeks.GeeksProductivityTools.Menus.ActionsOnCSharp.CSharpActionDele
 
 namespace Geeks.GeeksProductivityTools.Menus.Cleanup
 {
-    public class ConvertSmallMembersToExpressionBodiedCommand : BaseCodeCleanupCommand
+    public class ConvertMembersToExpressionBodiedCommand : BaseCodeCleanupCommand
     {
         OleMenuCommandService Menu;
 
-        public ConvertSmallMembersToExpressionBodiedCommand(OleMenuCommandService menu) { Menu = menu; }
+        public ConvertMembersToExpressionBodiedCommand(OleMenuCommandService menu) { Menu = menu; }
 
         public override void SetupCommands()
         {
-            var menuCommandID = new CommandID(GuidList.GuidCleanupCmdSet, (int)PkgCmdIDList.CmdConvertSmallMembersToExpressionBodied);
+            var menuCommandID = new CommandID(GuidList.GuidCleanupCmdSet, (int)PkgCmdIDList.CmdConvertMembersToExpressionBodied);
             var menuItem = new OleMenuCommand(CallBack, menuCommandID);
             menuItem.BeforeQueryStatus += Item_BeforeQueryStatus;
             Menu.AddCommand(menuItem);
@@ -38,7 +38,7 @@ namespace Geeks.GeeksProductivityTools.Menus.Cleanup
             var commandGuid = (sender as OleMenuCommand).CommandID.Guid;
 
             if (commandGuid == GuidList.GuidCleanupCmdSet)
-                ActionCSharpOnProject.Invoke(desiredAction, Definition.CodeCleanerType.SmallMembersToExpressionBodied);
+                ActionCSharpOnProject.Invoke(desiredAction, Definition.CodeCleanerType.ConvertMembersToExpressionBodied);
             else return;
         }
     }

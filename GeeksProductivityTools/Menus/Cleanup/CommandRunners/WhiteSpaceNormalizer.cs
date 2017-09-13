@@ -26,15 +26,6 @@ namespace Geeks.GeeksProductivityTools.Menus.Cleanup
             initialSource.WriteSourceTo(item.ToFullPathPropertyValue());
         }
 
-        public static void NormalizeWhiteSpace(string address)
-        {
-            var initialSource = CSharpSyntaxTree.ParseText(File.ReadAllText(address)).GetRoot();
-
-            initialSource = RevomeDuplicaterBlank(initialSource);
-
-            initialSource.WriteSourceTo(address);
-        }
-
         static SyntaxNode RevomeDuplicaterBlank(SyntaxNode initialSource)
         {
             initialSource = new Rewriter(initialSource).Visit(initialSource);

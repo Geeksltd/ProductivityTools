@@ -6,7 +6,7 @@ namespace Geeks.GeeksProductivityTools.Definition
         PrivateAccessModifier = 1,
         NormalizeWhiteSpaces = 2,
         OrganizeUsingDirectives = 3,
-        SmallMembersToExpressionBodied = 4,
+        ConvertMembersToExpressionBodied = 4,
         All = 35
     }
 }

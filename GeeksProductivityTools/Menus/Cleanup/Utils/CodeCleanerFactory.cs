@@ -10,8 +10,8 @@ namespace Geeks.GeeksProductivityTools.Menus.Cleanup
             {
                 case CodeCleanerType.NormalizeWhiteSpaces:
                     return new WhiteSpaceNormalizer();
-                case CodeCleanerType.SmallMembersToExpressionBodied:
-                    return new SmallMembersToExpressionBody();
+                case CodeCleanerType.ConvertMembersToExpressionBodied:
+                    return new ConvertMembersToExpressionBodied();
                 case CodeCleanerType.PrivateAccessModifier:
                     return new PrivateModifierRemover();
                 case CodeCleanerType.OrganizeUsingDirectives:

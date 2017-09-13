@@ -10,48 +10,26 @@ using Microsoft.CodeAnalysis.Formatting;
 
 namespace Geeks.GeeksProductivityTools.Menus.Cleanup
 {
-    public class SmallMembersToExpressionBody : ICodeCleaner
+    public class ConvertMembersToExpressionBodied : ICodeCleaner
     {
-        public void Run(ProjectItem item) => Task.Run(() => ConvertSmallMembersToExpressionBody(item));
+        public void Run(ProjectItem item) => Task.Run(() => ConvertToExpressionBody(item));
 
-        static void ConvertSmallMembersToExpressionBody(ProjectItem item)
+        static void ConvertToExpressionBody(ProjectItem item)
         {
             var initialSource = item.ToSyntaxNode();
 
-            initialSource = Formatter.Format(initialSource, GeeksProductivityToolsPackage.Instance.VsWorkspace);
-
-            initialSource = RevomeDuplicaterBlank(initialSource);
+            initialSource = ConvertToExpressionBody(initialSource);
 
             initialSource.WriteSourceTo(item.ToFullPathPropertyValue());
         }
-        public static void NormalizeWhiteSpace(string address)
+        static SyntaxNode ConvertToExpressionBody(SyntaxNode initialSource)
         {
-            var initialSource = CSharpSyntaxTree.ParseText(File.ReadAllText(address)).GetRoot();
-
-            initialSource = RevomeDuplicaterBlank(initialSource);
-
-            initialSource.WriteSourceTo(address);
-        }
-        static SyntaxNode RevomeDuplicaterBlank(SyntaxNode initialSource)
-        {
-            initialSource = new Rewriter(initialSource).Visit(initialSource);
+            initialSource = new Rewriter().Visit(initialSource);
             return initialSource;
         }
         class Rewriter : CSharpSyntaxRewriter
         {
             MethodDeclarationSyntax _lastMthodDeclarationNode = null;
-            SyntaxTrivia _endOfLineTrivia = default(SyntaxTrivia);
-
-            public Rewriter(SyntaxNode initialSource) : base()
-            {
-                _endOfLineTrivia =
-                    initialSource
-                        .SyntaxTree
-                        .GetRoot()
-                        .DescendantTrivia(descendIntoTrivia: true)
-                        .FirstOrDefault(x => x.IsKind(SyntaxKind.EndOfLineTrivia));
-            }
-
             public override SyntaxNode Visit(SyntaxNode node)
             {
                 if (node == null) return base.Visit(node);
@@ -130,7 +108,6 @@ namespace Geeks.GeeksProductivityTools.Menus.Cleanup
 
                 return expression;
             }
-
             PropertyDeclarationSyntax ConvertPropertyToExpressionBodied(PropertyDeclarationSyntax propertyDeclaration)
             {
                 if (propertyDeclaration.AccessorList == null) return propertyDeclaration;

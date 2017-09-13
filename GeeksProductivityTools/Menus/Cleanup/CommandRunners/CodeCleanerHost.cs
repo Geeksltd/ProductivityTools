@@ -21,8 +21,8 @@ namespace Geeks.GeeksProductivityTools.Menus.Cleanup
                     case CodeCleanerType.NormalizeWhiteSpaces:
                         invoker.InvokeWhiteSpaceNormalizer();
                         break;
-                    case CodeCleanerType.SmallMembersToExpressionBodied:
-                        invoker.InvokeSmallMembersToExpressionBody();
+                    case CodeCleanerType.ConvertMembersToExpressionBodied:
+                        invoker.InvokeConvertMembersToExpressionBody();
                         break;
                     case CodeCleanerType.OrganizeUsingDirectives:
                         invoker.InvokeUsingDirectiveOrganizer();
