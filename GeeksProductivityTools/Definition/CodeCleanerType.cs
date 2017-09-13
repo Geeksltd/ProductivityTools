@@ -7,6 +7,7 @@ namespace Geeks.GeeksProductivityTools.Definition
         NormalizeWhiteSpaces = 2,
         OrganizeUsingDirectives = 3,
         ConvertMembersToExpressionBodied = 4,
+        FullNameTypesToBuiltInTypes = 5,
         All = 35
     }
 }

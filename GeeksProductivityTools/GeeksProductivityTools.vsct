@@ -88,6 +88,12 @@
           <ButtonText>Convert Small Members To Expression Bodied</ButtonText>
         </Strings>
       </Button>
+      <Button guid="GuidCleanupCmdSet" id="ConvertFullNameTypesToBuiltInTypesCommand" priority="0x0104" type="Button">
+        <Parent guid="GuidCleanupCmdSet" id="MySubMenuGroup" />
+        <Strings>
+          <ButtonText>Convert FullName Types To Built-In Types</ButtonText>
+        </Strings>
+      </Button>
       <Button guid="GuidCleanupCmdSet" id="AllCleanUpCommand" priority="0x0135" type="Button">
         <Parent guid="GuidCleanupCmdSet" id="MySubMenuGroup" />
         <Strings>
@@ -223,6 +229,7 @@
       <IDSymbol name="OrganizeUsingDirectivesCommand" value="0x0101" />
       <IDSymbol name="PrivateRemoverCommand" value="0x0102" />
       <IDSymbol name="ConvertMembersToExpressionBodiedCommand" value="0x0103" />
+      <IDSymbol name="ConvertFullNameTypesToBuiltInTypesCommand" value="0x0104" />
       <IDSymbol name="AllCleanUpCommand" value="0x0135" />
       <IDSymbol name="MyMenuController" value="0x0136" />
       <IDSymbol name="MySubMenuGroup" value="0x0137" />

@@ -8,15 +8,15 @@ using static Geeks.GeeksProductivityTools.Menus.ActionsOnCSharp.CSharpActionDele
 
 namespace Geeks.GeeksProductivityTools.Menus.Cleanup
 {
-    public class NormalizeWhiteSpace : BaseCodeCleanupCommand
+    public class ConvertFullNameTypesToBuiltInTypesCommand : BaseCodeCleanupCommand
     {
         OleMenuCommandService Menu;
 
-        public NormalizeWhiteSpace(OleMenuCommandService menu) { Menu = menu; }
+        public ConvertFullNameTypesToBuiltInTypesCommand(OleMenuCommandService menu) { Menu = menu; }
 
         public override void SetupCommands()
         {
-            var menuCommandID = new CommandID(GuidList.GuidCleanupCmdSet, (int)PkgCmdIDList.CmdCleanUpNormalizeWhiteSpaces);
+            var menuCommandID = new CommandID(GuidList.GuidCleanupCmdSet, (int)PkgCmdIDList.CmdConvertFullNameTypesToBuiltInTypes);
             var menuItem = new OleMenuCommand(CallBack, menuCommandID);
             menuItem.BeforeQueryStatus += Item_BeforeQueryStatus;
             Menu.AddCommand(menuItem);
@@ -38,7 +38,7 @@ namespace Geeks.GeeksProductivityTools.Menus.Cleanup
             var commandGuid = (sender as OleMenuCommand).CommandID.Guid;
 
             if (commandGuid == GuidList.GuidCleanupCmdSet)
-                ActionCSharpOnProject.Invoke(desiredAction, Definition.CodeCleanerType.NormalizeWhiteSpaces);
+                ActionCSharpOnProject.Invoke(desiredAction, Definition.CodeCleanerType.FullNameTypesToBuiltInTypes);
             else return;
         }
     }

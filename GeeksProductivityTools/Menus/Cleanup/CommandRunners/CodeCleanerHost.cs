@@ -24,6 +24,9 @@ namespace Geeks.GeeksProductivityTools.Menus.Cleanup
                     case CodeCleanerType.ConvertMembersToExpressionBodied:
                         invoker.InvokeConvertMembersToExpressionBody();
                         break;
+                    case CodeCleanerType.FullNameTypesToBuiltInTypes:
+                        invoker.InvokeFullNameTypesToBuiltInTypes();
+                        break;
                     case CodeCleanerType.OrganizeUsingDirectives:
                         invoker.InvokeUsingDirectiveOrganizer();
                         break;
