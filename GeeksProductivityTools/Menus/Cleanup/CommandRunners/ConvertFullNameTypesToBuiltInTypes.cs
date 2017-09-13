@@ -95,12 +95,17 @@ namespace Geeks.GeeksProductivityTools.Menus.Cleanup
                     })
                 .Where(n => builtInTypesMapDic.ContainsKey(n.NodeText))
                 .Select(n => n.Node);
-
+                             
             return initialSource.ReplaceNodes(
                     selectedTokensList,
                     (oldNode1, oldNode2) =>
                     {
                         if (oldNode1.Parent is QualifiedNameSyntax) return oldNode1;
+                        if (oldNode1.Parent is MemberAccessExpressionSyntax)
+                        {
+                            if ((oldNode1.Parent as MemberAccessExpressionSyntax).Expression != oldNode1) return oldNode1;
+                        }
+                        else if ((oldNode1 is IdentifierNameSyntax) == false && (oldNode1 is QualifiedNameSyntax) == false) return oldNode1;
 
                         return
                             builtInTypesMapDic[oldNode1.WithoutTrivia().ToFullString()]
