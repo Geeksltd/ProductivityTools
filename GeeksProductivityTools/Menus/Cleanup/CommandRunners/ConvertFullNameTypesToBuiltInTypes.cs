@@ -11,9 +11,12 @@ using EnvDTE;
 
 namespace Geeks.GeeksProductivityTools.Menus.Cleanup
 {
-    public class ConvertFullNameTypesToBuiltInTypes : ICodeCleaner
+    public class ConvertFullNameTypesToBuiltInTypes : CodeCleanerCommandRunnerBase, ICodeCleaner
     {
-        public void Run(ProjectItem item) => Task.Run(() => ConvertTypeNames(item));
+        public override SyntaxNode CleanUp(SyntaxNode initialSourceNode)
+        {
+            return ConvertFullNameTypesToBuiltInTypesHelper(initialSourceNode);
+        }
 
         class TypesMapItem
         {
@@ -32,8 +35,12 @@ namespace Geeks.GeeksProductivityTools.Menus.Cleanup
                 NewNode = node
             };
         }
+
+        static Dictionary<string, TypesMapItem> BuiltInTypesDic;
         static Dictionary<string, TypesMapItem> GetBuiltInTypesDic()
         {
+            if (BuiltInTypesDic != null) return BuiltInTypesDic;
+
             var output = new Dictionary<string, TypesMapItem>();
 
             using (var provider = new CSharpCodeProvider())
@@ -63,39 +70,29 @@ namespace Geeks.GeeksProductivityTools.Menus.Cleanup
                     output.Add(item.FullName, item);
                 }
 
-                return output;
+                return BuiltInTypesDic = output;
             }
         }
-
-        private static TypeSyntax GetPredefineType(SyntaxKind keyword)
+        static TypeSyntax GetPredefineType(SyntaxKind keyword)
         {
             return SyntaxFactory.PredefinedType(SyntaxFactory.Token(keyword));
         }
 
-        static void ConvertTypeNames(ProjectItem item)
-        {
-            var initialSource = item.ToSyntaxNode();
-
-            initialSource = ConvertTypeNames(initialSource);
-
-            initialSource.WriteSourceTo(item.ToFullPathPropertyValue());
-        }
-        static SyntaxNode ConvertTypeNames(SyntaxNode initialSource)
+        public static SyntaxNode ConvertFullNameTypesToBuiltInTypesHelper(SyntaxNode initialSource)
         {
             var builtInTypesMapDic = GetBuiltInTypesDic();
 
             var selectedTokensList =
                 initialSource
-                .DescendantNodes()
-                .Select(node =>
-                    new
-                    {
-                        Node = node,
-                        NodeText = node.WithoutTrivia().ToFullString()
-                    })
-                .Where(n => builtInTypesMapDic.ContainsKey(n.NodeText))
-                .Select(n => n.Node);
-                             
+                    .DescendantNodes()
+                    .Where
+                    (
+                        n =>
+                            (n is IdentifierNameSyntax || n is QualifiedNameSyntax)
+                            &&
+                            builtInTypesMapDic.ContainsKey(n.WithoutTrivia().ToFullString())
+                    );
+
             return initialSource.ReplaceNodes(
                     selectedTokensList,
                     (oldNode1, oldNode2) =>
@@ -105,7 +102,7 @@ namespace Geeks.GeeksProductivityTools.Menus.Cleanup
                         {
                             if ((oldNode1.Parent as MemberAccessExpressionSyntax).Expression != oldNode1) return oldNode1;
                         }
-                        else if ((oldNode1 is IdentifierNameSyntax) == false && (oldNode1 is QualifiedNameSyntax) == false) return oldNode1;
+                        else if (oldNode1 is IdentifierNameSyntax == false && oldNode1 is QualifiedNameSyntax == false) return oldNode1;
 
                         return
                             builtInTypesMapDic[oldNode1.WithoutTrivia().ToFullString()]

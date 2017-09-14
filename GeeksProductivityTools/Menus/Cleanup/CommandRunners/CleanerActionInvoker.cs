@@ -1,6 +1,7 @@
 using System.Threading.Tasks;
 using EnvDTE;
 using Geeks.GeeksProductivityTools.Definition;
+using Microsoft.CodeAnalysis;
 
 namespace Geeks.GeeksProductivityTools.Menus.Cleanup
 {
@@ -11,46 +12,41 @@ namespace Geeks.GeeksProductivityTools.Menus.Cleanup
 
         public void InvokeAll()
         {
-            var organizeUsingDirectiveTask = Task.Run(() => InvokeUsingDirectiveOrganizer());
-            var whiteSpaceNormalizerTask = organizeUsingDirectiveTask.ContinueWith(antecedentTask => InvokeWhiteSpaceNormalizer());
-            var privateModifiersRemoverTask = whiteSpaceNormalizerTask.ContinueWith(antecedentTask => InvokePrivateModifierRemover());
-            var membersToExpressionBodyTask = organizeUsingDirectiveTask.ContinueWith(antecedentTask => InvokeConvertMembersToExpressionBody());
-            var fullNameTypesToBuiltInTypesTask = organizeUsingDirectiveTask.ContinueWith(antecedentTask => InvokeFullNameTypesToBuiltInTypes());
+            var organizeUsingDirectiveTask = Task.Run(() => Invoke(CodeCleanerType.OrganizeUsingDirectives));
+            var whiteSpaceNormalizerTask = organizeUsingDirectiveTask.ContinueWith(antecedentTask => Invoke(CodeCleanerType.NormalizeWhiteSpaces));
+            var privateModifiersRemoverTask = whiteSpaceNormalizerTask.ContinueWith(antecedentTask => Invoke(CodeCleanerType.PrivateAccessModifier));
+            var membersToExpressionBodyTask = privateModifiersRemoverTask.ContinueWith(antecedentTask => Invoke(CodeCleanerType.ConvertMembersToExpressionBodied));
+            var fullNameTypesToBuiltInTypesTask = membersToExpressionBodyTask.ContinueWith(antecedentTask => Invoke(CodeCleanerType.FullNameTypesToBuiltInTypes));
 
             //var privateModifiersRemoverTask = Task.Run(() => InvokePrivateModifierRemover());
             //var whiteSpaceNormalizerTask = privateModifiersRemoverTask.ContinueWith(antecedentTask => InvokeWhiteSpaceNormalizer());
             //var organizeUsingDirectiveTask = whiteSpaceNormalizerTask.ContinueWith(antecedentTask => InvokeUsingDirectiveOrganizer());
 
-            Task.WaitAll(new[] { whiteSpaceNormalizerTask, membersToExpressionBodyTask, fullNameTypesToBuiltInTypesTask, privateModifiersRemoverTask, organizeUsingDirectiveTask });
+            Task.WaitAll(new[]
+            {
+                whiteSpaceNormalizerTask,
+                membersToExpressionBodyTask,
+                fullNameTypesToBuiltInTypesTask,
+                privateModifiersRemoverTask,
+                organizeUsingDirectiveTask
+            });
         }
 
-        public void InvokePrivateModifierRemover()
+        public void Invoke(CodeCleanerType cleanerType)
         {
-            var instance = CodeCleanerFactory.Create(CodeCleanerType.PrivateAccessModifier);
+            var instance = CodeCleanerFactory.Create(cleanerType);
             new CodeCleaner(instance, Item).Run();
         }
+        //TODO: By Alireza =>  To return Syntax node and pass syntaxNode no next clean up function and dont close windows for each cleanup , just for something like organize usings
+        //public SyntaxNode InvokeInternal(CodeCleanerType cleanerType)
+        //{
+        //    var instance = CodeCleanerFactory.Create(cleanerType);
+        //    var cleaner = new CodeCleaner(instance, Item);
+        //    if (cleaner.Cleaner is CodeCleanerCommandRunnerBase)
+        //        return (cleaner.Cleaner as CodeCleanerCommandRunnerBase).CleanUp(Item.ToSyntaxNode());
 
-        public void InvokeWhiteSpaceNormalizer()
-        {
-            var instance = CodeCleanerFactory.Create(CodeCleanerType.NormalizeWhiteSpaces);
-            new CodeCleaner(instance, Item).Run();
-        }
-
-        public void InvokeConvertMembersToExpressionBody()
-        {
-            var instance = CodeCleanerFactory.Create(CodeCleanerType.ConvertMembersToExpressionBodied);
-            new CodeCleaner(instance, Item).Run();
-        }
-        public void InvokeFullNameTypesToBuiltInTypes()
-        {
-            var instance = CodeCleanerFactory.Create(CodeCleanerType.FullNameTypesToBuiltInTypes);
-            new CodeCleaner(instance, Item).Run();
-        }
-
-        public void InvokeUsingDirectiveOrganizer()
-        {
-            var instance = CodeCleanerFactory.Create(CodeCleanerType.OrganizeUsingDirectives);
-            new CodeCleaner(instance, Item).Run();
-        }
+        //    cleaner.Run();
+        //    return null;
+        //}
     }
 }

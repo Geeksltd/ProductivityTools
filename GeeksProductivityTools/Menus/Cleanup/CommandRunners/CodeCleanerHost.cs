@@ -16,19 +16,11 @@ namespace Geeks.GeeksProductivityTools.Menus.Cleanup
                 switch (command)
                 {
                     case CodeCleanerType.PrivateAccessModifier:
-                        invoker.InvokePrivateModifierRemover();
-                        break;
                     case CodeCleanerType.NormalizeWhiteSpaces:
-                        invoker.InvokeWhiteSpaceNormalizer();
-                        break;
                     case CodeCleanerType.ConvertMembersToExpressionBodied:
-                        invoker.InvokeConvertMembersToExpressionBody();
-                        break;
                     case CodeCleanerType.FullNameTypesToBuiltInTypes:
-                        invoker.InvokeFullNameTypesToBuiltInTypes();
-                        break;
                     case CodeCleanerType.OrganizeUsingDirectives:
-                        invoker.InvokeUsingDirectiveOrganizer();
+                        invoker.Invoke(command);
                         break;
                     case CodeCleanerType.All:
                         invoker.InvokeAll();

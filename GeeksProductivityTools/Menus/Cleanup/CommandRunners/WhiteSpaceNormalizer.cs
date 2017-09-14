@@ -10,30 +10,22 @@ using Microsoft.CodeAnalysis.Formatting;
 
 namespace Geeks.GeeksProductivityTools.Menus.Cleanup
 {
-    // TODO: Refactor this bloody class Ali
-    public class WhiteSpaceNormalizer : ICodeCleaner
+    public class WhiteSpaceNormalizer : CodeCleanerCommandRunnerBase, ICodeCleaner
     {
-        public void Run(ProjectItem item) => Task.Run(() => NormalizeWhiteSpace(item));
-
-        static void NormalizeWhiteSpace(ProjectItem item)
+        public override SyntaxNode CleanUp(SyntaxNode initialSourceNode)
         {
-            var initialSource = item.ToSyntaxNode();
-
-            initialSource = Formatter.Format(initialSource, GeeksProductivityToolsPackage.Instance.VsWorkspace);
-
-            initialSource = RevomeDuplicaterBlank(initialSource);
-
-            initialSource.WriteSourceTo(item.ToFullPathPropertyValue());
+            initialSourceNode = Formatter.Format(initialSourceNode, GeeksProductivityToolsPackage.Instance.VsWorkspace);
+            return NormalizeWhiteSpaceHelper(initialSourceNode);
         }
 
-        static SyntaxNode RevomeDuplicaterBlank(SyntaxNode initialSource)
+        public static SyntaxNode NormalizeWhiteSpaceHelper(SyntaxNode initialSource)
         {
             initialSource = new Rewriter(initialSource).Visit(initialSource);
             return initialSource;
         }
+
         class Rewriter : CSharpSyntaxRewriter
         {
-            const int MAX_EXPRESSION_BODIED_MEMBER_LENGTH = 90;
             bool _lastTokenIsAOpenBrace = false;
             SyntaxKind _lastSpecialSyntax = SyntaxKind.None;
             MethodDeclarationSyntax _lastMthodDeclarationNode = null;
