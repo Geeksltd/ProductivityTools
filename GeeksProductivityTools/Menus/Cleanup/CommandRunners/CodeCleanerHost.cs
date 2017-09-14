@@ -20,6 +20,8 @@ namespace Geeks.GeeksProductivityTools.Menus.Cleanup
                     case CodeCleanerType.ConvertMembersToExpressionBodied:
                     case CodeCleanerType.FullNameTypesToBuiltInTypes:
                     case CodeCleanerType.OrganizeUsingDirectives:
+                    case CodeCleanerType.SimplyAsyncCallsCommand:
+                    case CodeCleanerType.SortClassMembersCommand:
                         invoker.Invoke(command);
                         break;
                     case CodeCleanerType.All:

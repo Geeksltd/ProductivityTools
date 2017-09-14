@@ -14,6 +14,10 @@ namespace Geeks.GeeksProductivityTools.Menus.Cleanup
                     return new ConvertMembersToExpressionBodied();
                 case CodeCleanerType.FullNameTypesToBuiltInTypes:
                     return new ConvertFullNameTypesToBuiltInTypes();
+                case CodeCleanerType.SortClassMembersCommand:
+                    return new SortClassMembers();
+                case CodeCleanerType.SimplyAsyncCallsCommand:
+                    return new SimplyAsyncCalls();
                 case CodeCleanerType.PrivateAccessModifier:
                     return new PrivateModifierRemover();
                 case CodeCleanerType.OrganizeUsingDirectives:

@@ -8,6 +8,8 @@ namespace Geeks.GeeksProductivityTools.Definition
         OrganizeUsingDirectives = 3,
         ConvertMembersToExpressionBodied = 4,
         FullNameTypesToBuiltInTypes = 5,
+        SimplyAsyncCallsCommand = 6,
+        SortClassMembersCommand = 7,
         All = 35
     }
 }

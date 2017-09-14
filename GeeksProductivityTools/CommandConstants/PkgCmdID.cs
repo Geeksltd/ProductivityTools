@@ -28,6 +28,8 @@ namespace Geeks.GeeksProductivityTools
         public const uint CmdCleanUpPrivateModifier = 0x0102;
         public const uint CmdConvertMembersToExpressionBodied = 0x0103;
         public const uint CmdConvertFullNameTypesToBuiltInTypes = 0x0104;
+        public const uint CmdSimplyAsyncCalls = 0x0105;
+        public const uint CmdSortClassMembers = 0x0106;
         public const uint CmdCleanUpAllActions = 0x0135;
     };
 }
