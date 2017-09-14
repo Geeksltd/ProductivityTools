@@ -183,23 +183,14 @@ namespace Geeks.GeeksProductivityTools.Menus.Cleanup
                 return lineBreaksAtBeginning - 1;
             }
 
-            int FindSpecialTriviasCount(IEnumerable<SyntaxTrivia> newList)
-            {
-                return
-                    newList
-
-                        .Count(t =>
-                            t.IsKind(SyntaxKind.RegionDirectiveTrivia) ||
-                            t.IsKind(SyntaxKind.EndRegionDirectiveTrivia) ||
-                            t.IsKind(SyntaxKind.SingleLineCommentTrivia) ||
-                            t.IsKind(SyntaxKind.MultiLineCommentTrivia)
-                        );
-            }
-
             IList<SyntaxTrivia> ProcessSpecialTrivias(IList<SyntaxTrivia> syntaxTrivias, bool itsForCloseBrace)
             {
                 if (CheckShortSyntax(syntaxTrivias, itsForCloseBrace)) return syntaxTrivias;
-                var specialTriviasCount = FindSpecialTriviasCount(syntaxTrivias);
+                var specialTriviasCount =
+                    syntaxTrivias
+                        .Count(t =>
+                            !t.IsKind(SyntaxKind.EndOfLineTrivia) && !t.IsKind(SyntaxKind.WhitespaceTrivia)
+                        );
 
                 var outputTriviasList = new List<SyntaxTrivia>();
                 var specialTiviasCount = 0;
