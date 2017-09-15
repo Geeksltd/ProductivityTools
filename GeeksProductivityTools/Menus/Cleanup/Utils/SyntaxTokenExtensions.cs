@@ -28,7 +28,12 @@ namespace Geeks.GeeksProductivityTools.Menus.Cleanup
         {
             lock (_lockFileWrite)
             {
-                using (var write = new StreamWriter(filePath))
+                System.Text.Encoding encoding;
+                using (var reader = new StreamReader(filePath))
+                {
+                    encoding = reader.CurrentEncoding;
+                }
+                using (var write = new StreamWriter(filePath, false, encoding))
                     write.Write(sourceCode.ToFullString());
             }
         }
