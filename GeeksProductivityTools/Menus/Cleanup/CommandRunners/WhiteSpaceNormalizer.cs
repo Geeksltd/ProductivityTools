@@ -14,19 +14,23 @@ namespace Geeks.GeeksProductivityTools.Menus.Cleanup
     {
         public override SyntaxNode CleanUp(SyntaxNode initialSourceNode)
         {
-            initialSourceNode = Formatter.Format(initialSourceNode, GeeksProductivityToolsPackage.Instance.VsWorkspace);
             return NormalizeWhiteSpaceHelper(initialSourceNode);
         }
 
-        public static SyntaxNode NormalizeWhiteSpaceHelper(SyntaxNode initialSource)
+        public static SyntaxNode NormalizeWhiteSpaceHelper(SyntaxNode initialSourceNode)
         {
-            initialSource = new Rewriter(initialSource).Visit(initialSource);
-            return initialSource;
+            if (GeeksProductivityToolsPackage.Instance != null)
+            {
+                initialSourceNode = Formatter.Format(initialSourceNode, GeeksProductivityToolsPackage.Instance.VsWorkspace);
+            }
+            initialSourceNode = new Rewriter(initialSourceNode).Visit(initialSourceNode);
+            return initialSourceNode;
         }
 
         class Rewriter : CSharpSyntaxRewriter
         {
             bool _lastTokenIsAOpenBrace = false;
+            bool _lastTokenIsACloseBrace = false;
             SyntaxKind _lastSpecialSyntax = SyntaxKind.None;
             MethodDeclarationSyntax _lastMthodDeclarationNode = null;
             SyntaxTrivia _endOfLineTrivia = default(SyntaxTrivia);
@@ -75,14 +79,23 @@ namespace Geeks.GeeksProductivityTools.Menus.Cleanup
 
             public override SyntaxToken VisitToken(SyntaxToken token)
             {
-                if (_lastTokenIsAOpenBrace)
+                if (_lastTokenIsACloseBrace)
+                {
+                    if (!(token.Parent is CatchClauseSyntax || token.Parent is ElseClauseSyntax || token.ValueText == ";"))
+                    {
+                        token = token.WithLeadingTrivia(token.LeadingTrivia.Insert(0, _endOfLineTrivia));
+                    }
+                    _lastTokenIsACloseBrace = false;
+                }
+                else if (_lastTokenIsAOpenBrace)
                 {
                     var oldList = token.LeadingTrivia.ToList();
                     var newList = CleanUpOpenBrace(oldList);
                     token = token.WithLeadingTrivia(newList);
                     _lastTokenIsAOpenBrace = false;
                 }
-                else if (token.IsKind(SyntaxKind.OpenBraceToken))
+
+                if (token.IsKind(SyntaxKind.OpenBraceToken))
                 {
                     _lastTokenIsAOpenBrace = true;
                 }
@@ -90,6 +103,10 @@ namespace Geeks.GeeksProductivityTools.Menus.Cleanup
                 {
                     var oldList = token.LeadingTrivia.ToList();
                     var newList = CleanUpCloseBrace(oldList);
+                    if (CheckForAddBlankAfterBracesInsideMethods(token.Parent))
+                    {
+                        _lastTokenIsACloseBrace = true;
+                    }
                     token = token.WithLeadingTrivia(newList);
                 }
                 else if (token.LeadingTrivia.Count > 1)
@@ -100,6 +117,22 @@ namespace Geeks.GeeksProductivityTools.Menus.Cleanup
                 }
 
                 return base.VisitToken(token);
+            }
+            bool CheckForAddBlankAfterBracesInsideMethods(SyntaxNode node)
+            {
+                if (node == null) return true;
+                if (node is BlockSyntax == false) return false;
+                if (node.Parent is DoStatementSyntax) return false;
+                if (node.Parent is MethodDeclarationSyntax) return false;
+                if (node.Parent is NamespaceDeclarationSyntax) return false;
+                if (node.Parent is ParenthesizedLambdaExpressionSyntax) return false;
+                if (node.Parent is ParenthesizedExpressionSyntax) return false;
+                if (node.Parent is AnonymousMethodExpressionSyntax) return false;
+                if (node.Parent is AnonymousFunctionExpressionSyntax) return false;
+                if (node.Parent is TryStatementSyntax) return false;
+                if (node.Parent is IfStatementSyntax && ((IfStatementSyntax)node.Parent).Else != null) return false;
+
+                return true;
             }
 
             SyntaxNode CheckSyntaxNodeAfterUsingNode(SyntaxNode node, SyntaxKind syntaxNodeKind)
