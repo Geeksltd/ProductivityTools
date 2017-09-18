@@ -80,6 +80,22 @@ namespace Geeks.GeeksProductivityTools.Menus.Cleanup
             if (singleStatement is IfStatementSyntax) return null;
             if (singleStatement is ThrowStatementSyntax) return null;
             if (singleStatement is YieldStatementSyntax) return null;
+            if (singleStatement.HasLeadingTrivia)
+            {
+                if (HasNoneWhitespaceTrivia(singleStatement.GetLeadingTrivia()) == false) return null;
+            }
+            if (singleStatement.HasTrailingTrivia)
+            {
+                if (HasNoneWhitespaceTrivia(singleStatement.GetTrailingTrivia()) == false) return null;
+            }
+            if (method.Body.CloseBraceToken.HasLeadingTrivia)
+            {
+                if (HasNoneWhitespaceTrivia(method.Body.CloseBraceToken.LeadingTrivia) == false) return null;
+            }
+            if (method.Body.OpenBraceToken.HasLeadingTrivia)
+            {
+                if (HasNoneWhitespaceTrivia(method.Body.OpenBraceToken.LeadingTrivia) == false) return null;
+            }
 
             var expression =
                 (
@@ -94,6 +110,11 @@ namespace Geeks.GeeksProductivityTools.Menus.Cleanup
             if (method.Body.ChildNodes().OfType<UsingStatementSyntax>().Any()) return null;
 
             return expression;
+        }
+
+        static bool HasNoneWhitespaceTrivia(SyntaxTriviaList getLeadingTrivia)
+        {
+            return getLeadingTrivia.All(t => t.IsKind(SyntaxKind.EndOfLineTrivia) || t.IsKind(SyntaxKind.WhitespaceTrivia));
         }
 
         public static PropertyDeclarationSyntax ConvertToExpressionBodiedHelper(PropertyDeclarationSyntax propertyDeclaration)
