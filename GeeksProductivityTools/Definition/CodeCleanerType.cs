@@ -10,6 +10,7 @@ namespace Geeks.GeeksProductivityTools.Definition
         FullNameTypesToBuiltInTypes = 5,
         SimplyAsyncCallsCommand = 6,
         SortClassMembersCommand = 7,
+        SimplifyClassFieldDeclarationsCommand = 8,
         All = 35
     }
 }

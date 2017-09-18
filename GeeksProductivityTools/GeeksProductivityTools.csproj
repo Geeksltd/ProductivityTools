@@ -373,10 +373,11 @@
     <Compile Include="Menus\Cleanup\CommandRunners\TypesMapItem.cs" />
     <Compile Include="Menus\Cleanup\CommandRunners\UsingDirectiveOrganizer.cs" />
     <Compile Include="Menus\Cleanup\CommandRunners\ConvertMembersToExpressionBodied.cs" />
-    <Compile Include="Menus\Cleanup\CommandRunners\MinifyFieldsDefinition.cs" />
+    <Compile Include="Menus\Cleanup\CommandRunners\SimplifyClassFieldDeclarations.cs" />
     <Compile Include="Menus\Cleanup\CommandsHandlers\ActionAllCodeCleanup.cs" />
     <Compile Include="Menus\Cleanup\CommandsHandlers\ExtendedBaseCodeCleanupCommand.cs" />
     <Compile Include="Menus\Cleanup\CommandsHandlers\ConvertFullNameTypesToBuiltInTypesCommand.cs" />
+    <Compile Include="Menus\Cleanup\CommandsHandlers\SimplifyClassFieldDeclarationsCommand.cs" />
     <Compile Include="Menus\Cleanup\CommandsHandlers\SimplyAsyncCallsCommand.cs" />
     <Compile Include="Menus\Cleanup\CommandsHandlers\SortClassMembersCommand.cs" />
     <Compile Include="Menus\Cleanup\CommandsHandlers\ConvertMembersToExpressionBodiedCommand.cs" />

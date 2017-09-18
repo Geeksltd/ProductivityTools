@@ -114,7 +114,7 @@ namespace Geeks.GeeksProductivityTools.Menus.Cleanup
         {
             if (_predefinedTypesDic != null) return _predefinedTypesDic;
 
-            var output = TypesMapItem.GetBuiltInTypesDic();
+            var output = GetBuiltInTypesDic();
 
             using (var provider = new CSharpCodeProvider())
             {
