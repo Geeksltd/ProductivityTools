@@ -103,9 +103,10 @@ namespace Geeks.GeeksProductivityTools.Menus.Cleanup
                 {
                     var oldList = token.LeadingTrivia.ToList();
                     var newList = CleanUpCloseBrace(oldList);
-                    if (CheckForAddBlankAfterBracesInsideMethods(token.Parent))
+                    var triviasBetweenTokens = token.GetPreviousToken().TrailingTrivia.AddRange(token.LeadingTrivia);
+                    if (triviasBetweenTokens.Any(x => x.IsKind(SyntaxKind.EndOfLineTrivia)))
                     {
-                        _lastTokenIsACloseBrace = true;
+                        _lastTokenIsACloseBrace = CheckForAddBlankAfterBracesInsideMethods(token.Parent);
                     }
                     token = token.WithLeadingTrivia(newList);
                 }
