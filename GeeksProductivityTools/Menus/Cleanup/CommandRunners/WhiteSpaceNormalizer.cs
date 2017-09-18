@@ -109,6 +109,11 @@ namespace Geeks.GeeksProductivityTools.Menus.Cleanup
                     }
                     token = token.WithLeadingTrivia(newList);
                 }
+                else if (token.IsKind(SyntaxKind.EndOfFileToken))
+                {
+                    var triviList = ProcessSpecialTrivias(CleanUpList(token.LeadingTrivia.ToList(), 0), itsForCloseBrace: false);
+                    token = token.WithLeadingTrivia(triviList);
+                }
                 else if (token.LeadingTrivia.Count > 1)
                 {
                     var output = CleanUpList(token.LeadingTrivia.ToList());
@@ -137,11 +142,21 @@ namespace Geeks.GeeksProductivityTools.Menus.Cleanup
 
             SyntaxNode CheckSyntaxNodeAfterUsingNode(SyntaxNode node, SyntaxKind syntaxNodeKind)
             {
+                IList<SyntaxTrivia> triviList;
                 if (_lastSpecialSyntax == SyntaxKind.UsingKeyword)
                 {
-                    var output = CleanUpListUsings(node.GetLeadingTrivia().ToList());
-                    node = node.WithLeadingTrivia(output);
+                    triviList = CleanUpListUsings(node.GetLeadingTrivia().ToList());
                 }
+                else if (_lastSpecialSyntax == SyntaxKind.None)
+                {
+                    triviList = CleanUpList(node.GetLeadingTrivia().ToList(), 0);
+                }
+                else
+                {
+                    triviList = CleanUpList(node.GetLeadingTrivia().ToList());
+                }
+
+                node = node.WithLeadingTrivia(triviList);
 
                 _lastSpecialSyntax = syntaxNodeKind;
 
