@@ -31,25 +31,26 @@ namespace Geeks.GeeksProductivityTools.Menus.Cleanup
             SyntaxTrivia spaceTrivia = SyntaxFactory.Whitespace(" ");
             SyntaxNode Apply(ClassDeclarationSyntax classDescriptionNode)
             {
-                var newDeclarationDic = new Dictionary<Type, NewFieldDeclarationDicItem>();
+                var newDeclarationDic = new Dictionary<NewFieldDeclarationDicKey, NewFieldDeclarationDicItem>();
 
                 var fieldDeclarations =
                     classDescriptionNode
                     .Members
                     .OfType<FieldDeclarationSyntax>()
-                    .Where(f => (f as FieldDeclarationSyntax).Declaration.Type is PredefinedTypeSyntax)
                     .ToList();
 
                 foreach (var fieldDeclarationItem in fieldDeclarations)
                 {
                     var variableType = GetSystemTypeOfTypeNode(fieldDeclarationItem.Declaration);
 
-                    if (newDeclarationDic.ContainsKey(variableType) == false)
+                    var key = GetKey(fieldDeclarationItem);
+
+                    if (newDeclarationDic.ContainsKey(key) == false)
                     {
                         newDeclarationDic
                             .Add
                             (
-                                variableType,
+                                key,
                                 new NewFieldDeclarationDicItem
                                 {
                                     VariablesWithoutInitializer = new List<VariableDeclaratorSyntax>(),
@@ -59,7 +60,7 @@ namespace Geeks.GeeksProductivityTools.Menus.Cleanup
                             );
                     }
 
-                    var currentItem = newDeclarationDic[variableType];
+                    var currentItem = newDeclarationDic[key];
 
                     currentItem.OldFieldDeclarations.Add(fieldDeclarationItem);
 
@@ -112,7 +113,7 @@ namespace Geeks.GeeksProductivityTools.Menus.Cleanup
                          {
                              if (replaceList.Contains(node1))
                              {
-                                 var dicItem = newDeclarationDic[GetSystemTypeOfTypeNode((node1 as FieldDeclarationSyntax).Declaration)];
+                                 var dicItem = newDeclarationDic[GetKey(node1 as FieldDeclarationSyntax)];
 
                                  return
                                     dicItem
@@ -126,9 +127,27 @@ namespace Geeks.GeeksProductivityTools.Menus.Cleanup
 
                 return classDescriptionNode;
             }
-            Type GetSystemTypeOfTypeNode(VariableDeclarationSyntax d)
+
+            NewFieldDeclarationDicKey GetKey(FieldDeclarationSyntax fieldDeclarationItem)
             {
-                return TypesMapItem.GetAllPredefinedTypesDic()[(d.Type as PredefinedTypeSyntax).Keyword.ValueText].BuiltInType;
+                var header = new NewFieldDeclarationDicKey
+                {
+                    TypeName = GetSystemTypeOfTypeNode(fieldDeclarationItem.Declaration),
+                };
+
+                if (fieldDeclarationItem.Modifiers.Any())
+                {
+                    header.Modifiers = fieldDeclarationItem.Modifiers.Select(x => x.ValueText).ToArray();
+                }
+                return header;
+            }
+
+            string GetSystemTypeOfTypeNode(VariableDeclarationSyntax d)
+            {
+                if (d.Type is PredefinedTypeSyntax)
+                    return TypesMapItem.GetAllPredefinedTypesDic()[(d.Type as PredefinedTypeSyntax).Keyword.ValueText].BuiltInName.Trim();
+
+                return (d.Type.ToFullString().Trim());
             }
 
             public override SyntaxNode VisitClassDeclaration(ClassDeclarationSyntax node)
@@ -143,15 +162,22 @@ namespace Geeks.GeeksProductivityTools.Menus.Cleanup
             {
                 if (node.Initializer == null) return base.VisitVariableDeclarator(node);
                 if (node.Parent is VariableDeclarationSyntax == false) return base.VisitVariableDeclarator(node);
-                var variableTypeNode = (node.Parent as VariableDeclarationSyntax).Type;
                 var value = node.Initializer.Value;
 
                 if (value is LiteralExpressionSyntax)
                 {
+                    var variableTypeNode = GetSystemTypeOfTypeNode((node.Parent as VariableDeclarationSyntax));
                     var valueObj = (value as LiteralExpressionSyntax).Token.Value;
-                    var typeItem = TypesMapItem.GetAllPredefinedTypesDic()[(variableTypeNode as PredefinedTypeSyntax).Keyword.ValueText];
 
-                    if ((typeItem.DefaultValue == null && valueObj != null) || (typeItem.DefaultValue != null && !typeItem.DefaultValue.Equals(valueObj))) return base.VisitVariableDeclarator(node);
+                    if (TypesMapItem.GetAllPredefinedTypesDic().ContainsKey(variableTypeNode))
+                    {
+                        var typeItem = TypesMapItem.GetAllPredefinedTypesDic()[variableTypeNode];
+                        if ((typeItem.DefaultValue == null && valueObj != null) || (typeItem.DefaultValue != null && !typeItem.DefaultValue.Equals(valueObj))) return base.VisitVariableDeclarator(node);
+                    }
+                    else
+                    {
+                        if (valueObj != null) return base.VisitVariableDeclarator(node);
+                    }
 
                     node = node.WithInitializer(null).WithoutTrailingTrivia();
                 }
@@ -170,6 +196,35 @@ namespace Geeks.GeeksProductivityTools.Menus.Cleanup
                 return base.VisitVariableDeclarator(node);
             }
 
+            struct NewFieldDeclarationDicKey : IEquatable<NewFieldDeclarationDicKey>
+            {
+                public string TypeName { get; set; }
+                public string[] Modifiers { get; set; }
+
+                public bool Equals(NewFieldDeclarationDicKey other)
+                {
+                    return this == other;
+                }
+
+                public static bool operator ==(NewFieldDeclarationDicKey left, NewFieldDeclarationDicKey right)
+                {
+                    if (string.Compare(left.TypeName, right.TypeName) != 0) return false;
+                    if (left.Modifiers == null && right.Modifiers == null) return true;
+                    if (left.Modifiers == null || right.Modifiers == null) return false;
+                    if (left.Modifiers.Length != right.Modifiers.Length) return false;
+                    foreach (var item in left.Modifiers)
+                    {
+                        if (right.Modifiers.Any(m => string.Compare(m, item) == 0) == false) return false;
+                    }
+
+                    return true;
+                }
+                public static bool operator !=(NewFieldDeclarationDicKey left, NewFieldDeclarationDicKey right)
+                {
+                    return !(left == right);
+                }
+
+            }
             class NewFieldDeclarationDicItem
             {
                 public List<VariableDeclaratorSyntax> VariablesWithoutInitializer { get; set; }
