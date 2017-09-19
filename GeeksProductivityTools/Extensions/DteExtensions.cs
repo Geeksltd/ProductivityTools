@@ -47,9 +47,8 @@ namespace GeeksAddin
             var items = (Array)App.DTE.ToolWindows.SolutionExplorer.SelectedItems;
             foreach (UIHierarchyItem selItem in items)
             {
-                var item = selItem.Object as ProjectItem;
 
-                if (item != null)
+                if (selItem.Object is ProjectItem item)
                     yield return item.Properties.Item("FullPath").Value.ToString();
             }
         }

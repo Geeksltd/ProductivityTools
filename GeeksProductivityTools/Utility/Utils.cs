@@ -8,6 +8,7 @@ using System.Web.Script.Serialization;
 using EnvDTE;
 using EnvDTE80;
 using Geeks.GeeksProductivityTools;
+using Microsoft.VisualStudio.Shell.Interop;
 
 namespace GeeksAddin
 {
@@ -15,7 +16,7 @@ namespace GeeksAddin
     {
         public static string GetSolutionName(DTE2 app)
         {
-            if (app == null || app.Solution == null || String.IsNullOrEmpty(app.Solution.FullName)) return "";
+            if (app == null || app.Solution == null || string.IsNullOrEmpty(app.Solution.FullName)) return "";
             return Path.GetFileNameWithoutExtension(app.Solution.FullName);
         }
 
@@ -23,8 +24,7 @@ namespace GeeksAddin
         {
             var basePaths = new List<string>();
 
-            var solution = app.Solution as SolutionClass;
-            if (solution != null)
+            if (app.Solution is SolutionClass solution)
             {
                 for (var i = 1; i <= solution.Projects.Count; i++)
                 {
@@ -35,7 +35,11 @@ namespace GeeksAddin
                 return basePaths.ToArray();
             }
 
-            app.StatusBar.Text = "No solution or project is identified";
+            app.StatusBar.Text = "No solution or project is identified. app.Solution is " +
+                (app.Solution?.GetType().Name).Or("NULL");
+
+            App.DTE = (DTE2)GeeksProductivityToolsPackage.GetGlobalService(typeof(SDTE));
+
             return null;
         }
 
@@ -50,8 +54,7 @@ namespace GeeksAddin
 
                 if (!string.IsNullOrWhiteSpace(projectFileName))
                 {
-                    var fullPath = projectItem.Properties.Item("FullPath").Value as string;
-                    if (fullPath != null)
+                    if (projectItem.Properties.Item("FullPath").Value is string fullPath)
                         basePaths.Add(fullPath);
                 }
                 else
@@ -69,7 +72,7 @@ namespace GeeksAddin
 
         public static IEnumerable<string> SplitCommandLine(string commandLine)
         {
-            bool inQuotes = false;
+            var inQuotes = false;
 
             return commandLine.Split(c =>
             {
@@ -82,9 +85,9 @@ namespace GeeksAddin
 
         public static IEnumerable<string> Split(this string str, Func<char, bool> controller)
         {
-            int nextPiece = 0;
+            var nextPiece = 0;
 
-            for (int c = 0; c < str.Length; c++)
+            for (var c = 0; c < str.Length; c++)
             {
                 if (controller(str[c]))
                 {
