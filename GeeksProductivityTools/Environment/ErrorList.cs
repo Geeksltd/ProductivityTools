@@ -25,10 +25,6 @@ namespace Geeks.GeeksProductivityTools
             }
         }
 
-        /// <summary>
-        /// Removes a Task
-        /// </summary>
-        /// <param name="key">The key.</param>
         public static void RemoveError(string key)
         {
             if (string.IsNullOrEmpty(key))
