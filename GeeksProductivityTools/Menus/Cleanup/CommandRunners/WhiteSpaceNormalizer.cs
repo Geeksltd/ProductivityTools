@@ -51,7 +51,7 @@ namespace Geeks.GeeksProductivityTools.Menus.Cleanup
 
                 if (node is UsingDirectiveSyntax)
                 {
-                    var output = CleanUpList(node.GetLeadingTrivia().ToList(), 0);
+                    var output = CleanUpList(node.GetLeadingTrivia(), 0);
                     node = node.WithLeadingTrivia(output);
 
                     _lastSpecialSyntax = SyntaxKind.UsingKeyword;
@@ -89,11 +89,12 @@ namespace Geeks.GeeksProductivityTools.Menus.Cleanup
                 }
                 else if (_lastTokenIsAOpenBrace)
                 {
-                    var oldList = token.LeadingTrivia.ToList();
-                    var newList = CleanUpOpenBrace(oldList);
+                    var newList = CleanUpOpenBrace(token.LeadingTrivia);
                     token = token.WithLeadingTrivia(newList);
                     _lastTokenIsAOpenBrace = false;
                 }
+
+                var triviList = default(SyntaxTriviaList);
 
                 if (token.IsKind(SyntaxKind.OpenBraceToken))
                 {
@@ -101,19 +102,25 @@ namespace Geeks.GeeksProductivityTools.Menus.Cleanup
                 }
                 else if (token.IsKind(SyntaxKind.CloseBraceToken))
                 {
-                    var oldList = token.LeadingTrivia.ToList();
-                    var newList = CleanUpCloseBrace(oldList);
-                    if (CheckForAddBlankAfterBracesInsideMethods(token.Parent))
+                    triviList = CleanUpCloseBrace(token.LeadingTrivia);
+                    var triviasBetweenTokens = token.GetPreviousToken().TrailingTrivia.AddRange(token.LeadingTrivia);
+                    if (triviasBetweenTokens.Any(x => x.IsKind(SyntaxKind.EndOfLineTrivia)))
                     {
-                        _lastTokenIsACloseBrace = true;
+                        _lastTokenIsACloseBrace = CheckForAddBlankAfterBracesInsideMethods(token.Parent);
                     }
-                    token = token.WithLeadingTrivia(newList);
+                }
+                else if (token.IsKind(SyntaxKind.EndOfFileToken))
+                {
+                    triviList = ProcessSpecialTrivias(CleanUpList(token.LeadingTrivia, 0), itsForCloseBrace: false);
                 }
                 else if (token.LeadingTrivia.Count > 1)
                 {
-                    var output = CleanUpList(token.LeadingTrivia.ToList());
-                    output = ProcessSpecialTrivias(output, itsForCloseBrace: false);
-                    token = token.WithLeadingTrivia(output);
+                    triviList = ProcessSpecialTrivias(CleanUpList(token.LeadingTrivia), itsForCloseBrace: false);
+                }
+
+                if (triviList != default(SyntaxTriviaList))
+                {
+                    token = token.WithLeadingTrivia(triviList);
                 }
 
                 return base.VisitToken(token);
@@ -131,17 +138,26 @@ namespace Geeks.GeeksProductivityTools.Menus.Cleanup
                 if (node.Parent is AnonymousFunctionExpressionSyntax) return false;
                 if (node.Parent is TryStatementSyntax) return false;
                 if (node.Parent is IfStatementSyntax && ((IfStatementSyntax)node.Parent).Else != null) return false;
-
                 return true;
             }
 
             SyntaxNode CheckSyntaxNodeAfterUsingNode(SyntaxNode node, SyntaxKind syntaxNodeKind)
             {
+                SyntaxTriviaList triviList;
                 if (_lastSpecialSyntax == SyntaxKind.UsingKeyword)
                 {
-                    var output = CleanUpListUsings(node.GetLeadingTrivia().ToList());
-                    node = node.WithLeadingTrivia(output);
+                    triviList = CleanUpListUsings(node.GetLeadingTrivia());
                 }
+                else if (_lastSpecialSyntax == SyntaxKind.None)
+                {
+                    triviList = CleanUpList(node.GetLeadingTrivia(), 0);
+                }
+                else
+                {
+                    triviList = CleanUpList(node.GetLeadingTrivia());
+                }
+
+                node = node.WithLeadingTrivia(triviList);
 
                 _lastSpecialSyntax = syntaxNodeKind;
 
@@ -152,7 +168,7 @@ namespace Geeks.GeeksProductivityTools.Menus.Cleanup
             {
                 if (_lastMthodDeclarationNode != null)
                 {
-                    var leadingTrivia = CleanUpList(node.GetLeadingTrivia().ToList(), 1);
+                    var leadingTrivia = CleanUpList(node.GetLeadingTrivia(), 1);
 
                     node = node.WithLeadingTrivia(leadingTrivia);
                 }
@@ -161,25 +177,25 @@ namespace Geeks.GeeksProductivityTools.Menus.Cleanup
 
                 return node;
             }
-            IList<SyntaxTrivia> CleanUpList(IList<SyntaxTrivia> newList)
+            SyntaxTriviaList CleanUpList(SyntaxTriviaList newList)
             {
                 var lineBreaksAtBeginning = newList.TakeWhile(t => t.IsKind(SyntaxKind.EndOfLineTrivia)).Count();
 
                 if (lineBreaksAtBeginning > 1)
                 {
-                    newList = newList.Skip(lineBreaksAtBeginning - 1).ToList();
+                    newList = newList.Skip(lineBreaksAtBeginning - 1).ToSyntaxTriviaList();
                 }
 
                 return newList;
             }
 
-            IList<SyntaxTrivia> CleanUpList(IList<SyntaxTrivia> syntaxTrivias, int exactNumberOfBlanks)
+            SyntaxTriviaList CleanUpList(SyntaxTriviaList syntaxTrivias, int exactNumberOfBlanks)
             {
                 var lineBreaksAtBeginning = syntaxTrivias.TakeWhile(t => t.IsKind(SyntaxKind.EndOfLineTrivia)).Count();
 
                 if (lineBreaksAtBeginning > exactNumberOfBlanks)
                 {
-                    syntaxTrivias = syntaxTrivias.Skip(lineBreaksAtBeginning - exactNumberOfBlanks).ToList();
+                    syntaxTrivias = syntaxTrivias.Skip(lineBreaksAtBeginning - exactNumberOfBlanks).ToSyntaxTriviaList();
                 }
                 else if (lineBreaksAtBeginning < exactNumberOfBlanks)
                 {
@@ -192,22 +208,22 @@ namespace Geeks.GeeksProductivityTools.Menus.Cleanup
                 return syntaxTrivias;
             }
 
-            IList<SyntaxTrivia> CleanUpListUsings(IList<SyntaxTrivia> syntaxTrivias)
+            SyntaxTriviaList CleanUpListUsings(SyntaxTriviaList syntaxTrivias)
             {
                 return CleanUpList(syntaxTrivias, 1);
             }
 
-            IList<SyntaxTrivia> CleanUpOpenBrace(IList<SyntaxTrivia> syntaxTrivias)
+            SyntaxTriviaList CleanUpOpenBrace(SyntaxTriviaList syntaxTrivias)
             {
                 return ProcessSpecialTrivias(CleanUpList(syntaxTrivias, 0), itsForCloseBrace: false);
             }
 
-            IList<SyntaxTrivia> CleanUpCloseBrace(IList<SyntaxTrivia> syntaxTrivias)
+            SyntaxTriviaList CleanUpCloseBrace(SyntaxTriviaList syntaxTrivias)
             {
                 return ProcessSpecialTrivias(CleanUpList(syntaxTrivias), itsForCloseBrace: true);
             }
 
-            int RemoveBlankDuplication(IList<SyntaxTrivia> syntaxTrivias, SyntaxKind kind, int iterationIndex)
+            int RemoveBlankDuplication(SyntaxTriviaList syntaxTrivias, SyntaxKind kind, int iterationIndex)
             {
                 if (iterationIndex >= syntaxTrivias.Count) return -1;
 
@@ -216,7 +232,7 @@ namespace Geeks.GeeksProductivityTools.Menus.Cleanup
                 return lineBreaksAtBeginning - 1;
             }
 
-            IList<SyntaxTrivia> ProcessSpecialTrivias(IList<SyntaxTrivia> syntaxTrivias, bool itsForCloseBrace)
+            SyntaxTriviaList ProcessSpecialTrivias(SyntaxTriviaList syntaxTrivias, bool itsForCloseBrace)
             {
                 if (CheckShortSyntax(syntaxTrivias, itsForCloseBrace)) return syntaxTrivias;
                 var specialTriviasCount =
@@ -291,10 +307,10 @@ namespace Geeks.GeeksProductivityTools.Menus.Cleanup
                     }
                     bAddedBlankLine = false;
                 }
-                return outputTriviasList;
+                return outputTriviasList.ToSyntaxTriviaList();
             }
 
-            bool CheckShortSyntax(IList<SyntaxTrivia> syntaxTrivias, bool itsForCloseBrace)
+            bool CheckShortSyntax(SyntaxTriviaList syntaxTrivias, bool itsForCloseBrace)
             {
                 if (itsForCloseBrace) return false;
                 if (syntaxTrivias.Count <= 1) return true;

@@ -106,6 +106,12 @@
           <ButtonText>Sort Class Members</ButtonText>
         </Strings>
       </Button>
+      <Button guid="GuidCleanupCmdSet" id="SimplifyClassFieldDeclarationsCommand" priority="0x0107" type="Button">
+        <Parent guid="GuidCleanupCmdSet" id="MySubMenuGroup" />
+        <Strings>
+          <ButtonText>Simplify class field declarations</ButtonText>
+        </Strings>
+      </Button>
       <Button guid="GuidCleanupCmdSet" id="AllCleanUpCommand" priority="0x0135" type="Button">
         <Parent guid="GuidCleanupCmdSet" id="MySubMenuGroup" />
         <Strings>
@@ -244,6 +250,7 @@
       <IDSymbol name="ConvertFullNameTypesToBuiltInTypesCommand" value="0x0104" />
       <IDSymbol name="SimplyAsyncCallsCommand" value="0x0105" />
       <IDSymbol name="SortClassMembersCommand" value="0x0106" />
+      <IDSymbol name="SimplifyClassFieldDeclarationsCommand" value="0x0107" />
       <IDSymbol name="AllCleanUpCommand" value="0x0135" />
       <IDSymbol name="MyMenuController" value="0x0136" />
       <IDSymbol name="MySubMenuGroup" value="0x0137" />

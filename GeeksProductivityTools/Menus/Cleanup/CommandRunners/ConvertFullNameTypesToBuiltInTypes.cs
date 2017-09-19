@@ -1,12 +1,7 @@
-using System;
 using System.Linq;
-using System.CodeDom;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Microsoft.CSharp;
 using EnvDTE;
 
 namespace Geeks.GeeksProductivityTools.Menus.Cleanup
@@ -18,69 +13,9 @@ namespace Geeks.GeeksProductivityTools.Menus.Cleanup
             return ConvertFullNameTypesToBuiltInTypesHelper(initialSourceNode);
         }
 
-        class TypesMapItem
-        {
-            public string Name { get; set; }
-            public string FullName { get; set; }
-            public string BuiltInName { get; set; }
-            public TypeSyntax NewNode { get; set; }
-        }
-        static TypesMapItem GetBuiltInTypes(Type type, TypeSyntax node, CSharpCodeProvider provider)
-        {
-            return new TypesMapItem
-            {
-                Name = type.Name,
-                FullName = type.FullName,
-                BuiltInName = provider.GetTypeOutput(new CodeTypeReference(type)),
-                NewNode = node
-            };
-        }
-
-        static Dictionary<string, TypesMapItem> BuiltInTypesDic;
-        static Dictionary<string, TypesMapItem> GetBuiltInTypesDic()
-        {
-            if (BuiltInTypesDic != null) return BuiltInTypesDic;
-
-            var output = new Dictionary<string, TypesMapItem>();
-
-            using (var provider = new CSharpCodeProvider())
-            {
-                var typesList = new TypesMapItem[]
-                {
-                    GetBuiltInTypes(typeof(Boolean), GetPredefineType(SyntaxKind.BoolKeyword), provider),
-                    GetBuiltInTypes(typeof(Byte),GetPredefineType(SyntaxKind.ByteKeyword), provider),
-                    GetBuiltInTypes(typeof(SByte),GetPredefineType(SyntaxKind.SByteKeyword), provider),
-                    GetBuiltInTypes(typeof(Char),GetPredefineType(SyntaxKind.CharKeyword), provider),
-                    GetBuiltInTypes(typeof(Decimal),GetPredefineType(SyntaxKind.DecimalKeyword), provider),
-                    GetBuiltInTypes(typeof(Double),GetPredefineType(SyntaxKind.DoubleKeyword), provider),
-                    GetBuiltInTypes(typeof(Single),GetPredefineType(SyntaxKind.FloatKeyword), provider),
-                    GetBuiltInTypes(typeof(Int32),GetPredefineType(SyntaxKind.IntKeyword), provider),
-                    GetBuiltInTypes(typeof(UInt32),GetPredefineType(SyntaxKind.UIntKeyword), provider),
-                    GetBuiltInTypes(typeof(Int64),GetPredefineType(SyntaxKind.LongKeyword), provider),
-                    GetBuiltInTypes(typeof(UInt64),GetPredefineType(SyntaxKind.ULongKeyword), provider),
-                    GetBuiltInTypes(typeof(Object),GetPredefineType(SyntaxKind.ObjectKeyword), provider),
-                    GetBuiltInTypes(typeof(Int16),GetPredefineType(SyntaxKind.ShortKeyword), provider),
-                    GetBuiltInTypes(typeof(UInt16),GetPredefineType(SyntaxKind.UShortKeyword), provider),
-                    GetBuiltInTypes(typeof(String),GetPredefineType(SyntaxKind.StringKeyword), provider),
-                };
-
-                foreach (var item in typesList)
-                {
-                    output.Add(item.Name, item);
-                    output.Add(item.FullName, item);
-                }
-
-                return BuiltInTypesDic = output;
-            }
-        }
-        static TypeSyntax GetPredefineType(SyntaxKind keyword)
-        {
-            return SyntaxFactory.PredefinedType(SyntaxFactory.Token(keyword));
-        }
-
         public static SyntaxNode ConvertFullNameTypesToBuiltInTypesHelper(SyntaxNode initialSource)
         {
-            var builtInTypesMapDic = GetBuiltInTypesDic();
+            var builtInTypesMapDic = TypesMapItem.GetBuiltInTypesDic();
 
             var selectedTokensList =
                 initialSource
