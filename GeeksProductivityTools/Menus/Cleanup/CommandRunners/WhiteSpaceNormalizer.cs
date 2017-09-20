@@ -97,7 +97,7 @@ namespace Geeks.GeeksProductivityTools.Menus.Cleanup
 
                 if (token.IsKind(SyntaxKind.OpenBraceToken))
                 {
-                    if(token.Parent is NamespaceDeclarationSyntax || token.Parent is ClassDeclarationSyntax || (token.Parent is BlockSyntax && (token.Parent.Parent is MethodDeclarationSyntax)))
+                    if (token.Parent is NamespaceDeclarationSyntax || token.Parent is ClassDeclarationSyntax || (token.Parent is BlockSyntax && (token.Parent.Parent is MethodDeclarationSyntax)))
                     {
                         triviList = CleanUpList(token.LeadingTrivia, 0);
                     }
@@ -129,6 +129,10 @@ namespace Geeks.GeeksProductivityTools.Menus.Cleanup
                 {
                     triviList = ProcessSpecialTrivias(CleanUpList(token.LeadingTrivia), itsForCloseBrace: false);
                     token = token.WithLeadingTrivia(triviList);
+                    _lastTokenIsAOpenBrace = false;
+                }
+                else
+                {
                     _lastTokenIsAOpenBrace = false;
                 }
 
