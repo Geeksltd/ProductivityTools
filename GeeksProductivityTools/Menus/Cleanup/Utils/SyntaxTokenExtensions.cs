@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Text;
 using EnvDTE;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
@@ -28,14 +29,49 @@ namespace Geeks.GeeksProductivityTools.Menus.Cleanup
         {
             lock (_lockFileWrite)
             {
-                System.Text.Encoding encoding;
-                using (var reader = new StreamReader(filePath))
+                var encoding = DetectFileEncoding(filePath);
+
+                using (var reader = new StreamReader(filePath, true))
                 {
                     encoding = reader.CurrentEncoding;
                 }
-                using (var write = new StreamWriter(filePath, false, encoding))
-                    write.Write(sourceCode.ToFullString());
+
+                var bom = encoding.GetPreamble();
             }
+        }
+
+        static Encoding DetectFileEncoding(string filePath)
+        {
+            Encoding encoding = null;
+
+            using (var reader = new FileStream(filePath, FileMode.Open, FileAccess.Read))
+            {
+                byte[] bom = new byte[4];
+                reader.Read(bom, 0, 4);
+                if (bom[0] == 0xef && bom[1] == 0xbb && bom[2] == 0xbf)
+                {
+                    encoding = new UTF8Encoding(true);
+                }
+                else if (bom[0] == 0x2b && bom[1] == 0x2f && bom[2] == 0x76)
+                {
+                    encoding = new UTF7Encoding(true);
+                }
+                else if (bom[0] == 0xff && bom[1] == 0xfe)
+                {
+                    //encoding = new UnicodeEncoding(true);
+                }
+                else if (bom[0] == 0xfe && bom[1] == 0xff)
+                {
+                    //encoding = new BigEndianUnicode(true);
+                }
+                else if (bom[0] == 0 && bom[1] == 0 && bom[2] == 0xfe && bom[3] == 0xff)
+                {
+                    //encoding = new UTF32Encoding(true);
+                }
+                else encoding = new UTF8Encoding(false);
+
+            }
+            return encoding;
         }
 
         public static SyntaxNode ToSyntaxNode(this ProjectItem item)
