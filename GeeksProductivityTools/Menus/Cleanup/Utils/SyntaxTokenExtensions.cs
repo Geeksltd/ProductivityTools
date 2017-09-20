@@ -72,7 +72,10 @@ namespace Geeks.GeeksProductivityTools.Menus.Cleanup
 
         public static SyntaxNode ToSyntaxNode(this ProjectItem item)
         {
-            return CSharpSyntaxTree.ParseText(File.ReadAllText(item.ToFullPathPropertyValue())).GetRoot();
+            lock (_lockFileWrite)
+            {
+                return CSharpSyntaxTree.ParseText(File.ReadAllText(item.ToFullPathPropertyValue())).GetRoot();
+            }
         }
 
         public static string ToFullPathPropertyValue(this ProjectItem item)

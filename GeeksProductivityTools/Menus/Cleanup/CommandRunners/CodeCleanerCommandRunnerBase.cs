@@ -12,7 +12,7 @@ namespace Geeks.GeeksProductivityTools.Menus.Cleanup
 {
     public abstract class CodeCleanerCommandRunnerBase : ICodeCleaner
     {
-        public void Run(ProjectItem item) => Task.Run(() => AsyncRun(item));
+        public void Run(ProjectItem item) => AsyncRun(item);
 
 
         public ProjectItem ProjectItem { get; private set; }
