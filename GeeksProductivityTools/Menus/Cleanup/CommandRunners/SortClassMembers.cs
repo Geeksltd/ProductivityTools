@@ -59,7 +59,6 @@ namespace Geeks.GeeksProductivityTools.Menus.Cleanup
             var constructors = classNode.DescendantNodes().Where(x => x is ConstructorDeclarationSyntax).ToList();
             if (constructors.Any() == false) return classNode;
 
-            SyntaxNode lastConstructoreWithGoodPosition = null;
             var constructorsToMoveList = new List<SyntaxNode>();
 
             foreach (var constructorItem in constructors)
@@ -68,16 +67,12 @@ namespace Geeks.GeeksProductivityTools.Menus.Cleanup
                 {
                     constructorsToMoveList.Add(constructorItem);
                 }
-                else
-                {
-                    lastConstructoreWithGoodPosition = constructorItem;
-                }
             }
 
             return
                 classNode
                     .RemoveNodes(constructorsToMoveList, SyntaxRemoveOptions.KeepNoTrivia)
-                    .InsertNodesAfter(lastConstructoreWithGoodPosition, constructorsToMoveList);
+                    .InsertNodesBefore(firstMethod, constructorsToMoveList);
         }
     }
 }
