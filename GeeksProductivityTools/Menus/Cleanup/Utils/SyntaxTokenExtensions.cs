@@ -31,12 +31,8 @@ namespace Geeks.GeeksProductivityTools.Menus.Cleanup
             {
                 var encoding = DetectFileEncoding(filePath);
 
-                using (var reader = new StreamReader(filePath, true))
-                {
-                    encoding = reader.CurrentEncoding;
-                }
-
-                var bom = encoding.GetPreamble();
+                using (var write = new StreamWriter(filePath, false, encoding))
+                    write.Write(sourceCode.ToFullString());
             }
         }
 
