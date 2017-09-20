@@ -53,8 +53,7 @@ namespace GeeksAddin.FileFinder
                     app.ItemOperations.OpenFile(item.FullPath, EnvDTE.Constants.vsViewKindAny);
                     var selection = app.ActiveDocument.Selection as TextSelection;
 
-                    if (selection != null)
-                        selection.MoveTo(item.LineNumber, item.Column, false);
+                    selection?.MoveTo(item.LineNumber, item.Column, Extend: false);
 
                     if (Settings.Default.TrackItemInSolutionExplorer)
                         TrackInSolutionExplorer(app, item);
@@ -75,11 +74,13 @@ namespace GeeksAddin.FileFinder
             catch
             {
                 app.Solution.FindProjectItem(item.FullPath).ExpandView();
-                var solutionExplorerPath = "";
-                FindItem(app.ToolWindows.SolutionExplorer.UIHierarchyItems, item.FullPath, out solutionExplorerPath);
+                FindItem(app.ToolWindows.SolutionExplorer.UIHierarchyItems, item.FullPath,
+                    out var solutionExplorerPath);
+
                 if (solutionExplorerPath.HasValue())
                 {
-                    app.ToolWindows.SolutionExplorer.GetItem(solutionExplorerPath).Select(vsUISelectionType.vsUISelectionTypeSelect);
+                    app.ToolWindows.SolutionExplorer.GetItem(solutionExplorerPath)
+                        .Select(vsUISelectionType.vsUISelectionTypeSelect);
                 }
             }
         }
@@ -88,8 +89,7 @@ namespace GeeksAddin.FileFinder
         {
             foreach (UIHierarchyItem CurrentItem in children)
             {
-                var projectitem = CurrentItem.Object as EnvDTE.ProjectItem;
-                if (projectitem != null)
+                if (CurrentItem.Object is EnvDTE.ProjectItem projectitem)
                 {
                     short i = 1;
                     while (i <= projectitem.FileCount)
@@ -103,11 +103,11 @@ namespace GeeksAddin.FileFinder
                     }
                 }
 
-                var ChildItem = FindItem(CurrentItem.UIHierarchyItems, fileName, out solutionExplorerPath) as UIHierarchyItem;
-                if (ChildItem != null)
+                if (FindItem(CurrentItem.UIHierarchyItems, fileName, out solutionExplorerPath)
+                    is UIHierarchyItem childItem)
                 {
                     solutionExplorerPath = CurrentItem.Name + "\\" + solutionExplorerPath;
-                    return ChildItem;
+                    return childItem;
                 }
             }
             solutionExplorerPath = "";

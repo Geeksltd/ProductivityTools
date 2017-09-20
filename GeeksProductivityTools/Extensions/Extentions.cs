@@ -24,6 +24,8 @@ namespace System
 
         public static bool HasValue(this string text) => !string.IsNullOrEmpty(text);
 
+        public static string Or(this string text, string ifEmpty) => text.HasValue() ? text : ifEmpty;
+
         public static string TrimStart(this string text, string textToTrim, bool ignoreCase = false)
         {
             if (text.StartsWith(textToTrim, ignoreCase, Globalization.CultureInfo.InvariantCulture))
