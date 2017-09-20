@@ -52,11 +52,11 @@ namespace Geeks.GeeksProductivityTools.Menus.Cleanup
 
         public static ClassDeclarationSyntax SortClassMemebersHelper(ClassDeclarationSyntax classNode)
         {
-            var methods = classNode.DescendantNodes().Where(x => x is MethodDeclarationSyntax).ToList();
+            var methods = classNode.Members.Where(x => x is MethodDeclarationSyntax).ToList();
             var firstMethod = methods.FirstOrDefault();
             if (firstMethod == null) return classNode;
 
-            var constructors = classNode.DescendantNodes().Where(x => x is ConstructorDeclarationSyntax).ToList();
+            var constructors = classNode.Members.Where(x => x is ConstructorDeclarationSyntax).ToList();
             if (constructors.Any() == false) return classNode;
 
             var constructorsToMoveList = new List<SyntaxNode>();
