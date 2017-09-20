@@ -80,6 +80,7 @@ namespace Geeks.GeeksProductivityTools.Menus.Cleanup
             if (singleStatement is IfStatementSyntax) return null;
             if (singleStatement is ThrowStatementSyntax) return null;
             if (singleStatement is YieldStatementSyntax) return null;
+            if (singleStatement is ReturnStatementSyntax == false && singleStatement is ExpressionStatementSyntax == false) return null;
             if (singleStatement.HasLeadingTrivia)
             {
                 if (HasNoneWhitespaceTrivia(singleStatement.GetLeadingTrivia()) == false) return null;

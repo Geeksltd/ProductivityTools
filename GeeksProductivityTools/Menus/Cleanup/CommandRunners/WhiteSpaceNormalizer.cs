@@ -91,7 +91,6 @@ namespace Geeks.GeeksProductivityTools.Menus.Cleanup
                 {
                     var newList = CleanUpOpenBrace(token.LeadingTrivia);
                     token = token.WithLeadingTrivia(newList);
-                    _lastTokenIsAOpenBrace = false;
                 }
 
                 SyntaxTriviaList triviList = SyntaxTriviaList.Empty;
@@ -113,21 +112,24 @@ namespace Geeks.GeeksProductivityTools.Menus.Cleanup
                 {
                     triviList = CleanUpCloseBrace(token.LeadingTrivia);
                     var triviasBetweenTokens = token.GetPreviousToken().TrailingTrivia.AddRange(token.LeadingTrivia);
-                    if (triviasBetweenTokens.Any(x => x.IsKind(SyntaxKind.EndOfLineTrivia)))
+                    if (_lastTokenIsAOpenBrace || triviasBetweenTokens.Any(x => x.IsKind(SyntaxKind.EndOfLineTrivia)))
                     {
                         _lastTokenIsACloseBrace = CheckForAddBlankAfterBracesInsideMethods(token.Parent);
                     }
                     token = token.WithLeadingTrivia(triviList);
+                    _lastTokenIsAOpenBrace = false;
                 }
                 else if (token.IsKind(SyntaxKind.EndOfFileToken))
                 {
                     triviList = ProcessSpecialTrivias(CleanUpList(token.LeadingTrivia, 0), itsForCloseBrace: false);
                     token = token.WithLeadingTrivia(triviList);
+                    _lastTokenIsAOpenBrace = false;
                 }
                 else if (token.LeadingTrivia.Count > 1)
                 {
                     triviList = ProcessSpecialTrivias(CleanUpList(token.LeadingTrivia), itsForCloseBrace: false);
                     token = token.WithLeadingTrivia(triviList);
+                    _lastTokenIsAOpenBrace = false;
                 }
 
                 return base.VisitToken(token);
