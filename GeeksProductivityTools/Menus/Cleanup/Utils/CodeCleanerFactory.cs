@@ -12,7 +12,7 @@ namespace Geeks.GeeksProductivityTools.Menus.Cleanup
                     return new WhiteSpaceNormalizer();
                 case CodeCleanerType.ConvertMembersToExpressionBodied:
                     return new ConvertMembersToExpressionBodied();
-                case CodeCleanerType.FullNameTypesToBuiltInTypes:
+                case CodeCleanerType.ConvertFullNameTypesToBuiltInTypes:
                     return new ConvertFullNameTypesToBuiltInTypes();
                 case CodeCleanerType.SortClassMembersCommand:
                     return new SortClassMembers();

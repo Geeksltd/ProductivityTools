@@ -18,7 +18,7 @@ namespace Geeks.GeeksProductivityTools.Menus.Cleanup
                     case CodeCleanerType.PrivateAccessModifier:
                     case CodeCleanerType.NormalizeWhiteSpaces:
                     case CodeCleanerType.ConvertMembersToExpressionBodied:
-                    case CodeCleanerType.FullNameTypesToBuiltInTypes:
+                    case CodeCleanerType.ConvertFullNameTypesToBuiltInTypes:
                     case CodeCleanerType.OrganizeUsingDirectives:
                     case CodeCleanerType.SimplyAsyncCallsCommand:
                     case CodeCleanerType.SortClassMembersCommand:

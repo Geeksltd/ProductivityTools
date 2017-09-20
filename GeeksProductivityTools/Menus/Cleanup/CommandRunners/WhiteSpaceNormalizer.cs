@@ -94,11 +94,20 @@ namespace Geeks.GeeksProductivityTools.Menus.Cleanup
                     _lastTokenIsAOpenBrace = false;
                 }
 
-                var triviList = default(SyntaxTriviaList);
+                SyntaxTriviaList triviList = SyntaxTriviaList.Empty;
 
                 if (token.IsKind(SyntaxKind.OpenBraceToken))
                 {
+                    if(token.Parent is NamespaceDeclarationSyntax || token.Parent is ClassDeclarationSyntax || (token.Parent is BlockSyntax && (token.Parent.Parent is MethodDeclarationSyntax)))
+                    {
+                        triviList = CleanUpList(token.LeadingTrivia, 0);
+                    }
+                    else
+                    {
+                        triviList = CleanUpList(token.LeadingTrivia);
+                    }
                     _lastTokenIsAOpenBrace = true;
+                    token = token.WithLeadingTrivia(triviList);
                 }
                 else if (token.IsKind(SyntaxKind.CloseBraceToken))
                 {
@@ -108,18 +117,16 @@ namespace Geeks.GeeksProductivityTools.Menus.Cleanup
                     {
                         _lastTokenIsACloseBrace = CheckForAddBlankAfterBracesInsideMethods(token.Parent);
                     }
+                    token = token.WithLeadingTrivia(triviList);
                 }
                 else if (token.IsKind(SyntaxKind.EndOfFileToken))
                 {
                     triviList = ProcessSpecialTrivias(CleanUpList(token.LeadingTrivia, 0), itsForCloseBrace: false);
+                    token = token.WithLeadingTrivia(triviList);
                 }
                 else if (token.LeadingTrivia.Count > 1)
                 {
                     triviList = ProcessSpecialTrivias(CleanUpList(token.LeadingTrivia), itsForCloseBrace: false);
-                }
-
-                if (triviList != default(SyntaxTriviaList))
-                {
                     token = token.WithLeadingTrivia(triviList);
                 }
 

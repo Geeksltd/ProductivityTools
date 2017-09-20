@@ -7,7 +7,7 @@ namespace Geeks.GeeksProductivityTools.Definition
         NormalizeWhiteSpaces = 2,
         OrganizeUsingDirectives = 3,
         ConvertMembersToExpressionBodied = 4,
-        FullNameTypesToBuiltInTypes = 5,
+        ConvertFullNameTypesToBuiltInTypes = 5,
         SimplyAsyncCallsCommand = 6,
         SortClassMembersCommand = 7,
         SimplifyClassFieldDeclarationsCommand = 8,

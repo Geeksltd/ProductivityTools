@@ -31,7 +31,6 @@ namespace Geeks.GeeksProductivityTools.Menus.Cleanup
             foreach (var classNode in classes)
             {
                 var newClassNode = SortClassMemebersHelper(classNode);
-                if (newClassNode == classNode) continue;
                 newClassesDic.Add(classNode, newClassNode);
             }
 
@@ -40,7 +39,12 @@ namespace Geeks.GeeksProductivityTools.Menus.Cleanup
                     .ReplaceNodes
                     (
                         classes,
-                        (oldNode1, oldNode2) => newClassesDic[oldNode1]
+                        (oldNode1, oldNode2) => 
+                        {
+                            var newClass = newClassesDic[oldNode1];
+                            if (oldNode1 != newClass) return newClass;
+                            return oldNode1;
+                        }
                     );
 
             return initialSource;

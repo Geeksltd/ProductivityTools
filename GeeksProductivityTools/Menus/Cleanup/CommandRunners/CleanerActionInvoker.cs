@@ -16,18 +16,20 @@ namespace Geeks.GeeksProductivityTools.Menus.Cleanup
             var whiteSpaceNormalizerTask = organizeUsingDirectiveTask.ContinueWith(antecedentTask => Invoke(CodeCleanerType.NormalizeWhiteSpaces));
             var privateModifiersRemoverTask = whiteSpaceNormalizerTask.ContinueWith(antecedentTask => Invoke(CodeCleanerType.PrivateAccessModifier));
             var membersToExpressionBodyTask = privateModifiersRemoverTask.ContinueWith(antecedentTask => Invoke(CodeCleanerType.ConvertMembersToExpressionBodied));
-            var fullNameTypesToBuiltInTypesTask = membersToExpressionBodyTask.ContinueWith(antecedentTask => Invoke(CodeCleanerType.FullNameTypesToBuiltInTypes));
-
-            //var privateModifiersRemoverTask = Task.Run(() => InvokePrivateModifierRemover());
-            //var whiteSpaceNormalizerTask = privateModifiersRemoverTask.ContinueWith(antecedentTask => InvokeWhiteSpaceNormalizer());
-            //var organizeUsingDirectiveTask = whiteSpaceNormalizerTask.ContinueWith(antecedentTask => InvokeUsingDirectiveOrganizer());
+            var fullNameTypesToBuiltInTypesTask = membersToExpressionBodyTask.ContinueWith(antecedentTask => Invoke(CodeCleanerType.ConvertFullNameTypesToBuiltInTypes));
+            var simplyAsyncCallsCommandTask = fullNameTypesToBuiltInTypesTask.ContinueWith(antecedentTask => Invoke(CodeCleanerType.SimplyAsyncCallsCommand));
+            var sortClassMembersCommandTask = simplyAsyncCallsCommandTask.ContinueWith(antecedentTask => Invoke(CodeCleanerType.SortClassMembersCommand));
+            var simplifyClassFieldDeclarationsCommandTask = sortClassMembersCommandTask.ContinueWith(antecedentTask => Invoke(CodeCleanerType.SimplifyClassFieldDeclarationsCommand));
 
             Task.WaitAll(new[]
             {
-                whiteSpaceNormalizerTask,
-                membersToExpressionBodyTask,
+                simplifyClassFieldDeclarationsCommandTask,
+                sortClassMembersCommandTask,
+                simplyAsyncCallsCommandTask,
                 fullNameTypesToBuiltInTypesTask,
+                membersToExpressionBodyTask,
                 privateModifiersRemoverTask,
+                whiteSpaceNormalizerTask,
                 organizeUsingDirectiveTask
             });
         }
