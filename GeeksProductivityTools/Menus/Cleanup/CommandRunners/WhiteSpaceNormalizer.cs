@@ -54,126 +54,192 @@ namespace Geeks.GeeksProductivityTools.Menus.Cleanup
 
                 if (node is UsingDirectiveSyntax)
                 {
-                    triviList = CleanUpListWithoutNo(triviList);
+                    triviList = CleanUpListWithNoWhitespaces(triviList);
+                    node = node.WithLeadingTrivia(triviList);
                     _LastMember = null;
                 }
                 else if (node is NamespaceDeclarationSyntax)
                 {
-                    var namespaceNode = node as NamespaceDeclarationSyntax;
-
-                    node =
-                        namespaceNode
-                            .WithOpenBraceToken(
-                                namespaceNode.OpenBraceToken
-                                    .WithLeadingTrivia(CleanUpListWithoutNo(namespaceNode.OpenBraceToken.LeadingTrivia)))
-                            .WithCloseBraceToken(
-                                namespaceNode.CloseBraceToken
-                                    .WithLeadingTrivia(CleanUpListWithoutNo(namespaceNode.CloseBraceToken.LeadingTrivia, itsForCloseBrace: true))
-                            );
-
-                    var zeroCondition = _lastTokenIsAOpenBrace || _lastToken == default(SyntaxToken);
-                    triviList = CleanUpList(triviList, zeroCondition ? 0 : 1);
-                    _LastMember = null;
+                    node = ApplyNodeChange(node as NamespaceDeclarationSyntax);
                 }
                 else if (node is ClassDeclarationSyntax)
                 {
-                    var classNode = node as ClassDeclarationSyntax;
-
-                    node =
-                        classNode
-                            .WithOpenBraceToken(
-                                classNode.OpenBraceToken
-                                    .WithLeadingTrivia(CleanUpListWithoutNo(classNode.OpenBraceToken.LeadingTrivia)))
-                            .WithCloseBraceToken(
-                                classNode.CloseBraceToken
-                                    .WithLeadingTrivia(CleanUpListWithoutNo(classNode.CloseBraceToken.LeadingTrivia, itsForCloseBrace: true))
-                            );
-
-
-                    var zeroCondition = _lastTokenIsAOpenBrace || _lastToken == default(SyntaxToken);
-                    triviList = CleanUpList(triviList, zeroCondition ? 0 : 1);
-                    _LastMember = null;
+                    node = ApplyNodeChange(node as ClassDeclarationSyntax);
                 }
                 else if (node is StructDeclarationSyntax)
                 {
-                    var classNode = node as StructDeclarationSyntax;
-
-                    node =
-                        classNode
-                            .WithOpenBraceToken(
-                                classNode.OpenBraceToken
-                                    .WithLeadingTrivia(CleanUpListWithoutNo(classNode.OpenBraceToken.LeadingTrivia)))
-                            .WithCloseBraceToken(
-                                classNode.CloseBraceToken
-                                    .WithLeadingTrivia(CleanUpListWithoutNo(classNode.CloseBraceToken.LeadingTrivia, itsForCloseBrace: true))
-                            );
-
-
-                    var zeroCondition = _lastTokenIsAOpenBrace || _lastToken == default(SyntaxToken);
-                    triviList = CleanUpList(triviList, zeroCondition ? 0 : 1);
-                    _LastMember = null;
+                    node = ApplyNodeChange(node as StructDeclarationSyntax);
                 }
                 else if (node is MethodDeclarationSyntax && node.Parent is ClassDeclarationSyntax)
                 {
-                    if (_lastTokenIsAOpenBrace)
-                    {
-                        triviList = CleanUpListWith(triviList);
-                    }
-                    else if (_LastMember is MethodDeclarationSyntax)
-                    {
-                        triviList = CleanUpListWithExact(triviList, 1);
-                    }
-                    else
-                    {
-                        triviList = CleanUpListWith(triviList);
-                    }
-                    _LastMember = node as MethodDeclarationSyntax;
+                    node = ApplyNodeChange(node as MethodDeclarationSyntax);
                 }
                 else if (node is MemberDeclarationSyntax)
                 {
-                    triviList = CleanUpListWith(triviList);
+                    triviList = CleanUpListWithDefaultWhitespaces(triviList);
+                    node = node.WithLeadingTrivia(triviList);
                     _LastMember = node as MemberDeclarationSyntax;
                 }
                 else if (node is BlockSyntax)
                 {
-                    var block = node as BlockSyntax;
-
-                    node =
-                        block
-                            .WithOpenBraceToken(block.OpenBraceToken)
-                            .WithStatements(MakeUpStatements(block.Statements))
-                            .WithCloseBraceToken(
-                                block.CloseBraceToken
-                                    .WithLeadingTrivia(CleanUpListWithoutNo(block.CloseBraceToken.LeadingTrivia, itsForCloseBrace: true))
-                            );
+                    node = ApplyNodeChange(node as BlockSyntax);
                 }
                 else if (node is StatementSyntax)
                 {
-                    var zeroCondition = _lastTokenIsAOpenBrace || _lastToken == default(SyntaxToken);
-                    if (zeroCondition)
-                    {
-                        triviList = CleanUpListWithExact(triviList, 0);
-                    }
-                    else if (_lastTokenIsACloseBrace)
-                    {
-                        triviList = CleanUpListWithExact(triviList, 1, itsForCloseBrace: false);
-                    }
-                    else
-                    {
-                        triviList = CleanUpListWith(triviList);
-                    }
+                    node = ApplyNodeChange(node as StatementSyntax);
                 }
-                else if (CheckBlocks(node))
+                else if (CheckInnerBlocks(node))
                 {
-                    triviList = CleanUpListWith(triviList);
+                    triviList = CleanUpListWithDefaultWhitespaces(triviList);
+                    node = node.WithLeadingTrivia(triviList);
                 }
-
-                node = node.WithLeadingTrivia(triviList);
 
                 return base.Visit(node);
             }
 
-            bool CheckBlocks(SyntaxNode node)
+
+            private BlockSyntax ApplyNodeChange(BlockSyntax blockNode)
+            {
+                return
+                    blockNode
+                        .WithOpenBraceToken(
+                            blockNode.OpenBraceToken
+                                .WithLeadingTrivia(
+                                    CleanUpListWithExactNumberOfWhitespaces(blockNode.OpenBraceToken.LeadingTrivia, 0, itsForCloseBrace: true))
+                        )
+                        .WithStatements(ReWriteBlockStatements(blockNode.Statements))
+                        .WithCloseBraceToken(
+                            blockNode.CloseBraceToken
+                                .WithLeadingTrivia(
+                                    CleanUpListWithNoWhitespaces(blockNode.CloseBraceToken.LeadingTrivia, itsForCloseBrace: true))
+                        );
+            }
+
+            private SyntaxNode ApplyNodeChange(MethodDeclarationSyntax methodNode)
+            {
+                var triviList = methodNode.GetLeadingTrivia();
+
+                if (_lastTokenIsAOpenBrace)
+                {
+                    triviList = CleanUpListWithDefaultWhitespaces(triviList);
+                }
+                else if (_LastMember is MethodDeclarationSyntax)
+                {
+                    triviList = CleanUpListWithExactNumberOfWhitespaces(triviList, 1);
+                }
+                else
+                {
+                    triviList = CleanUpListWithDefaultWhitespaces(triviList);
+                }
+
+                _LastMember = methodNode;
+
+                methodNode = methodNode.WithLeadingTrivia(triviList);
+
+                return methodNode;
+            }
+
+            private StatementSyntax ApplyNodeChange(StatementSyntax statementNode)
+            {
+                var triviList = statementNode.GetLeadingTrivia();
+
+                var zeroCondition = _lastTokenIsAOpenBrace || _lastToken == default(SyntaxToken);
+
+                if (zeroCondition)
+                {
+                    triviList = CleanUpListWithExactNumberOfWhitespaces(triviList, 0);
+                }
+                else if (_lastTokenIsACloseBrace)
+                {
+                    triviList = CleanUpListWithExactNumberOfWhitespaces(triviList, 1, itsForCloseBrace: false);
+                }
+                else
+                {
+                    triviList = CleanUpListWithDefaultWhitespaces(triviList);
+                }
+
+                statementNode = statementNode.WithLeadingTrivia(triviList);
+
+                return statementNode;
+            }
+
+            private StructDeclarationSyntax ApplyNodeChange(StructDeclarationSyntax structNode)
+            {
+                var triviList = structNode.GetLeadingTrivia();
+
+                structNode =
+                    structNode
+                        .WithOpenBraceToken(
+                            structNode.OpenBraceToken
+                                .WithLeadingTrivia(
+                                    CleanUpListWithExactNumberOfWhitespaces(structNode.OpenBraceToken.LeadingTrivia, 0, itsForCloseBrace: true)))
+                        .WithCloseBraceToken(
+                            structNode.CloseBraceToken
+                                .WithLeadingTrivia(
+                                    CleanUpListWithNoWhitespaces(structNode.CloseBraceToken.LeadingTrivia, itsForCloseBrace: true))
+                        );
+
+                var zeroCondition = _lastTokenIsAOpenBrace || _lastToken == default(SyntaxToken);
+                triviList = CleanUpList(triviList, zeroCondition ? 0 : 1);
+                _LastMember = null;
+
+                structNode = structNode.WithLeadingTrivia(triviList);
+
+                return structNode;
+            }
+
+            private ClassDeclarationSyntax ApplyNodeChange(ClassDeclarationSyntax classNode)
+            {
+                var triviList = classNode.GetLeadingTrivia();
+
+                classNode =
+                    classNode
+                        .WithOpenBraceToken(
+                            classNode.OpenBraceToken
+                                .WithLeadingTrivia(
+                                    CleanUpListWithExactNumberOfWhitespaces(classNode.OpenBraceToken.LeadingTrivia, 0, itsForCloseBrace: true)))
+                        .WithCloseBraceToken(
+                            classNode.CloseBraceToken
+                                .WithLeadingTrivia(
+                                    CleanUpListWithNoWhitespaces(classNode.CloseBraceToken.LeadingTrivia, itsForCloseBrace: true))
+                        );
+
+
+                var zeroCondition = _lastTokenIsAOpenBrace || _lastToken == default(SyntaxToken);
+                triviList = CleanUpList(triviList, zeroCondition ? 0 : 1);
+                _LastMember = null;
+
+                classNode = classNode.WithLeadingTrivia(triviList);
+
+                return classNode;
+            }
+
+            private NamespaceDeclarationSyntax ApplyNodeChange(NamespaceDeclarationSyntax namespaceNode)
+            {
+                var triviList = namespaceNode.GetLeadingTrivia();
+
+                var zeroCondition = _lastTokenIsAOpenBrace || _lastToken == default(SyntaxToken);
+                triviList = CleanUpList(triviList, zeroCondition ? 0 : 1);
+
+                namespaceNode =
+                    namespaceNode
+                        .WithOpenBraceToken(
+                            namespaceNode.OpenBraceToken
+                                .WithLeadingTrivia(
+                                    CleanUpListWithExactNumberOfWhitespaces(namespaceNode.OpenBraceToken.LeadingTrivia, 0, itsForCloseBrace: true)))
+                        .WithCloseBraceToken(
+                            namespaceNode.CloseBraceToken
+                                .WithLeadingTrivia(
+                                    CleanUpListWithNoWhitespaces(namespaceNode.CloseBraceToken.LeadingTrivia, itsForCloseBrace: true))
+                        )
+                        .WithLeadingTrivia(triviList);
+
+                _LastMember = null;
+
+                return namespaceNode;
+            }
+
+            bool CheckInnerBlocks(SyntaxNode node)
             {
                 if (node is CatchClauseSyntax) return true;
                 if (node is FinallyClauseSyntax) return true;
@@ -214,15 +280,16 @@ namespace Geeks.GeeksProductivityTools.Menus.Cleanup
                 return base.VisitToken(token);
             }
 
-            SyntaxList<StatementSyntax> MakeUpStatements(SyntaxList<StatementSyntax> blockStatements)
+            SyntaxList<StatementSyntax> ReWriteBlockStatements(SyntaxList<StatementSyntax> blockStatements)
             {
                 if (blockStatements.Any() == false) return blockStatements;
                 var first = blockStatements[0];
-                var newFirst = first.WithLeadingTrivia(CleanUpListWithExact(first.GetLeadingTrivia(), 0));
+                var newFirst = first.WithLeadingTrivia(CleanUpListWithExactNumberOfWhitespaces(first.GetLeadingTrivia(), 0));
                 return blockStatements.Replace(first, newFirst);
             }
 
             #region
+
             SyntaxTriviaList CleanUpList(SyntaxTriviaList newList)
             {
                 var lineBreaksAtBeginning = newList.TakeWhile(t => t.IsKind(SyntaxKind.EndOfLineTrivia)).Count();
@@ -234,6 +301,7 @@ namespace Geeks.GeeksProductivityTools.Menus.Cleanup
 
                 return newList;
             }
+
             SyntaxTriviaList CleanUpList(SyntaxTriviaList syntaxTrivias, int exactNumberOfBlanks)
             {
                 var lineBreaksAtBeginning = syntaxTrivias.TakeWhile(t => t.IsKind(SyntaxKind.EndOfLineTrivia)).Count();
@@ -255,7 +323,8 @@ namespace Geeks.GeeksProductivityTools.Menus.Cleanup
 
                 return syntaxTrivias;
             }
-            SyntaxTriviaList CleanUpListWithoutNo(SyntaxTriviaList syntaxTrivias, bool itsForCloseBrace = false)
+
+            SyntaxTriviaList CleanUpListWithNoWhitespaces(SyntaxTriviaList syntaxTrivias, bool itsForCloseBrace = false)
             {
                 syntaxTrivias = ProcessSpecialTrivias(syntaxTrivias, itsForCloseBrace);
 
@@ -270,14 +339,15 @@ namespace Geeks.GeeksProductivityTools.Menus.Cleanup
                 return CleanUpList(syntaxTrivias, 0);
             }
 
-            SyntaxTriviaList CleanUpListWith(SyntaxTriviaList syntaxTrivias, bool itsForCloseBrace = false)
+            SyntaxTriviaList CleanUpListWithDefaultWhitespaces(SyntaxTriviaList syntaxTrivias, bool itsForCloseBrace = false)
             {
                 syntaxTrivias = CleanUpList(syntaxTrivias);
                 syntaxTrivias = ProcessSpecialTrivias(syntaxTrivias, itsForCloseBrace);
 
                 return syntaxTrivias;
             }
-            SyntaxTriviaList CleanUpListWithExact(SyntaxTriviaList syntaxTrivias, int exactNumberOfBlanks, bool itsForCloseBrace = false)
+
+            SyntaxTriviaList CleanUpListWithExactNumberOfWhitespaces(SyntaxTriviaList syntaxTrivias, int exactNumberOfBlanks, bool itsForCloseBrace = false)
             {
                 syntaxTrivias = CleanUpList(syntaxTrivias, exactNumberOfBlanks);
                 syntaxTrivias = ProcessSpecialTrivias(syntaxTrivias, itsForCloseBrace);
