@@ -10,19 +10,6 @@ using Microsoft.CodeAnalysis.Formatting;
 
 namespace Geeks.GeeksProductivityTools.Menus.Cleanup
 {
-    public static class MySyntaxHelper
-    {
-        public static SyntaxKind Kind(this SyntaxToken token)
-        {
-            return (SyntaxKind)token.RawKind;
-        }
-
-        public static bool IsWhitespace(this SyntaxToken token)
-        {
-            return token.IsKind(SyntaxKind.EndOfLineTrivia) || token.IsKind(SyntaxKind.WhitespaceTrivia);
-        }
-    }
-
     public class WhiteSpaceNormalizer : CodeCleanerCommandRunnerBase, ICodeCleaner
     {
         public override SyntaxNode CleanUp(SyntaxNode initialSourceNode)
@@ -32,10 +19,10 @@ namespace Geeks.GeeksProductivityTools.Menus.Cleanup
 
         public static SyntaxNode NormalizeWhiteSpaceHelper(SyntaxNode initialSourceNode)
         {
-            //if (GeeksProductivityToolsPackage.Instance != null)
-            //{
-            //    initialSourceNode = Formatter.Format(initialSourceNode, GeeksProductivityToolsPackage.Instance.VsWorkspace);
-            //}
+            if (GeeksProductivityToolsPackage.Instance != null)
+            {
+                initialSourceNode = Formatter.Format(initialSourceNode, GeeksProductivityToolsPackage.Instance.VsWorkspace);
+            }
             initialSourceNode = new Rewriter2(initialSourceNode).Visit(initialSourceNode);
             return initialSourceNode;
         }
@@ -46,7 +33,6 @@ namespace Geeks.GeeksProductivityTools.Menus.Cleanup
         {
             SyntaxToken _lastToken = default(SyntaxToken);
             MemberDeclarationSyntax _LastMember = null;
-            StatementSyntax _LastSyntax = null;
             bool _lastTokenIsAOpenBrace = false;
             bool _lastTokenIsACloseBrace = false;
 
@@ -142,36 +128,15 @@ namespace Geeks.GeeksProductivityTools.Menus.Cleanup
                         triviList = CleanUpListWith(triviList);
                     }
                     _LastMember = node as MethodDeclarationSyntax;
-                    _LastSyntax = null;
                 }
                 else if (node is MemberDeclarationSyntax)
                 {
                     triviList = CleanUpListWith(triviList);
                     _LastMember = node as MemberDeclarationSyntax;
-                    _LastSyntax = null;
                 }
                 else if (node is BlockSyntax)
                 {
                     var block = node as BlockSyntax;
-                    var lastToken = block.CloseBraceToken;
-                    bool mustAddBlankLine = false;
-
-                    var triviasBetweenTokens = lastToken.GetPreviousToken().TrailingTrivia.AddRange(lastToken.LeadingTrivia);
-                    if (_lastTokenIsAOpenBrace || triviasBetweenTokens.Any(x => x.IsKind(SyntaxKind.EndOfLineTrivia)))
-                    {
-                        if (_LastSyntax is BlockSyntax)
-                        {
-                            mustAddBlankLine = CheckForAddBlankAfterBracesInsideMethods(lastToken.Parent);
-                        }
-                    }
-
-                    var temp = block.CloseBraceToken.TrailingTrivia;
-                    if (mustAddBlankLine)
-                    {
-                        temp = temp.Add(_endOfLineTrivia);
-                    }
-
-                    triviList = CleanUpListWithoutNo(triviList);
 
                     node =
                         block
@@ -180,8 +145,7 @@ namespace Geeks.GeeksProductivityTools.Menus.Cleanup
                             .WithCloseBraceToken(
                                 block.CloseBraceToken
                                     .WithLeadingTrivia(CleanUpListWithoutNo(block.CloseBraceToken.LeadingTrivia, itsForCloseBrace: true))
-                                    .WithTrailingTrivia(temp));
-                    _LastSyntax = node as BlockSyntax;
+                            );
                 }
                 else if (node is StatementSyntax)
                 {
@@ -192,13 +156,12 @@ namespace Geeks.GeeksProductivityTools.Menus.Cleanup
                     }
                     else if (_lastTokenIsACloseBrace)
                     {
-                        triviList = CleanUpListWithExact(triviList, 1, itsForCloseBrace: true);
+                        triviList = CleanUpListWithExact(triviList, 1, itsForCloseBrace: false);
                     }
                     else
                     {
                         triviList = CleanUpListWith(triviList);
                     }
-                    _LastSyntax = node as StatementSyntax;
                 }
                 else if (CheckBlocks(node))
                 {
@@ -215,7 +178,6 @@ namespace Geeks.GeeksProductivityTools.Menus.Cleanup
                 if (node is CatchClauseSyntax) return true;
                 if (node is FinallyClauseSyntax) return true;
                 if (node is ElseClauseSyntax) return true;
-
 
                 return false;
             }
@@ -258,26 +220,6 @@ namespace Geeks.GeeksProductivityTools.Menus.Cleanup
                 var first = blockStatements[0];
                 var newFirst = first.WithLeadingTrivia(CleanUpListWithExact(first.GetLeadingTrivia(), 0));
                 return blockStatements.Replace(first, newFirst);
-            }
-
-
-            bool CheckForAddBlankAfterBracesInsideMethods(SyntaxNode node)
-            {
-                if (node == null) return true;
-                if (node is BlockSyntax == false) return false;
-                if (node.Parent is DoStatementSyntax) return false;
-                if (node.Parent is MethodDeclarationSyntax) return false;
-                //if (node.Parent is NamespaceDeclarationSyntax) return false;
-                if (node.Parent is ParenthesizedLambdaExpressionSyntax) return false;
-                if (node.Parent is ParenthesizedExpressionSyntax) return false;
-                if (node.Parent is AnonymousMethodExpressionSyntax) return false;
-                if (node.Parent is AnonymousFunctionExpressionSyntax) return false;
-                if (node.Parent is TryStatementSyntax) return false;
-                if (node.Parent is CatchClauseSyntax && (node as BlockSyntax).CloseBraceToken.GetNextToken()
-                    .IsKind(SyntaxKind.FinallyKeyword)) return false;
-                //if (node.Parent is CatchClauseSyntax && ((TryStatementSyntax)node.Parent.Parent).Finally != null) return false;
-                if (node.Parent is IfStatementSyntax && ((IfStatementSyntax)node.Parent).Else != null) return false;
-                return true;
             }
 
             #region
@@ -352,7 +294,6 @@ namespace Geeks.GeeksProductivityTools.Menus.Cleanup
             }
             SyntaxTriviaList ProcessSpecialTrivias(SyntaxTriviaList syntaxTrivias, bool itsForCloseBrace)
             {
-                itsForCloseBrace = false;
                 if (CheckShortSyntax(syntaxTrivias, itsForCloseBrace)) return syntaxTrivias;
                 var specialTriviasCount =
                     syntaxTrivias
@@ -448,6 +389,5 @@ namespace Geeks.GeeksProductivityTools.Menus.Cleanup
             #endregion
 
         }
-
     }
 }
