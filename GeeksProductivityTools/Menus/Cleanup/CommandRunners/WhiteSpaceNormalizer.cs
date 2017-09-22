@@ -352,6 +352,7 @@ namespace Geeks.GeeksProductivityTools.Menus.Cleanup
             }
             SyntaxTriviaList ProcessSpecialTrivias(SyntaxTriviaList syntaxTrivias, bool itsForCloseBrace)
             {
+                itsForCloseBrace = false;
                 if (CheckShortSyntax(syntaxTrivias, itsForCloseBrace)) return syntaxTrivias;
                 var specialTriviasCount =
                     syntaxTrivias
