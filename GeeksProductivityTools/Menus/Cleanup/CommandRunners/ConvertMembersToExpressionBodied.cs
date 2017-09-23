@@ -75,6 +75,7 @@ namespace Geeks.GeeksProductivityTools.Menus.Cleanup
             if ((method.Parent is ClassDeclarationSyntax) == false) return null;
             if (method.Body == null) return null;
             if (method.Body.Statements.Count != 1) return null;
+            if (method.Body.ContainsDirectives) return null;
 
             var singleStatement = method.Body.Statements.First();
             if (singleStatement is IfStatementSyntax) return null;
