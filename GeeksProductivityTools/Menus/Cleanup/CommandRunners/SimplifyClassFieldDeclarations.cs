@@ -31,8 +31,6 @@ namespace Geeks.GeeksProductivityTools.Menus.Cleanup
 
             public override SyntaxNode VisitClassDeclaration(ClassDeclarationSyntax node)
             {
-                node = base.VisitClassDeclaration(node) as ClassDeclarationSyntax;
-
                 node = Apply(node) as ClassDeclarationSyntax;
 
                 return node;
