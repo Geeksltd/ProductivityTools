@@ -1,3 +1,4 @@
+using Geeks.GeeksProductivityTools.Menus.Cleanup;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
@@ -28,6 +29,56 @@ namespace Geeks.GeeksProductivityTools.Menus.Cleanup
             {
             }
 
+            public override SyntaxNode VisitClassDeclaration(ClassDeclarationSyntax node)
+            {
+                node = base.VisitClassDeclaration(node) as ClassDeclarationSyntax;
+
+                node = Apply(node) as ClassDeclarationSyntax;
+
+                return node;
+            }
+
+            public override SyntaxNode VisitVariableDeclarator(VariableDeclaratorSyntax node)
+            {
+                if (node.Initializer == null) return base.VisitVariableDeclarator(node);
+                if (node.Parent is VariableDeclarationSyntax == false) return base.VisitVariableDeclarator(node);
+                if ((node.Parent.Parent as FieldDeclarationSyntax).Modifiers.Any(x => x.ValueText == "const")) return base.VisitVariableDeclarator(node);
+
+                var value = node.Initializer.Value;
+
+                if (value is LiteralExpressionSyntax)
+                {
+                    var variableTypeNode = GetSystemTypeOfTypeNode((node.Parent as VariableDeclarationSyntax));
+                    var valueObj = (value as LiteralExpressionSyntax).Token.Value;
+
+                    if (TypesMapItem.GetAllPredefinedTypesDic().ContainsKey(variableTypeNode))
+                    {
+                        var typeItem = TypesMapItem.GetAllPredefinedTypesDic()[variableTypeNode];
+                        if ((typeItem.DefaultValue == null && valueObj != null) || (typeItem.DefaultValue != null && !typeItem.DefaultValue.Equals(valueObj))) return base.VisitVariableDeclarator(node);
+                    }
+                    else
+                    {
+                        if (valueObj != null) return base.VisitVariableDeclarator(node);
+                    }
+
+                    node = node.WithInitializer(null).WithoutTrailingTrivia();
+                }
+                //else if (value is DefaultExpressionSyntax)
+                //{
+                //    node = node.WithInitializer(null).WithoutTrailingTrivia();
+                //}
+                //else if (value is ObjectCreationExpressionSyntax)
+                //{
+                //    if (variableTypeNode.IsKind(SyntaxKind.PredefinedType))
+                //    {
+                //        node = node.WithInitializer(null).WithoutTrailingTrivia();
+                //    }
+                //}
+
+                return base.VisitVariableDeclarator(node);
+            }
+
+
             SyntaxTrivia spaceTrivia = SyntaxFactory.Whitespace(" ");
             SyntaxNode Apply(ClassDeclarationSyntax classDescriptionNode)
             {
@@ -35,9 +86,11 @@ namespace Geeks.GeeksProductivityTools.Menus.Cleanup
 
                 var fieldDeclarations =
                     classDescriptionNode
-                    .Members
-                    .OfType<FieldDeclarationSyntax>()
-                    .ToList();
+                        .Members
+                        .OfType<FieldDeclarationSyntax>()
+                        .Where(fd => fd.AttributeLists.Any() == false)
+                        .Where(fd => fd.Declaration.Variables.All(x => x.Initializer == null || x.Initializer.Value is LiteralExpressionSyntax))
+                        .ToList();
 
                 foreach (var fieldDeclarationItem in fieldDeclarations)
                 {
@@ -150,51 +203,6 @@ namespace Geeks.GeeksProductivityTools.Menus.Cleanup
                 return (d.Type.ToFullString().Trim());
             }
 
-            public override SyntaxNode VisitClassDeclaration(ClassDeclarationSyntax node)
-            {
-                node = Apply(node) as ClassDeclarationSyntax;
-
-                return node;
-
-            }
-
-            public override SyntaxNode VisitVariableDeclarator(VariableDeclaratorSyntax node)
-            {
-                if (node.Initializer == null) return base.VisitVariableDeclarator(node);
-                if (node.Parent is VariableDeclarationSyntax == false) return base.VisitVariableDeclarator(node);
-                var value = node.Initializer.Value;
-
-                if (value is LiteralExpressionSyntax)
-                {
-                    var variableTypeNode = GetSystemTypeOfTypeNode((node.Parent as VariableDeclarationSyntax));
-                    var valueObj = (value as LiteralExpressionSyntax).Token.Value;
-
-                    if (TypesMapItem.GetAllPredefinedTypesDic().ContainsKey(variableTypeNode))
-                    {
-                        var typeItem = TypesMapItem.GetAllPredefinedTypesDic()[variableTypeNode];
-                        if ((typeItem.DefaultValue == null && valueObj != null) || (typeItem.DefaultValue != null && !typeItem.DefaultValue.Equals(valueObj))) return base.VisitVariableDeclarator(node);
-                    }
-                    else
-                    {
-                        if (valueObj != null) return base.VisitVariableDeclarator(node);
-                    }
-
-                    node = node.WithInitializer(null).WithoutTrailingTrivia();
-                }
-                //else if (value is DefaultExpressionSyntax)
-                //{
-                //    node = node.WithInitializer(null).WithoutTrailingTrivia();
-                //}
-                //else if (value is ObjectCreationExpressionSyntax)
-                //{
-                //    if (variableTypeNode.IsKind(SyntaxKind.PredefinedType))
-                //    {
-                //        node = node.WithInitializer(null).WithoutTrailingTrivia();
-                //    }
-                //}
-
-                return base.VisitVariableDeclarator(node);
-            }
 
             struct NewFieldDeclarationDicKey : IEquatable<NewFieldDeclarationDicKey>
             {
