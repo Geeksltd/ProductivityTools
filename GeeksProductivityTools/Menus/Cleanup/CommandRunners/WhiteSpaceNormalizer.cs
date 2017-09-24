@@ -365,11 +365,7 @@ namespace Geeks.GeeksProductivityTools.Menus.Cleanup
             SyntaxTriviaList ProcessSpecialTrivias(SyntaxTriviaList syntaxTrivias, bool itsForCloseBrace)
             {
                 if (CheckShortSyntax(syntaxTrivias, itsForCloseBrace)) return syntaxTrivias;
-                var specialTriviasCount =
-                    syntaxTrivias
-                        .Count(t =>
-                            !t.IsKind(SyntaxKind.EndOfLineTrivia) && !t.IsKind(SyntaxKind.WhitespaceTrivia)
-                        );
+                var specialTriviasCount = syntaxTrivias.Count(t =>!t.IsKind(SyntaxKind.EndOfLineTrivia) && !t.IsKind(SyntaxKind.WhitespaceTrivia));
 
                 var outputTriviasList = new List<SyntaxTrivia>();
                 var specialTiviasCount = 0;
@@ -408,9 +404,17 @@ namespace Geeks.GeeksProductivityTools.Menus.Cleanup
                         continue;
                     }
 
-                    if (syntaxTrivias[i].IsKind(SyntaxKind.SingleLineCommentTrivia) ||
-                        syntaxTrivias[i].IsKind(SyntaxKind.MultiLineCommentTrivia))
+                    if (syntaxTrivias[i].IsKind(SyntaxKind.SingleLineCommentTrivia) || syntaxTrivias[i].IsKind(SyntaxKind.MultiLineCommentTrivia))
                     {
+                        if (syntaxTrivias[i].IsKind(SyntaxKind.SingleLineCommentTrivia))
+                        {
+                            var commentText = syntaxTrivias[i].ToFullString().Trim();
+                            if (commentText.Length > 2 && commentText[2] != ' ')
+                            {
+                                commentText = $"{commentText.Substring(0, 2)} {commentText.Substring(2)}";
+                            }
+                            syntaxTrivias = syntaxTrivias.Replace(syntaxTrivias[i], SyntaxFactory.Comment(commentText));
+                        }
                         outputTriviasList.Add(syntaxTrivias[i]);
                         i++;
                         if (i < syntaxTrivias.Count && syntaxTrivias[i].IsKind(SyntaxKind.EndOfLineTrivia))
