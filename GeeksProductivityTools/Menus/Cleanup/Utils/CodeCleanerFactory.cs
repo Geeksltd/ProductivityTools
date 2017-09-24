@@ -20,6 +20,8 @@ namespace Geeks.GeeksProductivityTools.Menus.Cleanup
                     return new SimplyAsyncCalls();
                 case CodeCleanerType.SimplifyClassFieldDeclarationsCommand:
                     return new SimplifyClassFieldDeclarations();
+                case CodeCleanerType.RemoveAttributeKeyworkCommand:
+                    return new RemoveAttributeKeywork();
                 case CodeCleanerType.PrivateAccessModifier:
                     return new PrivateModifierRemover();
                 case CodeCleanerType.OrganizeUsingDirectives:

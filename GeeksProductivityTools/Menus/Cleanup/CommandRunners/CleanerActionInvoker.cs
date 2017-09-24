@@ -20,9 +20,11 @@ namespace Geeks.GeeksProductivityTools.Menus.Cleanup
             var simplyAsyncCallsCommandTask = fullNameTypesToBuiltInTypesTask.ContinueWith(antecedentTask => Invoke(CodeCleanerType.SimplyAsyncCallsCommand));
             var sortClassMembersCommandTask = simplyAsyncCallsCommandTask.ContinueWith(antecedentTask => Invoke(CodeCleanerType.SortClassMembersCommand));
             var simplifyClassFieldDeclarationsCommandTask = sortClassMembersCommandTask.ContinueWith(antecedentTask => Invoke(CodeCleanerType.SimplifyClassFieldDeclarationsCommand));
+            var RemoveAttributeKeyworkCommandTask = simplifyClassFieldDeclarationsCommandTask.ContinueWith(antecedentTask => Invoke(CodeCleanerType.RemoveAttributeKeyworkCommand));
 
             Task.WaitAll(new[]
             {
+                RemoveAttributeKeyworkCommandTask,
                 simplifyClassFieldDeclarationsCommandTask,
                 sortClassMembersCommandTask,
                 simplyAsyncCallsCommandTask,

@@ -112,6 +112,13 @@
           <ButtonText>Simplify class field declarations</ButtonText>
         </Strings>
       </Button>
+      <Button guid="GuidCleanupCmdSet" id="RemoveAttributeKeyworkCommand" priority="0x0108" type="Button">
+        <Parent guid="GuidCleanupCmdSet" id="MySubMenuGroup" />
+        <Strings>
+          <ButtonText>Remove Attribute Keywork</ButtonText>
+        </Strings>
+      </Button>
+     
       <Button guid="GuidCleanupCmdSet" id="AllCleanUpCommand" priority="0x0135" type="Button">
         <Parent guid="GuidCleanupCmdSet" id="MySubMenuGroup" />
         <Strings>
@@ -251,6 +258,7 @@
       <IDSymbol name="SimplyAsyncCallsCommand" value="0x0105" />
       <IDSymbol name="SortClassMembersCommand" value="0x0106" />
       <IDSymbol name="SimplifyClassFieldDeclarationsCommand" value="0x0107" />
+      <IDSymbol name="RemoveAttributeKeyworkCommand" value="0x0108" />
       <IDSymbol name="AllCleanUpCommand" value="0x0135" />
       <IDSymbol name="MyMenuController" value="0x0136" />
       <IDSymbol name="MySubMenuGroup" value="0x0137" />

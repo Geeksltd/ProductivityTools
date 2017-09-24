@@ -11,6 +11,7 @@ namespace Geeks.GeeksProductivityTools.Definition
         SimplyAsyncCallsCommand = 6,
         SortClassMembersCommand = 7,
         SimplifyClassFieldDeclarationsCommand = 8,
+        RemoveAttributeKeyworkCommand = 9,
         All = 35
     }
 }

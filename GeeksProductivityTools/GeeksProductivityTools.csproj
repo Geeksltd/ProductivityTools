@@ -368,6 +368,7 @@
     <Compile Include="Menus\Cleanup\CommandRunners\CleanerActionInvoker.cs" />
     <Compile Include="Menus\Cleanup\CommandRunners\ConvertFullNameTypesToBuiltInTypes.cs" />
     <Compile Include="Menus\Cleanup\CommandRunners\CodeCleanerCommandRunnerBase.cs" />
+    <Compile Include="Menus\Cleanup\CommandRunners\RemoveAttributeKeywork.cs" />
     <Compile Include="Menus\Cleanup\CommandRunners\SortClassMembers.cs" />
     <Compile Include="Menus\Cleanup\CommandRunners\SimplyAsyncCalls.cs" />
     <Compile Include="Menus\Cleanup\CommandRunners\TypesMapItem.cs" />
@@ -377,6 +378,7 @@
     <Compile Include="Menus\Cleanup\CommandsHandlers\ActionAllCodeCleanup.cs" />
     <Compile Include="Menus\Cleanup\CommandsHandlers\ExtendedBaseCodeCleanupCommand.cs" />
     <Compile Include="Menus\Cleanup\CommandsHandlers\ConvertFullNameTypesToBuiltInTypesCommand.cs" />
+    <Compile Include="Menus\Cleanup\CommandsHandlers\RemoveAttributeKeyworkCommand.cs" />
     <Compile Include="Menus\Cleanup\CommandsHandlers\SimplifyClassFieldDeclarationsCommand.cs" />
     <Compile Include="Menus\Cleanup\CommandsHandlers\SimplyAsyncCallsCommand.cs" />
     <Compile Include="Menus\Cleanup\CommandsHandlers\SortClassMembersCommand.cs" />

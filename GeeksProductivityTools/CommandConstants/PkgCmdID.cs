@@ -31,6 +31,8 @@ namespace Geeks.GeeksProductivityTools
         public const uint CmdSimplyAsyncCalls = 0x0105;
         public const uint CmdSortClassMembers = 0x0106;
         public const uint CmdSimplifyClassFieldDeclarations = 0x0107;
+        public const uint CmdRemoveAttributeKeywork = 0x0108;
+        
         public const uint CmdCleanUpAllActions = 0x0135;
     };
 }
