@@ -40,6 +40,7 @@ namespace Geeks.GeeksProductivityTools.Menus.Cleanup
             {
                 if (node.Initializer == null) return base.VisitVariableDeclarator(node);
                 if (node.Parent is VariableDeclarationSyntax == false) return base.VisitVariableDeclarator(node);
+                if (node.Parent.Parent is FieldDeclarationSyntax == false) return base.VisitVariableDeclarator(node);
                 if ((node.Parent.Parent as FieldDeclarationSyntax).Modifiers.Any(x => x.ValueText == "const")) return base.VisitVariableDeclarator(node);
 
                 var value = node.Initializer.Value;
