@@ -24,6 +24,7 @@ namespace Geeks.GeeksProductivityTools.Menus.Cleanup
                     case CodeCleanerType.SortClassMembersCommand:
                     case CodeCleanerType.SimplifyClassFieldDeclarationsCommand:
                     case CodeCleanerType.RemoveAttributeKeyworkCommand:
+                    case CodeCleanerType.CompactSmallIfElseStatementsCommand:
                         invoker.Invoke(command);
                         break;
                     case CodeCleanerType.All:

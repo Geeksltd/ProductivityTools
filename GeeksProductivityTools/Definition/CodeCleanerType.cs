@@ -12,6 +12,7 @@ namespace Geeks.GeeksProductivityTools.Definition
         SortClassMembersCommand = 7,
         SimplifyClassFieldDeclarationsCommand = 8,
         RemoveAttributeKeyworkCommand = 9,
+        CompactSmallIfElseStatementsCommand = 10,
         All = 35
     }
 }
