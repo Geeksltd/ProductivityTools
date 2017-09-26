@@ -1,12 +1,6 @@
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
 using EnvDTE;
 using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.CSharp;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Microsoft.CodeAnalysis.Formatting;
+using RDocument = Microsoft.CodeAnalysis.Document;
 
 namespace Geeks.GeeksProductivityTools.Menus.Cleanup
 {
@@ -14,15 +8,42 @@ namespace Geeks.GeeksProductivityTools.Menus.Cleanup
     {
         public void Run(ProjectItem item) => AsyncRun(item);
 
-
         public ProjectItem ProjectItem { get; private set; }
+        
+        RDocument _projectItemDocument;
+        public RDocument ProjectItemDocument
+        {
+            get
+            {
+                if (_projectItemDocument == null)
+                {
+                    _projectItemDocument = GeeksAddin.Utils.GetRoslynDomuentByProjectItem(ProjectItem);
+                }
+                return _projectItemDocument;
+            }
+        }
+
+        SemanticModel _projectItemSemanticModel;
+        public SemanticModel ProjectItemSemanticModel
+        {
+            get
+            {
+                if(_projectItemSemanticModel == null)
+                {
+                    _projectItemSemanticModel = ProjectItemDocument.GetSemanticModelAsync().Result;
+                }
+                return _projectItemSemanticModel;
+            }
+        }
+
         public string FilePath { get; private set; }
+
         protected virtual void AsyncRun(ProjectItem item)
         {
             FilePath = item.ToFullPathPropertyValue();
             ProjectItem = item;
 
-            var initialSourceNode = item.ToSyntaxNode();
+            var initialSourceNode = ProjectItemDocument != null ? ProjectItemDocument.GetSyntaxRootAsync().Result : item.ToSyntaxNode();
 
             initialSourceNode = CleanUp(initialSourceNode);
 

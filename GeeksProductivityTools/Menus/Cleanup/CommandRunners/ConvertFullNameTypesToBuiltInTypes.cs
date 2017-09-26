@@ -13,7 +13,7 @@ namespace Geeks.GeeksProductivityTools.Menus.Cleanup
             return ConvertFullNameTypesToBuiltInTypesHelper(initialSourceNode);
         }
 
-        public static SyntaxNode ConvertFullNameTypesToBuiltInTypesHelper(SyntaxNode initialSource)
+        public SyntaxNode ConvertFullNameTypesToBuiltInTypesHelper(SyntaxNode initialSource)
         {
             var builtInTypesMapDic = TypesMapItem.GetBuiltInTypesDic();
 
@@ -27,7 +27,6 @@ namespace Geeks.GeeksProductivityTools.Menus.Cleanup
                             &&
                             builtInTypesMapDic.ContainsKey(n.WithoutTrivia().ToFullString())
                     );
-
             return initialSource.ReplaceNodes(
                     selectedTokensList,
                     (oldNode1, oldNode2) =>
@@ -38,7 +37,11 @@ namespace Geeks.GeeksProductivityTools.Menus.Cleanup
                             if ((oldNode1.Parent as MemberAccessExpressionSyntax).Expression != oldNode1) return oldNode1;
                         }
                         else if (oldNode1 is IdentifierNameSyntax == false && oldNode1 is QualifiedNameSyntax == false) return oldNode1;
-
+                        else
+                        {
+                            var symbol = ProjectItemSemanticModel.GetSymbolInfo(oldNode1).Symbol;
+                            if (symbol != null && symbol.Kind != SymbolKind.NamedType) return oldNode1;
+                        }
                         return
                             builtInTypesMapDic[oldNode1.WithoutTrivia().ToFullString()]
                                 .NewNode

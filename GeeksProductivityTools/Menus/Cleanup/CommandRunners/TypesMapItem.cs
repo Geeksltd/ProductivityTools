@@ -8,7 +8,7 @@ using Microsoft.CSharp;
 
 namespace Geeks.GeeksProductivityTools.Menus.Cleanup
 {
-    internal class TypesMapItem
+    public class TypesMapItem
     {
         public string Name { get; set; }
         public string FullName { get; set; }
@@ -71,7 +71,7 @@ namespace Geeks.GeeksProductivityTools.Menus.Cleanup
         }
 
         static Dictionary<string, TypesMapItem> BuiltInTypesDic;
-        internal static Dictionary<string, TypesMapItem> GetBuiltInTypesDic()
+        public static Dictionary<string, TypesMapItem> GetBuiltInTypesDic()
         {
             if (BuiltInTypesDic != null) return BuiltInTypesDic;
 
@@ -81,21 +81,21 @@ namespace Geeks.GeeksProductivityTools.Menus.Cleanup
             {
                 var typesList = new TypesMapItem[]
                 {
-                    GetBuiltInTypes(typeof(Boolean), GetPredefineType(SyntaxKind.BoolKeyword), provider),
-                    GetBuiltInTypes(typeof(Byte),GetPredefineType(SyntaxKind.ByteKeyword), provider),
-                    GetBuiltInTypes(typeof(SByte),GetPredefineType(SyntaxKind.SByteKeyword), provider),
-                    GetBuiltInTypes(typeof(Char),GetPredefineType(SyntaxKind.CharKeyword), provider),
-                    GetBuiltInTypes(typeof(Decimal),GetPredefineType(SyntaxKind.DecimalKeyword), provider),
-                    GetBuiltInTypes(typeof(Double),GetPredefineType(SyntaxKind.DoubleKeyword), provider),
-                    GetBuiltInTypes(typeof(Single),GetPredefineType(SyntaxKind.FloatKeyword), provider),
-                    GetBuiltInTypes(typeof(Int32),GetPredefineType(SyntaxKind.IntKeyword), provider),
-                    GetBuiltInTypes(typeof(UInt32),GetPredefineType(SyntaxKind.UIntKeyword), provider),
-                    GetBuiltInTypes(typeof(Int64),GetPredefineType(SyntaxKind.LongKeyword), provider),
-                    GetBuiltInTypes(typeof(UInt64),GetPredefineType(SyntaxKind.ULongKeyword), provider),
-                    GetBuiltInTypes(typeof(Object),GetPredefineType(SyntaxKind.ObjectKeyword), provider),
-                    GetBuiltInTypes(typeof(Int16),GetPredefineType(SyntaxKind.ShortKeyword), provider),
-                    GetBuiltInTypes(typeof(UInt16),GetPredefineType(SyntaxKind.UShortKeyword), provider),
-                    GetBuiltInTypes(typeof(String),GetPredefineType(SyntaxKind.StringKeyword), provider),
+                    GetBuiltInTypes(Type.GetType("System.Boolean"), GetPredefineType(SyntaxKind.BoolKeyword), provider),
+                    GetBuiltInTypes(Type.GetType("System.Byte"), GetPredefineType(SyntaxKind.ByteKeyword), provider),
+                    GetBuiltInTypes(Type.GetType("System.SByte"), GetPredefineType(SyntaxKind.SByteKeyword), provider),
+                    GetBuiltInTypes(Type.GetType("System.Char"), GetPredefineType(SyntaxKind.CharKeyword), provider),
+                    GetBuiltInTypes(Type.GetType("System.Decimal"), GetPredefineType(SyntaxKind.DecimalKeyword), provider),
+                    GetBuiltInTypes(Type.GetType("System.Double"), GetPredefineType(SyntaxKind.DoubleKeyword), provider),
+                    GetBuiltInTypes(Type.GetType("System.Single"), GetPredefineType(SyntaxKind.FloatKeyword), provider),
+                    GetBuiltInTypes(Type.GetType("System.Int32"), GetPredefineType(SyntaxKind.IntKeyword), provider),
+                    GetBuiltInTypes(Type.GetType("System.UInt32"), GetPredefineType(SyntaxKind.UIntKeyword), provider),
+                    GetBuiltInTypes(Type.GetType("System.Int64"), GetPredefineType(SyntaxKind.LongKeyword), provider),
+                    GetBuiltInTypes(Type.GetType("System.UInt64"), GetPredefineType(SyntaxKind.ULongKeyword), provider),
+                    GetBuiltInTypes(Type.GetType("System.Object"), GetPredefineType(SyntaxKind.ObjectKeyword), provider),
+                    GetBuiltInTypes(Type.GetType("System.Int16"), GetPredefineType(SyntaxKind.ShortKeyword), provider),
+                    GetBuiltInTypes(Type.GetType("System.UInt16"), GetPredefineType(SyntaxKind.UShortKeyword), provider),
+                    GetBuiltInTypes(Type.GetType("System.String"), GetPredefineType(SyntaxKind.StringKeyword), provider),
                 };
 
                 foreach (var item in typesList)
