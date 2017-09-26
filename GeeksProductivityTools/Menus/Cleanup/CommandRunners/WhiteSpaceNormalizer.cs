@@ -270,7 +270,7 @@ namespace Geeks.GeeksProductivityTools.Menus.Cleanup
                 }
                 else if (token.IsKind(SyntaxKind.EndOfFileToken))
                 {
-                    leadingTriviList = ProcessSpecialTrivias(CleanUpList(leadingTriviList, 0), itsForCloseBrace: false);
+                    leadingTriviList = ProcessSpecialTrivias(CleanUpList(leadingTriviList), itsForCloseBrace: false);
                     if (token.LeadingTrivia != leadingTriviList)
                     {
                         token = token.WithLeadingTrivia(leadingTriviList);
