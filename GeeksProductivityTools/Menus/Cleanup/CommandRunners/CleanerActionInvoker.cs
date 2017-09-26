@@ -13,8 +13,7 @@ namespace Geeks.GeeksProductivityTools.Menus.Cleanup
         public void InvokeAll()
         {
             var organizeUsingDirectiveTask = Task.Run(() => Invoke(CodeCleanerType.OrganizeUsingDirectives));
-            var whiteSpaceNormalizerTask = organizeUsingDirectiveTask.ContinueWith(antecedentTask => Invoke(CodeCleanerType.NormalizeWhiteSpaces));
-            var privateModifiersRemoverTask = whiteSpaceNormalizerTask.ContinueWith(antecedentTask => Invoke(CodeCleanerType.PrivateAccessModifier));
+            var privateModifiersRemoverTask = organizeUsingDirectiveTask.ContinueWith(antecedentTask => Invoke(CodeCleanerType.PrivateAccessModifier));
             var membersToExpressionBodyTask = privateModifiersRemoverTask.ContinueWith(antecedentTask => Invoke(CodeCleanerType.ConvertMembersToExpressionBodied));
             var fullNameTypesToBuiltInTypesTask = membersToExpressionBodyTask.ContinueWith(antecedentTask => Invoke(CodeCleanerType.ConvertFullNameTypesToBuiltInTypes));
             var simplyAsyncCallsCommandTask = fullNameTypesToBuiltInTypesTask.ContinueWith(antecedentTask => Invoke(CodeCleanerType.SimplyAsyncCallsCommand));
@@ -22,9 +21,11 @@ namespace Geeks.GeeksProductivityTools.Menus.Cleanup
             var simplifyClassFieldDeclarationsCommandTask = sortClassMembersCommandTask.ContinueWith(antecedentTask => Invoke(CodeCleanerType.SimplifyClassFieldDeclarationsCommand));
             var RemoveAttributeKeyworkCommandTask = simplifyClassFieldDeclarationsCommandTask.ContinueWith(antecedentTask => Invoke(CodeCleanerType.RemoveAttributeKeyworkCommand));
             var CompactSmallIfElseStatementsCommandTask = RemoveAttributeKeyworkCommandTask.ContinueWith(antecedentTask => Invoke(CodeCleanerType.CompactSmallIfElseStatementsCommand));
+            var whiteSpaceNormalizerTask = CompactSmallIfElseStatementsCommandTask.ContinueWith(antecedentTask => Invoke(CodeCleanerType.NormalizeWhiteSpaces));
 
             Task.WaitAll(new[]
             {
+                whiteSpaceNormalizerTask,
                 CompactSmallIfElseStatementsCommandTask,
                 RemoveAttributeKeyworkCommandTask,
                 simplifyClassFieldDeclarationsCommandTask,
@@ -33,7 +34,6 @@ namespace Geeks.GeeksProductivityTools.Menus.Cleanup
                 fullNameTypesToBuiltInTypesTask,
                 membersToExpressionBodyTask,
                 privateModifiersRemoverTask,
-                whiteSpaceNormalizerTask,
                 organizeUsingDirectiveTask
             });
         }
