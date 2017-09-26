@@ -18,6 +18,11 @@ namespace Geeks.GeeksProductivityTools.Menus.Cleanup
             //return SimplyAsyncCallsHelper2(initialSourceNode);
         }
 
+
+        public static SyntaxNode SimplyAsyncCallsHelper2(SyntaxNode initialSourceNode)
+        {
+            return new Rewriter().Visit(initialSourceNode);
+        }
         class Rewriter : CSharpSyntaxRewriter
         {
             public override SyntaxNode Visit(SyntaxNode node)
@@ -31,12 +36,8 @@ namespace Geeks.GeeksProductivityTools.Menus.Cleanup
                 return base.Visit(node);
             }
         }
-        static SyntaxTrivia[] _spaceTrivia = { SyntaxFactory.SyntaxTrivia(SyntaxKind.WhitespaceTrivia, " ") };
 
-        public static SyntaxNode SimplyAsyncCallsHelper2(SyntaxNode initialSourceNode)
-        {
-            return new Rewriter().Visit(initialSourceNode);
-        }
+        static SyntaxTrivia[] _spaceTrivia = { SyntaxFactory.SyntaxTrivia(SyntaxKind.WhitespaceTrivia, " ") };
 
         public static SyntaxNode SimplyAsyncCallsHelper(SyntaxNode initialSource)
         {
@@ -56,6 +57,7 @@ namespace Geeks.GeeksProductivityTools.Menus.Cleanup
             if ((method.Parent is ClassDeclarationSyntax) == false) return method;
             if (method.Modifiers.Any(x => x.IsKind(SyntaxKind.AsyncKeyword)) == false) return method;
             if (method.Body == null) return method;
+            if (method.ReturnType.WithoutTrivia().ToFullString() == typeof(Task).Name) return method;
             if (method.Body.Statements.Count != 1) return method;
 
             var singleStatement = method.Body.Statements.First();
@@ -95,11 +97,16 @@ namespace Geeks.GeeksProductivityTools.Menus.Cleanup
                         newReturnStatement.ReturnKeyword.WithTrailingTrivia(_spaceTrivia));
             }
 
-            return
+            var m2 =
                 method
                     .ReplaceNode(singleStatement, newStatement)
                     .WithModifiers(
-                        method.Modifiers.Remove(method.Modifiers.First(x => x.IsKind(SyntaxKind.AsyncKeyword))));
+                        method.Modifiers.Remove(method.Modifiers.First(x => x.IsKind(SyntaxKind.AsyncKeyword))))
+                    .WithLeadingTrivia(method.GetLeadingTrivia())
+                    .WithTrailingTrivia(method.GetTrailingTrivia())
+                    ;
+
+            return m2;
         }
     }
 }
