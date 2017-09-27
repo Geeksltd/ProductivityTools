@@ -369,6 +369,7 @@
     <Compile Include="Menus\Cleanup\CommandRunners\ConvertFullNameTypesToBuiltInTypes.cs" />
     <Compile Include="Menus\Cleanup\CommandRunners\CodeCleanerCommandRunnerBase.cs" />
     <Compile Include="Menus\Cleanup\CommandRunners\RemoveAttributeKeywork.cs" />
+    <Compile Include="Menus\Cleanup\CommandRunners\RemoveExtraThis.cs" />
     <Compile Include="Menus\Cleanup\CommandRunners\SortClassMembers.cs" />
     <Compile Include="Menus\Cleanup\CommandRunners\SimplyAsyncCalls.cs" />
     <Compile Include="Menus\Cleanup\CommandRunners\TypesMapItem.cs" />
