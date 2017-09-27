@@ -97,16 +97,13 @@ namespace Geeks.GeeksProductivityTools.Menus.Cleanup
                         newReturnStatement.ReturnKeyword.WithTrailingTrivia(_spaceTrivia));
             }
 
-            var m2 =
+            return
                 method
                     .ReplaceNode(singleStatement, newStatement)
                     .WithModifiers(
                         method.Modifiers.Remove(method.Modifiers.First(x => x.IsKind(SyntaxKind.AsyncKeyword))))
                     .WithLeadingTrivia(method.GetLeadingTrivia())
-                    .WithTrailingTrivia(method.GetTrailingTrivia())
-                    ;
-
-            return m2;
+                    .WithTrailingTrivia(method.GetTrailingTrivia());
         }
     }
 }
