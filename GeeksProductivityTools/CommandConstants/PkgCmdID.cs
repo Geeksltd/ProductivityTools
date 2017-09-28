@@ -33,6 +33,7 @@ namespace Geeks.GeeksProductivityTools
         public const uint CmdSimplifyClassFieldDeclarations = 0x0107;
         public const uint CmdRemoveAttributeKeywork = 0x0108;
         public const uint CmdCompactSmallIfElseStatements = 0x0109;
+        public const uint CmdRemoveExtraThisQualification = 0x010A;
         
         public const uint CmdCleanUpAllActions = 0x0135;
     };

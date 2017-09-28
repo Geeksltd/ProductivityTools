@@ -39,7 +39,7 @@ namespace Geeks.GeeksProductivityTools.Menus.Cleanup
                         else if (oldNode1 is IdentifierNameSyntax == false && oldNode1 is QualifiedNameSyntax == false) return oldNode1;
                         else
                         {
-                            var symbol = ProjectItemSemanticModel.GetSymbolInfo(oldNode1).Symbol;
+                            var symbol = ProjectItemDetails.SemanticModel.GetSymbolInfo(oldNode1).Symbol;
                             if (symbol != null && symbol.Kind != SymbolKind.NamedType) return oldNode1;
                         }
                         return

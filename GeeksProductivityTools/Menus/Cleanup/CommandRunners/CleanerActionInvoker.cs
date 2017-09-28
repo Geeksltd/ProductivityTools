@@ -21,7 +21,8 @@ namespace Geeks.GeeksProductivityTools.Menus.Cleanup
             var simplifyClassFieldDeclarationsCommandTask = sortClassMembersCommandTask.ContinueWith(antecedentTask => Invoke(CodeCleanerType.SimplifyClassFieldDeclarationsCommand));
             var RemoveAttributeKeyworkCommandTask = simplifyClassFieldDeclarationsCommandTask.ContinueWith(antecedentTask => Invoke(CodeCleanerType.RemoveAttributeKeyworkCommand));
             var CompactSmallIfElseStatementsCommandTask = RemoveAttributeKeyworkCommandTask.ContinueWith(antecedentTask => Invoke(CodeCleanerType.CompactSmallIfElseStatementsCommand));
-            var whiteSpaceNormalizerTask = CompactSmallIfElseStatementsCommandTask.ContinueWith(antecedentTask => Invoke(CodeCleanerType.NormalizeWhiteSpaces));
+            var RemoveExtraThisQualificationCommandTask = CompactSmallIfElseStatementsCommandTask.ContinueWith(antecedentTask => Invoke(CodeCleanerType.RemoveExtraThisQualification));
+            var whiteSpaceNormalizerTask = RemoveExtraThisQualificationCommandTask.ContinueWith(antecedentTask => Invoke(CodeCleanerType.NormalizeWhiteSpaces));
 
             Task.WaitAll(new[]
             {

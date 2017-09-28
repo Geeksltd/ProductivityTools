@@ -13,6 +13,7 @@ namespace Geeks.GeeksProductivityTools.Definition
         SimplifyClassFieldDeclarationsCommand = 8,
         RemoveAttributeKeyworkCommand = 9,
         CompactSmallIfElseStatementsCommand = 10,
+        RemoveExtraThisQualification = 11,
         All = 35
     }
 }

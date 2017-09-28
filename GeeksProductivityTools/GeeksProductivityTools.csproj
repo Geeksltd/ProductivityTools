@@ -369,7 +369,7 @@
     <Compile Include="Menus\Cleanup\CommandRunners\ConvertFullNameTypesToBuiltInTypes.cs" />
     <Compile Include="Menus\Cleanup\CommandRunners\CodeCleanerCommandRunnerBase.cs" />
     <Compile Include="Menus\Cleanup\CommandRunners\RemoveAttributeKeywork.cs" />
-    <Compile Include="Menus\Cleanup\CommandRunners\RemoveExtraThis.cs" />
+    <Compile Include="Menus\Cleanup\CommandRunners\RemoveExtraThisQualification.cs" />
     <Compile Include="Menus\Cleanup\CommandRunners\SortClassMembers.cs" />
     <Compile Include="Menus\Cleanup\CommandRunners\SimplyAsyncCalls.cs" />
     <Compile Include="Menus\Cleanup\CommandRunners\TypesMapItem.cs" />
@@ -380,6 +380,7 @@
     <Compile Include="Menus\Cleanup\CommandsHandlers\ActionAllCodeCleanup.cs" />
     <Compile Include="Menus\Cleanup\CommandsHandlers\ExtendedBaseCodeCleanupCommand.cs" />
     <Compile Include="Menus\Cleanup\CommandsHandlers\ConvertFullNameTypesToBuiltInTypesCommand.cs" />
+    <Compile Include="Menus\Cleanup\CommandsHandlers\RemoveExtraThisQualificationCommand.cs" />
     <Compile Include="Menus\Cleanup\CommandsHandlers\RemoveAttributeKeyworkCommand.cs" />
     <Compile Include="Menus\Cleanup\CommandsHandlers\CompactSmallIfElseStatementsCommand.cs" />
     <Compile Include="Menus\Cleanup\CommandsHandlers\SimplifyClassFieldDeclarationsCommand.cs" />

@@ -25,6 +25,7 @@ namespace Geeks.GeeksProductivityTools.Menus.Cleanup
                     case CodeCleanerType.SimplifyClassFieldDeclarationsCommand:
                     case CodeCleanerType.RemoveAttributeKeyworkCommand:
                     case CodeCleanerType.CompactSmallIfElseStatementsCommand:
+                    case CodeCleanerType.RemoveExtraThisQualification:
                         invoker.Invoke(command);
                         break;
                     case CodeCleanerType.All:

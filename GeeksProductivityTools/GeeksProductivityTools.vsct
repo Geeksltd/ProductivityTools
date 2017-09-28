@@ -123,7 +123,13 @@
         <Strings>
           <ButtonText>Compact Small if/else Statements</ButtonText>
         </Strings>
-      </Button>     
+      </Button>
+      <Button guid="GuidCleanupCmdSet" id="RemoveExtraThisQualificationCommand" priority="0x010A" type="Button">
+        <Parent guid="GuidCleanupCmdSet" id="MySubMenuGroup" />
+        <Strings>
+          <ButtonText>Remove Extra 'this.' Qualification</ButtonText>
+        </Strings>
+      </Button> 
       <Button guid="GuidCleanupCmdSet" id="AllCleanUpCommand" priority="0x0135" type="Button">
         <Parent guid="GuidCleanupCmdSet" id="MySubMenuGroup" />
         <Strings>
@@ -265,6 +271,7 @@
       <IDSymbol name="SimplifyClassFieldDeclarationsCommand" value="0x0107" />
       <IDSymbol name="RemoveAttributeKeyworkCommand" value="0x0108" />
       <IDSymbol name="CompactSmallIfElseStatementsCommand" value="0x0109" />
+      <IDSymbol name="RemoveExtraThisQualificationCommand" value="0x010A" />
       <IDSymbol name="AllCleanUpCommand" value="0x0135" />
       <IDSymbol name="MyMenuController" value="0x0136" />
       <IDSymbol name="MySubMenuGroup" value="0x0137" />

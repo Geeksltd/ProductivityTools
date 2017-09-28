@@ -24,6 +24,8 @@ namespace Geeks.GeeksProductivityTools.Menus.Cleanup
                     return new RemoveAttributeKeywork();
                 case CodeCleanerType.CompactSmallIfElseStatementsCommand:
                     return new CompactSmallIfElseStatements();
+                case CodeCleanerType.RemoveExtraThisQualification:
+                    return new RemoveExtraThisQualification();
                 case CodeCleanerType.PrivateAccessModifier:
                     return new PrivateModifierRemover();
                 case CodeCleanerType.OrganizeUsingDirectives:
