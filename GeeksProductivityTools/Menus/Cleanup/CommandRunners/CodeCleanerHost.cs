@@ -26,6 +26,7 @@ namespace Geeks.GeeksProductivityTools.Menus.Cleanup
                     case CodeCleanerType.RemoveAttributeKeyworkCommand:
                     case CodeCleanerType.CompactSmallIfElseStatementsCommand:
                     case CodeCleanerType.RemoveExtraThisQualification:
+                    case CodeCleanerType.CamelCasedLocalVariable:
                         invoker.Invoke(command);
                         break;
                     case CodeCleanerType.All:

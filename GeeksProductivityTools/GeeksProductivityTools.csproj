@@ -365,6 +365,7 @@
     <Compile Include="Menus\ActionsOnCSharp\ActionsCSharpOnFile.cs" />
     <Compile Include="Menus\ActionsOnCSharp\CSharpActionDelegate.cs" />
     <Compile Include="Menus\ActionsOnCSharp\DteServiceProvider.cs" />
+    <Compile Include="Menus\Cleanup\CommandRunners\CamelCasedLocalVariable.cs" />
     <Compile Include="Menus\Cleanup\CommandRunners\CleanerActionInvoker.cs" />
     <Compile Include="Menus\Cleanup\CommandRunners\ConvertFullNameTypesToBuiltInTypes.cs" />
     <Compile Include="Menus\Cleanup\CommandRunners\CodeCleanerCommandRunnerBase.cs" />
@@ -372,12 +373,12 @@
     <Compile Include="Menus\Cleanup\CommandRunners\RemoveExtraThisQualification.cs" />
     <Compile Include="Menus\Cleanup\CommandRunners\SortClassMembers.cs" />
     <Compile Include="Menus\Cleanup\CommandRunners\SimplyAsyncCalls.cs" />
-    <Compile Include="Menus\Cleanup\CommandRunners\TypesMapItem.cs" />
     <Compile Include="Menus\Cleanup\CommandRunners\UsingDirectiveOrganizer.cs" />
     <Compile Include="Menus\Cleanup\CommandRunners\ConvertMembersToExpressionBodied.cs" />
     <Compile Include="Menus\Cleanup\CommandRunners\SimplifyClassFieldDeclarations.cs" />
     <Compile Include="Menus\Cleanup\CommandRunners\CompactSmallIfElseStatements.cs" />
     <Compile Include="Menus\Cleanup\CommandsHandlers\ActionAllCodeCleanup.cs" />
+    <Compile Include="Menus\Cleanup\CommandsHandlers\CamelCasedLocalVariableCommand.cs" />
     <Compile Include="Menus\Cleanup\CommandsHandlers\ExtendedBaseCodeCleanupCommand.cs" />
     <Compile Include="Menus\Cleanup\CommandsHandlers\ConvertFullNameTypesToBuiltInTypesCommand.cs" />
     <Compile Include="Menus\Cleanup\CommandsHandlers\RemoveExtraThisQualificationCommand.cs" />
@@ -403,6 +404,16 @@
     <Compile Include="Menus\Cleanup\TokenRemovers\MethodTokenRemover.cs" />
     <Compile Include="Menus\Cleanup\TokenRemovers\NestedClassTokenRemover.cs" />
     <Compile Include="Menus\Cleanup\TokenRemovers\PropertyTokenRemover.cs" />
+    <Compile Include="Menus\Cleanup\Utils\RenameHelper\Extensions.cs" />
+    <Compile Include="Menus\Cleanup\Utils\RenameHelper\ISyntaxWrapper.cs" />
+    <Compile Include="Menus\Cleanup\Utils\RenameHelper\LightupHelpers.cs" />
+    <Compile Include="Menus\Cleanup\Utils\RenameHelper\LocalFunctionStatementSyntaxWrapper.cs" />
+    <Compile Include="Menus\Cleanup\Utils\RenameHelper\RenameHelper.cs" />
+    <Compile Include="Menus\Cleanup\Utils\RenameHelper\SeparatedSyntaxListWrapper.cs" />
+    <Compile Include="Menus\Cleanup\Utils\RenameHelper\SingleVariableDesignationSyntaxWrapper.cs" />
+    <Compile Include="Menus\Cleanup\Utils\RenameHelper\SyntaxKindEx.cs" />
+    <Compile Include="Menus\Cleanup\Utils\RenameHelper\SyntaxWrapper.cs" />
+    <Compile Include="Menus\Cleanup\Utils\RenameHelper\VariableDesignationSyntaxWrapper.cs" />
     <Compile Include="Menus\Cleanup\Utils\SyntaxTokenExtensions.cs" />
     <Compile Include="Menus\Cleanup\SyntaxNodeExtractors\FieldExtractor.cs" />
     <Compile Include="Menus\Cleanup\SyntaxNodeExtractors\NestedClassExtractor.cs" />
@@ -474,6 +485,7 @@
     <Compile Include="FileToggle\FileToggleGadget.cs" />
     <Compile Include="Menus\ActionsOnCSharp\ActionCSharpOnProject.cs" />
     <Compile Include="Menus\ActionsOnCSharp\ActionCSharpOnSolution.cs" />
+    <Compile Include="Menus\Cleanup\Utils\TypesMapItem.cs" />
     <Compile Include="Structures\Gadget.cs" />
     <Compile Include="Environment\App.cs" />
     <Compile Include="GoTo\GoToModuleMouseHandler.cs" />

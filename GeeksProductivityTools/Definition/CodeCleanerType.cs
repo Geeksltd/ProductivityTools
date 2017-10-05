@@ -14,6 +14,7 @@ namespace Geeks.GeeksProductivityTools.Definition
         RemoveAttributeKeyworkCommand = 9,
         CompactSmallIfElseStatementsCommand = 10,
         RemoveExtraThisQualification = 11,
+        CamelCasedLocalVariable = 12,
         All = 35
     }
 }

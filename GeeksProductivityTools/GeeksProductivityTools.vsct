@@ -130,6 +130,12 @@
           <ButtonText>Remove Extra 'this.' Qualification</ButtonText>
         </Strings>
       </Button> 
+      <Button guid="GuidCleanupCmdSet" id="CamelCasedLocalVariableCommand" priority="0x010B" type="Button">
+        <Parent guid="GuidCleanupCmdSet" id="MySubMenuGroup" />
+        <Strings>
+          <ButtonText>Camel Cased Local Variable</ButtonText>
+        </Strings>
+      </Button> 
       <Button guid="GuidCleanupCmdSet" id="AllCleanUpCommand" priority="0x0135" type="Button">
         <Parent guid="GuidCleanupCmdSet" id="MySubMenuGroup" />
         <Strings>
@@ -272,6 +278,7 @@
       <IDSymbol name="RemoveAttributeKeyworkCommand" value="0x0108" />
       <IDSymbol name="CompactSmallIfElseStatementsCommand" value="0x0109" />
       <IDSymbol name="RemoveExtraThisQualificationCommand" value="0x010A" />
+      <IDSymbol name="CamelCasedLocalVariableCommand" value="0x010B" />
       <IDSymbol name="AllCleanUpCommand" value="0x0135" />
       <IDSymbol name="MyMenuController" value="0x0136" />
       <IDSymbol name="MySubMenuGroup" value="0x0137" />

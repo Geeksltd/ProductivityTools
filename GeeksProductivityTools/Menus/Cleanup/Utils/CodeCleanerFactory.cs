@@ -26,6 +26,8 @@ namespace Geeks.GeeksProductivityTools.Menus.Cleanup
                     return new CompactSmallIfElseStatements();
                 case CodeCleanerType.RemoveExtraThisQualification:
                     return new RemoveExtraThisQualification();
+                case CodeCleanerType.CamelCasedLocalVariable:
+                    return new CamelCasedLocalVariable();
                 case CodeCleanerType.PrivateAccessModifier:
                     return new PrivateModifierRemover();
                 case CodeCleanerType.OrganizeUsingDirectives:

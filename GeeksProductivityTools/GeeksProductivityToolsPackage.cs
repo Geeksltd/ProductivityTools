@@ -9,6 +9,7 @@ using GeeksAddin.FileToggle;
 using Microsoft.VisualStudio.ComponentModelHost;
 using Microsoft.VisualStudio.LanguageServices;
 using Microsoft.VisualStudio.Shell;
+using Microsoft.CodeAnalysis;
 
 namespace Geeks.GeeksProductivityTools
 {
@@ -28,7 +29,7 @@ namespace Geeks.GeeksProductivityTools
         EnvDTE.Events events;
 
         public static GeeksProductivityToolsPackage Instance { get; private set; }
-        public VisualStudioWorkspace VsWorkspace { get; private set; }
+        public Workspace VsWorkspace { get; private set; }
 
         protected override void Initialize()
         {
@@ -94,6 +95,7 @@ namespace Geeks.GeeksProductivityTools
                 new Menus.Cleanup.CompactSmallIfElseStatementsCommand(menuCommandService).SetupCommands();
                 new Menus.Cleanup.RemoveAttributeKeyworkCommand(menuCommandService).SetupCommands();
                 new Menus.Cleanup.RemoveExtraThisQualificationCommand(menuCommandService).SetupCommands();
+                new Menus.Cleanup.CamelCasedLocalVariableCommand(menuCommandService).SetupCommands();
                 new Menus.Cleanup.OrganizeUsingDirectives(menuCommandService).SetupCommands();
                 new Menus.Cleanup.ActionAllCodeCleanup(menuCommandService).SetupCommands();
             }
