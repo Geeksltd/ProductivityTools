@@ -15,11 +15,12 @@ namespace Geeks.GeeksProductivityTools.Menus.Cleanup
 {
     abstract partial class Renamer
     {
-        private static RenameOutput RenameSymbol(Document document, SyntaxNode root, SyntaxNode startNode, ParameterSyntax declarationNode, string newName)
+        const string SELECTED_METHOD_ANNOTATION = "SELECTED_METHOD_ANNOTATION";
+        private static RenameResult RenameSymbol(Document document, SyntaxNode root, SyntaxNode startNode, ParameterSyntax declarationNode, string newName)
         {
             var identifierToken = declarationNode.Identifier;
 
-            var methodAnnotation = new SyntaxAnnotation("my");
+            var methodAnnotation = new SyntaxAnnotation(SELECTED_METHOD_ANNOTATION);
             var changeDic = new Dictionary<SyntaxNode, SyntaxNode>();
             changeDic.Add(startNode, startNode.WithAdditionalAnnotations(methodAnnotation));
             changeDic.Add(declarationNode, declarationNode.WithIdentifier(identifierToken.WithAdditionalAnnotations(RenameAnnotation.Create())));
@@ -30,11 +31,11 @@ namespace Geeks.GeeksProductivityTools.Menus.Cleanup
 
             return GetNewStartNode(newSolution, document, methodAnnotation, startNode);
         }
-        private static RenameOutput RenameSymbol(Document document, SyntaxNode root, SyntaxNode startNode, VariableDeclaratorSyntax declarationNode, string newName)
+        private static RenameResult RenameSymbol(Document document, SyntaxNode root, SyntaxNode startNode, VariableDeclaratorSyntax declarationNode, string newName)
         {
             var identifierToken = declarationNode.Identifier;
 
-            var methodAnnotation = new SyntaxAnnotation("my");
+            var methodAnnotation = new SyntaxAnnotation(SELECTED_METHOD_ANNOTATION);
             var changeDic = new Dictionary<SyntaxNode, SyntaxNode>();
             changeDic.Add(startNode, startNode.WithAdditionalAnnotations(methodAnnotation));
             changeDic.Add(declarationNode, declarationNode.WithIdentifier(identifierToken.WithAdditionalAnnotations(RenameAnnotation.Create())));
@@ -45,7 +46,7 @@ namespace Geeks.GeeksProductivityTools.Menus.Cleanup
 
             return GetNewStartNode(newSolution, document, methodAnnotation, startNode);
         }
-        private static RenameOutput GetNewStartNode(Solution newSolution, Document document, SyntaxAnnotation methodAnnotation, SyntaxNode startNode)
+        private static RenameResult GetNewStartNode(Solution newSolution, Document document, SyntaxAnnotation methodAnnotation, SyntaxNode startNode)
         {
             var newDocument =
                newSolution.Projects.FirstOrDefault(x => x.Name == document.Project.Name)
@@ -55,18 +56,18 @@ namespace Geeks.GeeksProductivityTools.Menus.Cleanup
                 newSolution.Projects.FirstOrDefault(x => x.Name == document.Project.Name)
                 .Documents.FirstOrDefault(x => x.Name == document.Name).GetSyntaxRootAsync().Result;
 
-            return new RenameOutput
+            return new RenameResult
             {
                 Node = newRoot.GetAnnotatedNodes(methodAnnotation).FirstOrDefault(),
                 Solution = newSolution,
                 Document = newDocument
             };
         }
-        public static RenameOutput RenameSymbol(Document document, SyntaxNode root, SyntaxNode startNode, SyntaxToken identifierToken, string newName)
+        public static RenameResult RenameSymbol(Document document, SyntaxNode root, SyntaxNode startNode, SyntaxToken identifierToken, string newName)
         {
             return RenameSymbol(document, root, startNode, identifierToken.Parent, newName);
         }
-        public static RenameOutput RenameSymbol(Document document, SyntaxNode root, SyntaxNode startNode, SyntaxNode declarationNode, string newName)
+        public static RenameResult RenameSymbol(Document document, SyntaxNode root, SyntaxNode startNode, SyntaxNode declarationNode, string newName)
         {
             if (declarationNode is VariableDeclaratorSyntax variableNode)
             {
@@ -93,29 +94,37 @@ namespace Geeks.GeeksProductivityTools.Menus.Cleanup
             return newSolution;
         }
 
-
         SemanticModel _semanticModel;
-        public Document Document { get; private set; }
+        Document WorkingDocument { get; set; }
 
         public Renamer(Document document)
         {
-            Document = document;
-            _semanticModel = Document.GetSemanticModelAsync().Result;
+            WorkingDocument = document;
+            _semanticModel = WorkingDocument.GetSemanticModelAsync().Result;
         }
 
-        public SyntaxNode RenameDeclarations(SyntaxNode containerNode)
+        public RenameResult RenameDeclarations(SyntaxNode containerNode)
         {
             SyntaxNode currentNode;
             SyntaxNode newNode = containerNode;
-
+            RenameResult renamingResult = null;
+            RenameResult workingRenamingResult = null;
             do
             {
                 currentNode = newNode;
-                newNode = RenameDeclarations(currentNode, internalGetItemsToRename(currentNode));
-            }
-            while (newNode != currentNode);
+                workingRenamingResult = RenameDeclarations(currentNode, internalGetItemsToRename(currentNode));
 
-            return newNode;
+                if (workingRenamingResult != null)
+                {
+                    renamingResult = workingRenamingResult;
+                    newNode = renamingResult.Node;
+                    WorkingDocument = renamingResult.Document;
+                    _semanticModel = renamingResult.Document.GetSemanticModelAsync().Result;
+                }
+            }
+            while (workingRenamingResult != null && newNode != currentNode);
+
+            return renamingResult;
         }
 
         IList<string> VisitedTokens = new List<string>();
@@ -136,25 +145,22 @@ namespace Geeks.GeeksProductivityTools.Menus.Cleanup
                 .ToList();
         }
         protected abstract IEnumerable<SyntaxToken> GetItemsToRename(SyntaxNode currentNode);
-
-        SyntaxNode RenameDeclarations(SyntaxNode containerNode, IList<IdentifierStrcut> identifieridentifierStrcuts)
+        RenameResult RenameDeclarations(SyntaxNode containerNode, IList<IdentifierStrcut> identifieridentifierStrcuts)
         {
             foreach (var identifier in identifieridentifierStrcuts)
             {
                 var newcontainerNode = RenameDeclarations(containerNode, identifier);
-
                 VisitedTokens.Add(identifier.NewName);
 
-                if (newcontainerNode != containerNode)
+                if (newcontainerNode != null)
                 {
-
                     return newcontainerNode;
                 }
             }
 
-            return containerNode;
+            return null;
         }
-        SyntaxNode RenameDeclarations(SyntaxNode containerNode, IdentifierStrcut identifierStrcut)
+        RenameResult RenameDeclarations(SyntaxNode containerNode, IdentifierStrcut identifierStrcut)
         {
             var identifierDeclarationNode = identifierStrcut.Token.Parent;
 
@@ -164,14 +170,9 @@ namespace Geeks.GeeksProductivityTools.Menus.Cleanup
 
             var validateNameResult = RenameHelper.IsValidNewMemberNameAsync(_semanticModel, identifierSymbol, newVarName).Result;
 
-            if (validateNameResult == false) return containerNode;
+            if (validateNameResult == false) return null;
 
-            var result = RenameSymbol(Document, Document.GetSyntaxRootAsync().Result, containerNode, identifierDeclarationNode, newVarName);
-
-            containerNode = result.Node;
-            Document = result.Document;
-            _semanticModel = result.Document.GetSemanticModelAsync().Result;
-            return containerNode;
+            return RenameSymbol(WorkingDocument, WorkingDocument.GetSyntaxRootAsync().Result, containerNode, identifierDeclarationNode, newVarName);
         }
         string GetNewNameWithChecking(SyntaxToken identifierToken)
         {
@@ -217,6 +218,19 @@ namespace Geeks.GeeksProductivityTools.Menus.Cleanup
                 variableName.Substring(noneLetterCount + 1);
 
             return newVarName;
+        }
+
+        protected static bool IsPrivate(FieldDeclarationSyntax x)
+        {
+            return
+                x.Modifiers.Any(m => m.IsKind(SyntaxKind.PrivateKeyword)) ||
+                x.Modifiers
+                    .Any(
+                        m =>
+                            m.IsKind(SyntaxKind.PublicKeyword) ||
+                            m.IsKind(SyntaxKind.ProtectedKeyword) ||
+                            m.IsKind(SyntaxKind.InternalKeyword)
+                    ) == false;
         }
 
         internal class IdentifierStrcut

@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace Geeks.GeeksProductivityTools.Menus.Cleanup
 {
-    class ParameterRenamer : Renamer
+    class ParameterRenamer : VariableRenamer
     {
         public ParameterRenamer(Document document) : base(document)
         {
@@ -19,6 +19,5 @@ namespace Geeks.GeeksProductivityTools.Menus.Cleanup
                 .Parameters
                 .Select(x => x.Identifier);
         }
-        protected override string GetNewName(string currentName) => GetCamelCased(currentName);
     }
 }

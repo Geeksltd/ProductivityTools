@@ -7,9 +7,9 @@ using System;
 
 namespace Geeks.GeeksProductivityTools.Menus.Cleanup
 {
-    class FieldRenamer : Renamer
+    class CONSTRenamer : Renamer
     {
-        public FieldRenamer(Document document) : base(document)
+        public CONSTRenamer(Document document) : base(document)
         {
         }
 
@@ -22,8 +22,8 @@ namespace Geeks.GeeksProductivityTools.Menus.Cleanup
                     .Members.OfType<FieldDeclarationSyntax>()
                     .Where(
                         x =>
-                            IsPrivate(x) && 
-                            x.Modifiers.Any(m => m.IsKind(SyntaxKind.ConstKeyword)) == false
+                            x.Modifiers.Any(m => m.IsKind(SyntaxKind.ConstKeyword)) &&
+                            IsPrivate(x)
                     );
 
             foreach (var item in selectedFields)
@@ -33,19 +33,11 @@ namespace Geeks.GeeksProductivityTools.Menus.Cleanup
 
             return output.Select(x => x.Identifier);
         }
-
         protected override string GetNewName(string currentName)
         {
-            if (currentName.StartsWith("_"))
-            {
-                currentName = currentName.TrimStart('_');
-                if (Char.IsLetter(currentName[0]))
-                {
-                    return GetCamelCased(currentName);
-                }
-            }
+            if (string.Compare(currentName, currentName.ToUpper(), false) == 0) return null;
 
-            return null;
+            return currentName.ToUpper();
         }
     }
 }

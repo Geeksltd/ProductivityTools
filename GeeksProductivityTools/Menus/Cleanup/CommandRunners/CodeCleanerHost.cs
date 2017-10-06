@@ -27,6 +27,7 @@ namespace Geeks.GeeksProductivityTools.Menus.Cleanup
                     case CodeCleanerType.CompactSmallIfElseStatementsCommand:
                     case CodeCleanerType.RemoveExtraThisQualification:
                     case CodeCleanerType.CamelCasedLocalVariable:
+                    case CodeCleanerType.CamelCasedFields:
                         invoker.Invoke(command);
                         break;
                     case CodeCleanerType.All:

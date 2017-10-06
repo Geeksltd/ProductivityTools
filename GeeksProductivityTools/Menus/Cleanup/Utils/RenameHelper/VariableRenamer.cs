@@ -21,6 +21,22 @@ namespace Geeks.GeeksProductivityTools.Menus.Cleanup
                 .Select(x => x.Identifier);
         }
 
-        protected override string GetNewName(string currentName) => GetCamelCased(currentName);
+        protected override string GetNewName(string currentName)
+        {
+            if(currentName.StartsWith("_"))
+            {
+                currentName = currentName.TrimStart('_');
+                if(Char.IsLetter(currentName[0]))
+                {
+                    return GetCamelCased(currentName);
+                }
+            }
+            else if(Char.IsLetter(currentName[0]) && Char.IsUpper(currentName[0]))
+            {
+                return GetCamelCased(currentName);
+            }
+
+            return null;
+        }
     }
 }

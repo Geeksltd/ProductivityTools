@@ -4,46 +4,47 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace Geeks.GeeksProductivityTools.Menus.Cleanup
 {
-    public class CamelCasedLocalVariable : VariableRenamingBase, ICodeCleaner
+    public class CamelCasedFields : VariableRenamingBase, ICodeCleaner
     {
         protected override SyntaxNode GetWorkingNode(SyntaxNode initialSourceNode, SyntaxAnnotation annotationForSelectedNodes)
         {
             return
                 initialSourceNode
                     .DescendantNodes()
-                    .OfType<MethodDeclarationSyntax>()
+                    .OfType<ClassDeclarationSyntax>()
                     .FirstOrDefault(m => !m.HasAnnotation(annotationForSelectedNodes));
         }
+
         protected override VariableRenamingBaseRewriter GetRewriter(Document workingDocument)
         {
             return new Rewriter(workingDocument);
         }
+
         class Rewriter : VariableRenamingBaseRewriter
         {
             public Rewriter(Document workingDocument) : base(workingDocument) { }
 
-            public override SyntaxNode VisitMethodDeclaration(MethodDeclarationSyntax node)
+            public override SyntaxNode VisitClassDeclaration(ClassDeclarationSyntax node)
             {
-                return base.VisitMethodDeclaration(RenameDeclarations(node) as MethodDeclarationSyntax);
+                return base.VisitClassDeclaration(RenameDeclarations(node) as ClassDeclarationSyntax);
             }
 
-            MethodDeclarationSyntax RenameDeclarations(MethodDeclarationSyntax methodNode)
+            ClassDeclarationSyntax RenameDeclarations(ClassDeclarationSyntax classNode)
             {
-                var renamingResult = new VariableRenamer(WorkingDocument).RenameDeclarations(methodNode);
+                var renamingResult = new FieldRenamer(WorkingDocument).RenameDeclarations(classNode);
                 if (renamingResult != null)
                 {
-                    methodNode = renamingResult.Node as MethodDeclarationSyntax;
+                    classNode = renamingResult.Node as ClassDeclarationSyntax;
                     WorkingDocument = renamingResult.Document;
                 }
 
-                renamingResult = new ParameterRenamer(WorkingDocument).RenameDeclarations(methodNode);
+                renamingResult = new CONSTRenamer(WorkingDocument).RenameDeclarations(classNode);
                 if (renamingResult != null)
                 {
-                    methodNode = renamingResult.Node as MethodDeclarationSyntax;
+                    classNode = renamingResult.Node as ClassDeclarationSyntax;
                     WorkingDocument = renamingResult.Document;
                 }
-
-                return methodNode;
+                return classNode;
             }
         }
     }

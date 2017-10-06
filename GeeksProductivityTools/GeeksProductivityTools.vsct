@@ -135,7 +135,13 @@
         <Strings>
           <ButtonText>Camel Cased Local Variable</ButtonText>
         </Strings>
-      </Button> 
+      </Button>
+      <Button guid="GuidCleanupCmdSet" id="CamelCasedFieldsCommand" priority="0x010C" type="Button">
+        <Parent guid="GuidCleanupCmdSet" id="MySubMenuGroup" />
+        <Strings>
+          <ButtonText>Camel Cased Class Fields</ButtonText>
+        </Strings>
+      </Button>
       <Button guid="GuidCleanupCmdSet" id="AllCleanUpCommand" priority="0x0135" type="Button">
         <Parent guid="GuidCleanupCmdSet" id="MySubMenuGroup" />
         <Strings>
@@ -279,6 +285,7 @@
       <IDSymbol name="CompactSmallIfElseStatementsCommand" value="0x0109" />
       <IDSymbol name="RemoveExtraThisQualificationCommand" value="0x010A" />
       <IDSymbol name="CamelCasedLocalVariableCommand" value="0x010B" />
+      <IDSymbol name="CamelCasedFieldsCommand" value="0x010C" />
       <IDSymbol name="AllCleanUpCommand" value="0x0135" />
       <IDSymbol name="MyMenuController" value="0x0136" />
       <IDSymbol name="MySubMenuGroup" value="0x0137" />

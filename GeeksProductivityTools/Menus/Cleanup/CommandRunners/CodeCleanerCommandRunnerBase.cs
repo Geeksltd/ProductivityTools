@@ -16,6 +16,8 @@ namespace Geeks.GeeksProductivityTools.Menus.Cleanup
 
             var initialSourceNode = CleanUp(ProjectItemDetails.InitialSourceNode);
 
+            if (initialSourceNode == null || initialSourceNode == ProjectItemDetails.InitialSourceNode) return;
+
             initialSourceNode.WriteSourceTo(item.ToFullPathPropertyValue());
         }
 
