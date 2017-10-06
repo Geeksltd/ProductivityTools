@@ -143,7 +143,9 @@ namespace GeeksAddin
                     .VsWorkspace
                     .CurrentSolution
                     .Projects.FirstOrDefault(p => p.Name == projectItem.ContainingProject.Name)
-                    ?.Documents.FirstOrDefault(d => d.Name == projectItem.Name);
+                    ?.Documents.FirstOrDefault(d => d.FilePath == projectItem.Document.FullName);
         }
+
+
     }
 }
