@@ -34,8 +34,9 @@
       </Group>
 
       <!--Clean-up-->
-      <Group guid="GuidCleanupCmdSet" id="CleanupContextMenuOnProject" priority="0x0000">
-        <Parent guid="guidSHLMainMenu" id="IDM_VS_CTXT_PROJNODE"/>
+
+      <Group guid="GuidCleanupCmdSet" id="CleanupContextMenuGroup" priority="0x0000">
+        <Parent guid="guidSolutionExplorerMenu" id="menuidSolutionExplorerItemMenu" />
       </Group>
       <Group guid="GuidCleanupCmdSet" id="MySubMenuGroup">
         <Parent guid="GuidCleanupCmdSet" id="MyMenuController" />
@@ -46,7 +47,8 @@
     <Menus>
 
       <Menu guid="GuidCleanupCmdSet" id="MyMenuController" type="Context">
-        <Parent guid="GuidCleanupCmdSet" id="CleanupContextMenuOnProject" />
+        <Parent guid="GuidCleanupCmdSet" id="CleanupContextMenuGroup" />
+        <CommandFlag>DynamicVisibility</CommandFlag>
         <Strings>
           <ButtonText>Clean up...</ButtonText>
         </Strings>
@@ -250,6 +252,40 @@
       </Button>
     </Buttons>
   </Commands>
+  <CommandPlacements>
+    <CommandPlacement guid="GuidCleanupCmdSet" id="CleanupContextMenuGroup" priority="0x0000">
+      <Parent guid="guidSolutionExplorerMenu" id="menuidSolutionExplorerFolderMenu" />
+    </CommandPlacement>
+    <CommandPlacement guid="GuidCleanupCmdSet" id="CleanupContextMenuGroup" priority="0x0000">
+      <Parent guid="guidSolutionExplorerMenu" id="menuidSolutionExplorerProjectMenu" />
+    </CommandPlacement>
+    <CommandPlacement guid="GuidCleanupCmdSet" id="CleanupContextMenuGroup" priority="0x0000">
+      <Parent guid="guidSolutionExplorerMenu" id="menuidSolutionExplorerSolutionMenu" />
+    </CommandPlacement>
+    <CommandPlacement guid="GuidCleanupCmdSet" id="CleanupContextMenuGroup" priority="0x0000">
+      <Parent guid="guidSolutionExplorerMenu" id="menuidSolutionExplorerWebProjectMenu" />
+    </CommandPlacement>
+    <CommandPlacement guid="GuidCleanupCmdSet" id="CleanupContextMenuGroup" priority="0x0000">
+      <Parent guid="guidSolutionExplorerMenu" id="menuidSolutionExplorerWebFolderMenu" />
+    </CommandPlacement>
+    <CommandPlacement guid="GuidCleanupCmdSet" id="CleanupContextMenuGroup" priority="0x0000">
+      <Parent guid="guidSolutionExplorerMenu" id="menuidSolutionExplorerWebItemMenu" />
+    </CommandPlacement>
+    <CommandPlacement guid="GuidCleanupCmdSet" id="CleanupContextMenuGroup" priority="0x0000">
+      <Parent guid="guidSolutionExplorerMenu" id="menuidSolutionExplorerWebSubnodeMenu" />
+    </CommandPlacement>
+    <CommandPlacement guid="GuidCleanupCmdSet" id="CleanupContextMenuGroup" priority="0x0000">
+      <Parent guid="guidSolutionExplorerMenu" id="menuidSolutionExplorerAppDesignerFolderMenu" />
+    </CommandPlacement>
+    
+    
+    <CommandPlacement guid="GuidCleanupCmdSet" id="CleanupContextMenuGroup" priority="0x0000">
+      <Parent guid="guidSolutionExplorerMenu" id="menuidCodeWindowContextMenu" />
+    </CommandPlacement>
+    <CommandPlacement guid="GuidCleanupCmdSet" id="CleanupContextMenuGroup" priority="0x0000">
+      <Parent guid="guidSolutionExplorerMenu" id="menuidEasyMdiContextMenu" />
+    </CommandPlacement>
+  </CommandPlacements>
   <KeyBindings>
     <KeyBinding guid="GuidGeeksProductivityToolsCmdSet" editor="guidVSStd97" id="cmdidAttacher" key1="P" mod1="Control Alt" />
     <KeyBinding guid="GuidGeeksProductivityToolsCmdSet" editor="guidVSStd97" id="cmdidWebFileToggle" key1="VK_F7" />
@@ -272,7 +308,7 @@
     <!--Clean-up-->
     
     <GuidSymbol name="GuidCleanupCmdSet" value="{53366ba1-1788-42c8-922a-034d6dc89b12}">
-      <IDSymbol name="CleanupContextMenuOnProject" value="0x1020" />
+      <IDSymbol name="CleanupContextMenuGroup" value="0x1020" />
       <IDSymbol name="WhiteSpaceNormalizerCommand" value="0x0100" />
       <IDSymbol name="OrganizeUsingDirectivesCommand" value="0x0101" />
       <IDSymbol name="PrivateRemoverCommand" value="0x0102" />
@@ -290,6 +326,24 @@
       <IDSymbol name="MyMenuController" value="0x0136" />
       <IDSymbol name="MySubMenuGroup" value="0x0137" />
     </GuidSymbol>
+
+    <GuidSymbol name="guidVSPackage1CmdSet" value="{cf31800b-e941-4f53-891d-65b895fa033a}">
+      <IDSymbol name="CleanupContextMenuGroup" value="0x1020" />
+    </GuidSymbol>
+    <GuidSymbol name="guidSolutionExplorerMenu" value="{D309F791-903F-11D0-9EFC-00A0C911004F}">
+      <IDSymbol name="menuidSolutionExplorerItemMenu" value="1072" />
+      <IDSymbol name="menuidSolutionExplorerFolderMenu" value="1073" />
+      <IDSymbol name="menuidSolutionExplorerProjectMenu" value="1026" />
+      <IDSymbol name="menuidSolutionExplorerSolutionMenu" value="1043" />
+      <IDSymbol name="menuidSolutionExplorerWebProjectMenu" value="1136" />
+      <IDSymbol name="menuidSolutionExplorerWebFolderMenu" value="1137" />
+      <IDSymbol name="menuidSolutionExplorerWebItemMenu" value="1138" />
+      <IDSymbol name="menuidSolutionExplorerWebSubnodeMenu" value="1140" />
+      <IDSymbol name="menuidSolutionExplorerAppDesignerFolderMenu" value="1107" />
+      <IDSymbol name="menuidCodeWindowContextMenu" value="1037" />
+      <IDSymbol name="menuidEasyMdiContextMenu" value="1067" />
+    </GuidSymbol>
+
 
     <!--/Clean-up-->
     <GuidSymbol name="GuidGeeksProductivityToolsCmdSet" value="{8d55b43e-5f7c-44dd-8b02-71c751d8c440}">

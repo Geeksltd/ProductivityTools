@@ -361,6 +361,7 @@
     <Compile Include="Definition\IconType.cs" />
     <Compile Include="Definition\MemberType.cs" />
     <Compile Include="Extensions\FileExtensions.cs" />
+    <Compile Include="Menus\ActionsOnCSharp\ActionCSharpOnAnyWhere.cs" />
     <Compile Include="Menus\ActionsOnCSharp\ActionCSharpOnProjectItem.cs" />
     <Compile Include="Menus\ActionsOnCSharp\ActionsCSharpOnFile.cs" />
     <Compile Include="Menus\ActionsOnCSharp\CSharpActionDelegate.cs" />
