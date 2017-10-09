@@ -30,11 +30,6 @@ namespace Geeks.GeeksProductivityTools.Menus.ActionsOnCSharp
                         if (selectedProject != null)
                         {
                             ActionCSharpOnProject.Invoke(action, type);
-                            //for (int subItemIndex = 1; subItemIndex <= selectedProject.ProjectItems.Count; subItemIndex++)
-                            //{
-                            //    var subItem = selectedProject.ProjectItems.Item(subItemIndex);
-                            //    ActionCSharpOnProjectItem.Action(subItem, action, type);
-                            //}
                         }
                         else
                         {
