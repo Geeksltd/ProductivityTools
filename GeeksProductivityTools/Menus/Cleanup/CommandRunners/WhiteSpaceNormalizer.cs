@@ -23,7 +23,7 @@ namespace Geeks.GeeksProductivityTools.Menus.Cleanup
             {
                 initialSourceNode = Formatter.Format(initialSourceNode, GeeksProductivityToolsPackage.Instance.VsWorkspace);
             }
-            initialSourceNode = new BlockRewriter(initialSourceNode).Visit(initialSourceNode);
+            //initialSourceNode = new BlockRewriter(initialSourceNode).Visit(initialSourceNode);
             initialSourceNode = new WhitespaceRewriter(initialSourceNode).Visit(initialSourceNode);
             return initialSourceNode;
         }
