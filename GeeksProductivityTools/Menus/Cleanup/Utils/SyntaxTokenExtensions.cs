@@ -82,5 +82,10 @@ namespace Geeks.GeeksProductivityTools.Menus.Cleanup
         {
             return item.Properties.Item("FullPath").Value.ToString();
         }
+
+        public static SyntaxToken WithoutTrivia(this SyntaxToken token)
+        {
+            return token.WithLeadingTrivia().WithTrailingTrivia();
+        }
     }
 }

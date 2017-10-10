@@ -115,7 +115,7 @@ namespace Geeks.GeeksProductivityTools
         ITextStructureNavigatorSelectorService NavigatorService = null;
 
         [Import]
-        SVsServiceProvider GlobalServiceProvider = null;
+        Microsoft.VisualStudio.Shell.SVsServiceProvider GlobalServiceProvider = null;
 
         public IMouseProcessor GetAssociatedProcessor(IWpfTextView view)
         {
