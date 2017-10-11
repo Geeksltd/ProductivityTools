@@ -50,11 +50,11 @@ namespace Geeks.GeeksProductivityTools.Menus.Cleanup
         {
             var newDocument =
                newSolution.Projects.FirstOrDefault(x => x.Name == document.Project.Name)
-               .Documents.FirstOrDefault(x => x.Name == document.Name);
+               .Documents.FirstOrDefault(x => x.FilePath == document.FilePath);
 
             var newRoot =
                 newSolution.Projects.FirstOrDefault(x => x.Name == document.Project.Name)
-                .Documents.FirstOrDefault(x => x.Name == document.Name).GetSyntaxRootAsync().Result;
+                .Documents.FirstOrDefault(x => x.FilePath == document.FilePath).GetSyntaxRootAsync().Result;
 
             return new RenameResult
             {
