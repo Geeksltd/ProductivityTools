@@ -56,7 +56,10 @@ namespace Geeks.GeeksProductivityTools.Menus.Cleanup
             var firstMethod = methods.FirstOrDefault();
             if (firstMethod == null) return classNode;
 
-            var constructors = classNode.Members.Where(x => x is ConstructorDeclarationSyntax).ToList();
+            var methodAnnotation = new SyntaxAnnotation();
+            var annotatedClassNode = classNode.ReplaceNode(firstMethod, firstMethod.WithAdditionalAnnotations(methodAnnotation));
+
+            var constructors = annotatedClassNode.Members.Where(x => x is ConstructorDeclarationSyntax).ToList();
             if (constructors.Any() == false) return classNode;
 
             var constructorsToMoveList = new List<SyntaxNode>();
@@ -69,10 +72,17 @@ namespace Geeks.GeeksProductivityTools.Menus.Cleanup
                 }
             }
 
-            return
-                classNode
-                    .RemoveNodes(constructorsToMoveList, SyntaxRemoveOptions.KeepNoTrivia)
-                    .InsertNodesBefore(firstMethod, constructorsToMoveList);
+            if(constructorsToMoveList.Any())
+            {
+                annotatedClassNode = annotatedClassNode.RemoveNodes(constructorsToMoveList, SyntaxRemoveOptions.KeepNoTrivia);
+                var annotatedMethod = annotatedClassNode.GetAnnotatedNodes(methodAnnotation).First();
+                annotatedClassNode = annotatedClassNode.InsertNodesBefore(annotatedMethod, constructorsToMoveList);
+
+                return annotatedClassNode;
+            }
+
+            return classNode;
+
         }
     }
 }
