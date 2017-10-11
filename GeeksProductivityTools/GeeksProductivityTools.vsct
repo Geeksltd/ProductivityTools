@@ -50,7 +50,7 @@
         <Parent guid="GuidCleanupCmdSet" id="CleanupContextMenuGroup" />
         <CommandFlag>DynamicVisibility</CommandFlag>
         <Strings>
-          <ButtonText>Clean up...</ButtonText>
+          <ButtonText>Clean up C#...</ButtonText>
         </Strings>
       </Menu>
 
