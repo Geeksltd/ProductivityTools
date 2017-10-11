@@ -23,6 +23,7 @@ namespace Geeks.GeeksProductivityTools.Menus.Cleanup
             {
                 initialSourceNode = Formatter.Format(initialSourceNode, GeeksProductivityToolsPackage.Instance.VsWorkspace);
             }
+
             initialSourceNode = new BlockRewriter(initialSourceNode).Visit(initialSourceNode);
             initialSourceNode = new WhitespaceRewriter(initialSourceNode).Visit(initialSourceNode);
             return initialSourceNode;
@@ -226,7 +227,14 @@ namespace Geeks.GeeksProductivityTools.Menus.Cleanup
             {
                 if (node is BlockSyntax)
                 {
-                    node = ApplyNodeChange(node as BlockSyntax);
+                    try
+                    {
+                        node = ApplyNodeChange(node as BlockSyntax);
+                    }
+                    catch (System.Exception exp)
+                    {
+
+                    }
                 }
                 return base.Visit(node);
             }
