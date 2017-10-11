@@ -117,25 +117,25 @@
       <Button guid="GuidCleanupCmdSet" id="RemoveAttributeKeyworkCommand" priority="0x0108" type="Button">
         <Parent guid="GuidCleanupCmdSet" id="MySubMenuGroup" />
         <Strings>
-          <ButtonText>Remove Attribute Keywork</ButtonText>
+          <ButtonText>Remove unnecessary &quot;Attribute&quot; (e.g. [SomethingAttribute] -&gt; [Something]</ButtonText>
         </Strings>
       </Button>
       <Button guid="GuidCleanupCmdSet" id="CompactSmallIfElseStatementsCommand" priority="0x0109" type="Button">
         <Parent guid="GuidCleanupCmdSet" id="MySubMenuGroup" />
         <Strings>
-          <ButtonText>Compact Small if/else Statements</ButtonText>
+          <ButtonText>Compact small if/else blocks</ButtonText>
         </Strings>
       </Button>
       <Button guid="GuidCleanupCmdSet" id="RemoveExtraThisQualificationCommand" priority="0x010A" type="Button">
         <Parent guid="GuidCleanupCmdSet" id="MySubMenuGroup" />
         <Strings>
-          <ButtonText>Remove Extra 'this.' Qualification</ButtonText>
+          <ButtonText>Remove unnecessary 'this.'</ButtonText>
         </Strings>
       </Button> 
       <Button guid="GuidCleanupCmdSet" id="CamelCasedLocalVariableCommand" priority="0x010B" type="Button">
         <Parent guid="GuidCleanupCmdSet" id="MySubMenuGroup" />
         <Strings>
-          <ButtonText>Camel Cased Local Variable</ButtonText>
+          <ButtonText>Local variables -&gt; camelCased</ButtonText>
         </Strings>
       </Button>
       <Button guid="GuidCleanupCmdSet" id="CamelCasedFieldsCommand" priority="0x010C" type="Button">
