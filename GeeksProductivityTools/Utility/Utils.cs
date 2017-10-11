@@ -24,9 +24,9 @@ namespace GeeksAddin
         {
             var basePaths = new List<string>();
 
-            if (app.Solution is SolutionClass solution)
+            if (app.Solution != null)
             {
-                for (var i = 1; i <= solution.Projects.Count; i++)
+                for (var i = 1; i <= app.Solution.Projects.Count; i++)
                 {
                     var projectItem = app.Solution.Projects.Item(i);
                     AddPathFromProjectItem(basePaths, projectItem);
