@@ -111,7 +111,7 @@
       <Button guid="GuidCleanupCmdSet" id="SimplifyClassFieldDeclarationsCommand" priority="0x0107" type="Button">
         <Parent guid="GuidCleanupCmdSet" id="MySubMenuGroup" />
         <Strings>
-          <ButtonText>Simplify class field declarations</ButtonText>
+          <ButtonText>Compact class field declarations</ButtonText>
         </Strings>
       </Button>
       <Button guid="GuidCleanupCmdSet" id="RemoveAttributeKeyworkCommand" priority="0x0108" type="Button">
