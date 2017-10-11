@@ -368,6 +368,7 @@
     <Compile Include="Menus\ActionsOnCSharp\ActionsCSharpOnFile.cs" />
     <Compile Include="Menus\ActionsOnCSharp\CSharpActionDelegate.cs" />
     <Compile Include="Menus\ActionsOnCSharp\DteServiceProvider.cs" />
+    <Compile Include="Menus\Cleanup\CommandRunners\CamelCasedConstFields.cs" />
     <Compile Include="Menus\Cleanup\CommandRunners\CamelCasedFields.cs" />
     <Compile Include="Menus\Cleanup\CommandRunners\CamelCasedLocalVariable.cs" />
     <Compile Include="Menus\Cleanup\CommandRunners\CleanerActionInvoker.cs" />
@@ -381,6 +382,7 @@
     <Compile Include="Menus\Cleanup\CommandRunners\ConvertMembersToExpressionBodied.cs" />
     <Compile Include="Menus\Cleanup\CommandRunners\SimplifyClassFieldDeclarations.cs" />
     <Compile Include="Menus\Cleanup\CommandRunners\CompactSmallIfElseStatements.cs" />
+    <Compile Include="Menus\Cleanup\CommandsHandlers\CamelCasedConstFieldsCommand.cs" />
     <Compile Include="Menus\Cleanup\Utils\RenameHelper\VariableRenamingBase.cs" />
     <Compile Include="Menus\Cleanup\CommandsHandlers\ActionAllCodeCleanup.cs" />
     <Compile Include="Menus\Cleanup\CommandsHandlers\CamelCasedFieldsCommand.cs" />

@@ -30,6 +30,8 @@ namespace Geeks.GeeksProductivityTools.Menus.Cleanup
                     return new CamelCasedLocalVariable();
                 case CodeCleanerType.CamelCasedFields:
                     return new CamelCasedFields();
+                case CodeCleanerType.CamelCasedConstFields:
+                    return new CamelCasedConstFields();
                 case CodeCleanerType.PrivateAccessModifier:
                     return new PrivateModifierRemover();
                 case CodeCleanerType.OrganizeUsingDirectives:

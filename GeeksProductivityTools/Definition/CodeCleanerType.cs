@@ -16,6 +16,7 @@ namespace Geeks.GeeksProductivityTools.Definition
         RemoveExtraThisQualification = 11,
         CamelCasedLocalVariable = 12,
         CamelCasedFields = 13,
+        CamelCasedConstFields = 14,
         All = 35
     }
 }

@@ -4,7 +4,7 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace Geeks.GeeksProductivityTools.Menus.Cleanup
 {
-    public class CamelCasedFields : VariableRenamingBase, ICodeCleaner
+    public class CamelCasedConstFields : VariableRenamingBase, ICodeCleaner
     {
         protected override SyntaxNode GetWorkingNode(SyntaxNode initialSourceNode, SyntaxAnnotation annotationForSelectedNodes)
         {
@@ -31,13 +31,12 @@ namespace Geeks.GeeksProductivityTools.Menus.Cleanup
 
             ClassDeclarationSyntax RenameDeclarations(ClassDeclarationSyntax classNode)
             {
-                var renamingResult = new FieldRenamer(WorkingDocument).RenameDeclarations(classNode);
+                var renamingResult = new CONSTRenamer(WorkingDocument).RenameDeclarations(classNode);
                 if (renamingResult != null)
                 {
                     classNode = renamingResult.Node as ClassDeclarationSyntax;
                     WorkingDocument = renamingResult.Document;
                 }
-
                 return classNode;
             }
         }

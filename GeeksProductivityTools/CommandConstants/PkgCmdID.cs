@@ -36,6 +36,7 @@ namespace Geeks.GeeksProductivityTools
         public const uint CmdRemoveExtraThisQualification = 0x010A;
         public const uint CmdCamelCasedLocalVariable = 0x010B;
         public const uint CmdCamelCasedFields = 0x010C;
+        public const uint CmdCamelCasedConstFields = 0x010D;
         
         public const uint CmdCleanUpAllActions = 0x0135;
     };

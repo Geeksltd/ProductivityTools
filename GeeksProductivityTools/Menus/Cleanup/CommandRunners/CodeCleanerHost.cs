@@ -15,25 +15,12 @@ namespace Geeks.GeeksProductivityTools.Menus.Cleanup
                 var invoker = new CleanerActionInvoker(item);
                 switch (command)
                 {
-                    case CodeCleanerType.PrivateAccessModifier:
-                    case CodeCleanerType.NormalizeWhiteSpaces:
-                    case CodeCleanerType.ConvertMembersToExpressionBodied:
-                    case CodeCleanerType.ConvertFullNameTypesToBuiltInTypes:
-                    case CodeCleanerType.OrganizeUsingDirectives:
-                    case CodeCleanerType.SimplyAsyncCallsCommand:
-                    case CodeCleanerType.SortClassMembersCommand:
-                    case CodeCleanerType.SimplifyClassFieldDeclarationsCommand:
-                    case CodeCleanerType.RemoveAttributeKeyworkCommand:
-                    case CodeCleanerType.CompactSmallIfElseStatementsCommand:
-                    case CodeCleanerType.RemoveExtraThisQualification:
-                    case CodeCleanerType.CamelCasedLocalVariable:
-                    case CodeCleanerType.CamelCasedFields:
-                        invoker.Invoke(command);
-                        break;
                     case CodeCleanerType.All:
                         invoker.InvokeAll();
                         break;
-                    default: break; // TODO
+                    default:
+                        invoker.Invoke(command);
+                        break;
                 }
             }
         }

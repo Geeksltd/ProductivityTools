@@ -24,7 +24,8 @@ namespace Geeks.GeeksProductivityTools.Menus.Cleanup
             var RemoveExtraThisQualificationCommandTask = CompactSmallIfElseStatementsCommandTask.ContinueWith(antecedentTask => Invoke(CodeCleanerType.RemoveExtraThisQualification));
             var CamelCasedLocalVariableTask = RemoveExtraThisQualificationCommandTask.ContinueWith(antecedentTask => Invoke(CodeCleanerType.CamelCasedLocalVariable));
             var CamelCasedFieldsTask = CamelCasedLocalVariableTask.ContinueWith(antecedentTask => Invoke(CodeCleanerType.CamelCasedFields));
-            var whiteSpaceNormalizerTask = CamelCasedFieldsTask.ContinueWith(antecedentTask => Invoke(CodeCleanerType.NormalizeWhiteSpaces));
+            var CamelCasedConstFieldsTask = CamelCasedFieldsTask.ContinueWith(antecedentTask => Invoke(CodeCleanerType.CamelCasedConstFields));
+            var whiteSpaceNormalizerTask = CamelCasedConstFieldsTask.ContinueWith(antecedentTask => Invoke(CodeCleanerType.NormalizeWhiteSpaces));
 
             Task.WaitAll(new[]
             {
