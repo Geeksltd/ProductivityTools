@@ -1,4 +1,6 @@
+using Geeks.GeeksProductivityTools.Menus.Cleanup;
 using System;
+using System.IO;
 
 namespace Geeks.GeeksProductivityTools
 {
@@ -6,6 +8,24 @@ namespace Geeks.GeeksProductivityTools
     {
         internal static void EmailError(string message)
         {
+        }
+
+        static object logObj = new object();
+        internal static void LogError(Exception exp)
+        {
+            Log(exp.ToString() + "\r\n" + exp.StackTrace + "\r\n+++++++++++++++++++++++++++++++++++\r\n");
+        }
+
+        internal static void LogError(Exception exp, EnvDTE.ProjectItem projectItem)
+        {
+            Log(projectItem.ToFullPathPropertyValue() + " : \r\n" + exp.ToString() + "\r\n" + exp.StackTrace + "\r\n+++++++++++++++++++++++++++++++++++\r\n");
+        }
+        private static void Log(string message)
+        {
+            lock (logObj)
+            {
+                File.AppendAllText("log.txt", DateTime.Now.ToString() + "\r\n" + message);
+            }
         }
 
         internal static void EmailError(Exception ex)

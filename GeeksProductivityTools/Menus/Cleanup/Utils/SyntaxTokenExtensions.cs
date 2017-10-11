@@ -80,6 +80,7 @@ namespace Geeks.GeeksProductivityTools.Menus.Cleanup
 
         public static string ToFullPathPropertyValue(this ProjectItem item)
         {
+            if (item == null) return null;
             return item.Properties.Item("FullPath").Value.ToString();
         }
 
