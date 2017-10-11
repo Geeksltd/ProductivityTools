@@ -4,6 +4,7 @@ using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using System.Collections.Generic;
 using System;
+using System.Text;
 
 namespace Geeks.GeeksProductivityTools.Menus.Cleanup
 {
@@ -35,9 +36,27 @@ namespace Geeks.GeeksProductivityTools.Menus.Cleanup
         }
         protected override string GetNewName(string currentName)
         {
+            StringBuilder newNameBuilder = new StringBuilder();
+            bool lastCharIsLowwer = false;
+            foreach (var c in currentName)
+            {
+                if (Char.IsUpper(c))
+                {
+                    if (lastCharIsLowwer)
+                    {
+                        newNameBuilder.Append("_");
+                    }
+                }
+                else
+                {
+                    lastCharIsLowwer = true;
+                }
+                newNameBuilder.Append(c);
+            }
+
             if (string.Compare(currentName, currentName.ToUpper(), false) == 0) return null;
 
-            return currentName.ToUpper();
+            return newNameBuilder.ToString().ToUpper();
         }
     }
 }
