@@ -23,7 +23,7 @@ namespace Geeks.GeeksProductivityTools.Menus.Cleanup
             {
                 initialSourceNode = Formatter.Format(initialSourceNode, GeeksProductivityToolsPackage.Instance.VsWorkspace);
             }
-            //initialSourceNode = new BlockRewriter(initialSourceNode).Visit(initialSourceNode);
+            initialSourceNode = new BlockRewriter(initialSourceNode).Visit(initialSourceNode);
             initialSourceNode = new WhitespaceRewriter(initialSourceNode).Visit(initialSourceNode);
             return initialSourceNode;
         }
@@ -218,7 +218,6 @@ namespace Geeks.GeeksProductivityTools.Menus.Cleanup
             #endregion
         }
 
-
         class BlockRewriter : CSharpSyntaxRewriterBase
         {
             public BlockRewriter(SyntaxNode initialSource) : base(initialSource) { }
@@ -234,6 +233,9 @@ namespace Geeks.GeeksProductivityTools.Menus.Cleanup
             SyntaxToken lastBlockToken = default(SyntaxToken);
             SyntaxNode ApplyNodeChange(BlockSyntax blockNode)
             {
+                if (blockNode.Parent is DestructorDeclarationSyntax) return blockNode;
+                if (blockNode.Parent is TryStatementSyntax) return blockNode;
+                if (blockNode.Parent is CatchClauseSyntax) return blockNode;
                 if (blockNode.Parent is MethodDeclarationSyntax == false && blockNode.Statements.Count == 1)
                 {
                     var singleStatement = blockNode.Statements.First();
@@ -256,7 +258,7 @@ namespace Geeks.GeeksProductivityTools.Menus.Cleanup
                     }
                 }
 
-                return base.VisitBlock(blockNode);
+                return blockNode;
             }
 
             SyntaxToken lastToken = default(SyntaxToken);
@@ -332,27 +334,8 @@ namespace Geeks.GeeksProductivityTools.Menus.Cleanup
                 return base.Visit(node);
             }
 
-            SyntaxNode ApplyNodeChange(BlockSyntax blockNode)
+            BlockSyntax ApplyNodeChange(BlockSyntax blockNode)
             {
-                if (blockNode.Parent is MethodDeclarationSyntax == false && blockNode.Statements.Count == 1)
-                {
-                    var singleStatement = blockNode.Statements.First();
-
-                    if (singleStatement.Span.Length <= BLOCK_SINGLE_STATEMENT_MAX_LENGTH)
-                    {
-                        return
-                          singleStatement
-                              .WithTrailingTrivia(
-                                  SyntaxFactory.TriviaList(
-                                      singleStatement
-                                          .GetTrailingTrivia()
-                                          .AddRange(blockNode.GetTrailingTrivia())
-                                          .Add(_endOfLineTrivia)
-                                  )
-                              );
-                    }
-                }
-
                 return
                     blockNode
                         .WithOpenBraceToken(
