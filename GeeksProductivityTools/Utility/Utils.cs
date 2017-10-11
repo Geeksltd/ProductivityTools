@@ -9,6 +9,7 @@ using EnvDTE;
 using EnvDTE80;
 using Geeks.GeeksProductivityTools;
 using Microsoft.VisualStudio.Shell.Interop;
+using Geeks.GeeksProductivityTools.Menus.Cleanup;
 
 namespace GeeksAddin
 {
@@ -143,7 +144,7 @@ namespace GeeksAddin
                     .VsWorkspace
                     .CurrentSolution
                     .Projects.FirstOrDefault(p => p.Name == projectItem.ContainingProject.Name)
-                    ?.Documents.FirstOrDefault(d => d.FilePath == projectItem.Document.FullName);
+                    ?.Documents.FirstOrDefault(d => d.FilePath == projectItem.ToFullPathPropertyValue());
         }
 
 
