@@ -1,7 +1,6 @@
 using System.Threading.Tasks;
 using EnvDTE;
 using Geeks.GeeksProductivityTools.Definition;
-using Microsoft.CodeAnalysis;
 
 namespace Geeks.GeeksProductivityTools.Menus.Cleanup
 {
@@ -30,7 +29,10 @@ namespace Geeks.GeeksProductivityTools.Menus.Cleanup
             Task.WaitAll(new[]
             {
                 whiteSpaceNormalizerTask,
+                CamelCasedConstFieldsTask,
+                CamelCasedFieldsTask,
                 CamelCasedLocalVariableTask,
+                RemoveExtraThisQualificationCommandTask,
                 CompactSmallIfElseStatementsCommandTask,
                 RemoveAttributeKeyworkCommandTask,
                 simplifyClassFieldDeclarationsCommandTask,

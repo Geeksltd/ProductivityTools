@@ -1,6 +1,7 @@
+using System.Linq;
 using EnvDTE;
 using Microsoft.CodeAnalysis;
-using RDocument = Microsoft.CodeAnalysis.Document;
+using RoslynDocument = Microsoft.CodeAnalysis.Document;
 
 namespace Geeks.GeeksProductivityTools.Menus.Cleanup
 {
@@ -8,7 +9,7 @@ namespace Geeks.GeeksProductivityTools.Menus.Cleanup
     {
         public void Run(ProjectItem item) => AsyncRun(item);
 
-        public ProjectItemDetailsType ProjectItemDetails { get; private set; }
+        public ProjectItemDetailsType ProjectItemDetails { get; protected set; }
 
         protected virtual void AsyncRun(ProjectItem item)
         {
@@ -16,25 +17,36 @@ namespace Geeks.GeeksProductivityTools.Menus.Cleanup
 
             var initialSourceNode = CleanUp(ProjectItemDetails.InitialSourceNode);
 
-            if (initialSourceNode == null || initialSourceNode == ProjectItemDetails.InitialSourceNode) return;
-
-            initialSourceNode.WriteSourceTo(item.ToFullPathPropertyValue());
+            SaveResult(initialSourceNode);
         }
 
+        protected virtual void SaveResult(SyntaxNode initialSourceNode)
+        {
+            if (initialSourceNode == null || initialSourceNode == ProjectItemDetails.InitialSourceNode) return;
+
+            if (ProjectItemDetails.ProjectItemDocument == null)
+            {
+                initialSourceNode.WriteSourceTo(ProjectItemDetails.FilePath);
+                return;
+            }
+            var newDocument = ProjectItemDetails.ProjectItemDocument.WithText(initialSourceNode.GetText());
+
+            GeeksProductivityToolsPackage.Instance.RefreshSolution(newDocument.Project.Solution);
+        }
         public abstract SyntaxNode CleanUp(SyntaxNode initialSourceNode);
 
         public class ProjectItemDetailsType
         {
             public ProjectItem ProjectItem { get; private set; }
 
-            RDocument _projectItemDocument;
-            public RDocument ProjectItemDocument
+            RoslynDocument _projectItemDocument;
+            public RoslynDocument ProjectItemDocument
             {
                 get
                 {
                     if (_projectItemDocument == null)
                     {
-                        _projectItemDocument = GeeksAddin.Utils.GetRoslynDomuentByProjectItem(ProjectItem);
+                        _projectItemDocument = GetRoslynDomuentByProjectItem(ProjectItem);
                     }
                     return _projectItemDocument;
                 }
@@ -61,6 +73,14 @@ namespace Geeks.GeeksProductivityTools.Menus.Cleanup
                 FilePath = item.ToFullPathPropertyValue();
                 ProjectItem = item;
                 InitialSourceNode = ProjectItemDocument != null ? ProjectItemDocument.GetSyntaxRootAsync().Result : item.ToSyntaxNode();
+            }
+            static RoslynDocument GetRoslynDomuentByProjectItem(ProjectItem projectItem)
+            {
+                return
+                    GeeksProductivityToolsPackage.Instance
+                        .CleanupWorkingSolution
+                        .Projects.FirstOrDefault(p => p.Name == projectItem.ContainingProject.Name)
+                        ?.Documents.FirstOrDefault(d => d.FilePath == projectItem.ToFullPathPropertyValue());
             }
         }
     }

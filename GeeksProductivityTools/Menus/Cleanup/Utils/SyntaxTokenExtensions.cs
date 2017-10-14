@@ -11,7 +11,7 @@ namespace Geeks.GeeksProductivityTools.Menus.Cleanup
 {
     public static class SyntaxTokenExtensions
     {
-        public static SyntaxNode RemovePrivateTokens(this SyntaxNode root, List<SyntaxToken> tokens, string filePath)
+        public static SyntaxNode RemovePrivateTokens(this SyntaxNode root, List<SyntaxToken> tokens)
         {
             if (!tokens.Any()) return root;
 

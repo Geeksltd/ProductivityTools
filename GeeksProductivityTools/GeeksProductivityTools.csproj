@@ -374,9 +374,9 @@
     <Compile Include="Menus\Cleanup\CommandRunners\CamelCasedConstFields.cs" />
     <Compile Include="Menus\Cleanup\CommandRunners\CamelCasedFields.cs" />
     <Compile Include="Menus\Cleanup\CommandRunners\CamelCasedLocalVariable.cs" />
-    <Compile Include="Menus\Cleanup\CommandRunners\CleanerActionInvoker.cs" />
+    <Compile Include="Menus\Cleanup\CommandRunners\Infra\CleanerActionInvoker.cs" />
     <Compile Include="Menus\Cleanup\CommandRunners\ConvertFullNameTypesToBuiltInTypes.cs" />
-    <Compile Include="Menus\Cleanup\CommandRunners\CodeCleanerCommandRunnerBase.cs" />
+    <Compile Include="Menus\Cleanup\CommandRunners\Infra\CodeCleanerCommandRunnerBase.cs" />
     <Compile Include="Menus\Cleanup\CommandRunners\RemoveAttributeKeywork.cs" />
     <Compile Include="Menus\Cleanup\CommandRunners\RemoveExtraThisQualification.cs" />
     <Compile Include="Menus\Cleanup\CommandRunners\SortClassMembers.cs" />
@@ -390,7 +390,7 @@
     <Compile Include="Menus\Cleanup\CommandsHandlers\ActionAllCodeCleanup.cs" />
     <Compile Include="Menus\Cleanup\CommandsHandlers\CamelCasedFieldsCommand.cs" />
     <Compile Include="Menus\Cleanup\CommandsHandlers\CamelCasedLocalVariableCommand.cs" />
-    <Compile Include="Menus\Cleanup\CommandsHandlers\ExtendedBaseCodeCleanupCommand.cs" />
+    <Compile Include="Menus\Cleanup\CommandsHandlers\Infra\ExtendedBaseCodeCleanupCommand.cs" />
     <Compile Include="Menus\Cleanup\CommandsHandlers\ConvertFullNameTypesToBuiltInTypesCommand.cs" />
     <Compile Include="Menus\Cleanup\CommandsHandlers\RemoveExtraThisQualificationCommand.cs" />
     <Compile Include="Menus\Cleanup\CommandsHandlers\RemoveAttributeKeyworkCommand.cs" />
@@ -403,13 +403,13 @@
     <Compile Include="Menus\Cleanup\CommandsHandlers\OrganizeUsingDirectives.cs" />
     <Compile Include="Menus\Cleanup\CommandsHandlers\PrivateModifier.cs" />
     <Compile Include="Menus\Cleanup\Utils\ActiveDocument.cs" />
-    <Compile Include="Menus\Cleanup\CommandRunners\CodeCleaner.cs" />
+    <Compile Include="Menus\Cleanup\CommandRunners\Infra\CodeCleaner.cs" />
     <Compile Include="Definition\CodeCleanerType.cs" />
     <Compile Include="Menus\Cleanup\Utils\CodeCleanerFactory.cs" />
-    <Compile Include="Menus\Cleanup\CommandRunners\CodeCleanerHost.cs" />
+    <Compile Include="Menus\Cleanup\CommandRunners\Infra\CodeCleanerHost.cs" />
     <Compile Include="Menus\Cleanup\TokenRemovers\FieldTokenRemover.cs" />
-    <Compile Include="Menus\Cleanup\CommandRunners\ICodeCleaner.cs" />
-    <Compile Include="Menus\Cleanup\CommandsHandlers\BaseCodeCleanupCommand.cs" />
+    <Compile Include="Menus\Cleanup\CommandRunners\Infra\ICodeCleaner.cs" />
+    <Compile Include="Menus\Cleanup\CommandsHandlers\Infra\BaseCodeCleanupCommand.cs" />
     <Compile Include="Menus\Cleanup\TokenRemovers\IPrivateModiferTokenRemover.cs" />
     <Compile Include="Menus\Cleanup\SyntaxNodeExtractors\ISyntaxTreeMemberExtractor.cs" />
     <Compile Include="Menus\Cleanup\TokenRemovers\MethodTokenRemover.cs" />
@@ -680,6 +680,7 @@
     <Analyzer Include="..\packages\Microsoft.CodeAnalysis.Analyzers.1.1.0\analyzers\dotnet\cs\Microsoft.CodeAnalysis.Analyzers.dll" />
     <Analyzer Include="..\packages\Microsoft.CodeAnalysis.Analyzers.1.1.0\analyzers\dotnet\cs\Microsoft.CodeAnalysis.CSharp.Analyzers.dll" />
   </ItemGroup>
+  <ItemGroup />
   <PropertyGroup>
     <UseCodebase>true</UseCodebase>
   </PropertyGroup>

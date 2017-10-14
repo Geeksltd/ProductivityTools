@@ -12,29 +12,25 @@ namespace Geeks.GeeksProductivityTools.Menus.ActionsOnCSharp
         {
             try
             {
-                var projects = DteServiceProvider.Instance.ActiveSolutionProjects as Array;
                 var ideSelectedItems = DteServiceProvider.Instance.SelectedItems;
 
                 for (int itemIndex = 1; itemIndex <= ideSelectedItems.Count; itemIndex++)
                 {
-                    var selectedProjectItem = ideSelectedItems.Item(itemIndex).ProjectItem;
+                    var selectItem = ideSelectedItems.Item(itemIndex);
+
+                    var selectedProjectItem = selectItem.ProjectItem;
 
                     if (selectedProjectItem != null)
                     {
                         ActionCSharpOnProjectItem.Action(selectedProjectItem, action, type);
                     }
+                    else if (selectItem.Project != null)
+                    {
+                        ActionCSharpOnProject.Invoke(action, type);
+                    }
                     else
                     {
-                        var selectedProject = ideSelectedItems.Item(itemIndex).Project;
-
-                        if (selectedProject != null)
-                        {
-                            ActionCSharpOnProject.Invoke(action, type);
-                        }
-                        else
-                        {
-                            ActionCSharpOnSolution.Invoke(action, type);
-                        }
+                        ActionCSharpOnSolution.Invoke(action, type);
                     }
                 }
             }

@@ -136,17 +136,5 @@ namespace GeeksAddin
 
             return false;
         }
-
-        public static Microsoft.CodeAnalysis.Document GetRoslynDomuentByProjectItem(ProjectItem projectItem)
-        {
-            return
-                GeeksProductivityToolsPackage.Instance
-                    .VsWorkspace
-                    .CurrentSolution
-                    .Projects.FirstOrDefault(p => p.Name == projectItem.ContainingProject.Name)
-                    ?.Documents.FirstOrDefault(d => d.FilePath == projectItem.ToFullPathPropertyValue());
-        }
-
-
     }
 }

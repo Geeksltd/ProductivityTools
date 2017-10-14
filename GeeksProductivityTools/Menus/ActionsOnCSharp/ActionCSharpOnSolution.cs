@@ -15,8 +15,8 @@ namespace Geeks.GeeksProductivityTools.Menus.ActionsOnCSharp
                 for (var i = 0; i < projects.Count; i++)
                 {
                     var currentProject = projects[i];
-
                     if (currentProject.ProjectItems == null) continue;
+                    if (currentProject.FullName.ToLower().EndsWith(".shproj")) continue;
 
                     for (var j = 1; j < currentProject.ProjectItems.Count; j++)
                         ActionCSharpOnProjectItem.Action(currentProject.ProjectItems.Item(j), action, type);

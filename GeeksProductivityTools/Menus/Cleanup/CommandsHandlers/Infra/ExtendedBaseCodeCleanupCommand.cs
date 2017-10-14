@@ -44,7 +44,10 @@ namespace Geeks.GeeksProductivityTools.Menus.Cleanup
             var commandGuid = (sender as OleMenuCommand).CommandID.Guid;
 
             if (commandGuid == GuidList.GuidCleanupCmdSet)
+            {
                 ActionCSharpOnAnyWhere.Invoke(desiredAction, CleanerType);
+                GeeksProductivityToolsPackage.Instance.SaveSolutionChanges();
+            }
             else return;
         }
     }

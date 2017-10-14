@@ -10,6 +10,8 @@ using Microsoft.VisualStudio.ComponentModelHost;
 using Microsoft.VisualStudio.LanguageServices;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.CodeAnalysis;
+using Geeks.GeeksProductivityTools.Menus.Cleanup;
+using System.Linq;
 
 namespace Geeks.GeeksProductivityTools
 {
@@ -29,8 +31,67 @@ namespace Geeks.GeeksProductivityTools
         EnvDTE.Events events;
 
         public static GeeksProductivityToolsPackage Instance { get; private set; }
-        public Workspace VsWorkspace { get; private set; }
+        public Workspace VsWorkspace { get; set; }
 
+        bool bResetWorkingSolution = false;
+        Solution _CleanupWorkingSolution = null;
+        public Solution CleanupWorkingSolution
+        {
+            get
+            {
+                if (bResetWorkingSolution || _CleanupWorkingSolution == null)
+                {
+                    _CleanupWorkingSolution = VsWorkspace.CurrentSolution;
+                    bResetWorkingSolution = false;
+                }
+                return _CleanupWorkingSolution;
+            }
+        }
+        public void RefreshSolution(Solution newSolution)
+        {
+            _CleanupWorkingSolution = ExtactChanges(_CleanupWorkingSolution, newSolution);
+        }
+
+        private Solution ExtactChanges(Solution oldSolution, Solution newSolution)
+        {
+            lock (Instance)
+            {
+                var pchanges = oldSolution.GetChanges(newSolution).GetProjectChanges();
+                var changedSolution = oldSolution;
+                foreach (var changedProject in pchanges)
+                {
+                    var docchanges = changedProject.GetChangedDocuments();
+                    foreach (var changedDocumentId in docchanges)
+                    {
+                        var changedDocument = changedProject.OldProject.GetDocument(changedDocumentId);
+                        var documentRoot = changedDocument.GetSyntaxRootAsync().Result;
+                        documentRoot.WriteSourceTo(changedDocument.FilePath);
+                        changedSolution = changedSolution.WithDocumentSyntaxRoot(changedDocumentId, documentRoot);
+                        {
+                            var otherSharedProjects = changedSolution.Projects.Where(p => p.Name != changedDocument.Project.Name);
+                            foreach (var otherProject in otherSharedProjects)
+                            {
+                                foreach (var documentItem in otherProject.Documents.Where(d => d.FilePath == changedDocument.FilePath))
+                                {
+                                    //var tempDocument = documentItem.WithText(documentRoot.GetText());
+                                    //var g = tempDocument.GetSyntaxRootAsync().Result;
+                                    changedSolution = changedSolution.WithDocumentText(documentItem.Id, documentRoot.GetText());
+                                }
+                            }
+                        }
+                    }
+                }
+                return changedSolution;
+            }
+        }
+
+        public void SaveSolutionChanges()
+        {
+            var changedSolution = ExtactChanges(VsWorkspace.CurrentSolution, _CleanupWorkingSolution);
+            bool b = VsWorkspace.TryApplyChanges(changedSolution);
+            _CleanupWorkingSolution = null;
+            bResetWorkingSolution = true;
+        }
         protected override void Initialize()
         {
             base.Initialize();
@@ -114,17 +175,24 @@ namespace Geeks.GeeksProductivityTools
 
         void DocumentEvents_DocumentSaved(EnvDTE.Document document)
         {
-            if (document.Name.EndsWith(".cs") ||
-                document.Name.EndsWith(".css") ||
-                document.Name.EndsWith(".js") ||
-                document.Name.EndsWith(".ts"))
+            try
             {
-                document.DTE.ExecuteCommand("Edit.FormatDocument");
+                if (document.Name.EndsWith(".cs") ||
+                    document.Name.EndsWith(".css") ||
+                    document.Name.EndsWith(".js") ||
+                    document.Name.EndsWith(".ts"))
+                {
+                    document.DTE.ExecuteCommand("Edit.FormatDocument");
+                }
+
+                if (!document.Saved) document.Save();
+
+                Menus.Typescript.OnDocumentSaved(document);
             }
+            catch
+            {
 
-            if (!document.Saved) document.Save();
-
-            Menus.Typescript.OnDocumentSaved(document);
+            }
         }
 
         void SetCommandBindings()

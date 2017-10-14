@@ -1,54 +1,24 @@
-using System.Threading.Tasks;
-using EnvDTE;
 using Microsoft.CodeAnalysis;
 
 namespace Geeks.GeeksProductivityTools.Menus.Cleanup
 {
-    public class PrivateModifierRemover : ICodeCleaner
+    public class PrivateModifierRemover : CodeCleanerCommandRunnerBase, ICodeCleaner
     {
-        public void Run(ProjectItem item) => RemoveExplicitPrivateModifiers(item);
 
-        static void RemoveExplicitPrivateModifiers(ProjectItem item)
+        public override SyntaxNode CleanUp(SyntaxNode initialSourceNode)
         {
-            var actualSourceCode = item.ToSyntaxNode();
-            var filePath = item.ToFullPathPropertyValue();
-
-            var methodRemoverTask = Task.Run(() =>
-            {
-                var updatedSourceCode = new MethodTokenRemover().Remove(actualSourceCode, filePath);
-                actualSourceCode = UpdateSourceCode(filePath, actualSourceCode, updatedSourceCode);
-            });
-
-            var fieldRemoverTask = methodRemoverTask.ContinueWith(antecedentTask =>
-            {
-                var updateSourceCode = new FieldTokenRemover().Remove(actualSourceCode, filePath);
-                actualSourceCode = UpdateSourceCode(filePath, actualSourceCode, updateSourceCode);
-            });
-
-            var propertyRemoverTask = fieldRemoverTask.ContinueWith(antecedentTask =>
-            {
-                var updateSourceCode = new PropertyTokenRemover().Remove(actualSourceCode, filePath);
-                actualSourceCode = UpdateSourceCode(filePath, actualSourceCode, updateSourceCode);
-            });
-
-            var nestedClassesRemoverTask = propertyRemoverTask.ContinueWith(antecedentTask =>
-            {
-                var updateSourceCode = new NestedClassTokenRemover().Remove(actualSourceCode, filePath);
-                actualSourceCode = UpdateSourceCode(filePath, actualSourceCode, updateSourceCode);
-            });
-
-            Task.WaitAll(new[] { nestedClassesRemoverTask, propertyRemoverTask, fieldRemoverTask, methodRemoverTask });
+            return RemoveExplicitPrivateModifiers(initialSourceNode);
         }
 
-        static SyntaxNode UpdateSourceCode(string filePath, SyntaxNode actualSourceCode, SyntaxNode updatedSourceCode)
+        SyntaxNode RemoveExplicitPrivateModifiers(SyntaxNode actualSourceCode)
         {
-            if (updatedSourceCode != null)
-            {
-                actualSourceCode = updatedSourceCode;
-                actualSourceCode.WriteSourceTo(filePath);
-            }
+            actualSourceCode = new MethodTokenRemover().Remove(actualSourceCode) ?? actualSourceCode;
+            actualSourceCode = new FieldTokenRemover().Remove(actualSourceCode) ?? actualSourceCode;
+            actualSourceCode = new PropertyTokenRemover().Remove(actualSourceCode) ?? actualSourceCode;
+            actualSourceCode = new NestedClassTokenRemover().Remove(actualSourceCode) ?? actualSourceCode;
 
             return actualSourceCode;
         }
+
     }
 }

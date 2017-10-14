@@ -4,6 +4,6 @@ namespace Geeks.GeeksProductivityTools.Menus.Cleanup
 {
     public interface IPrivateModiferTokenRemover
     {
-        SyntaxNode Remove(SyntaxNode root, string filePath);
+        SyntaxNode Remove(SyntaxNode root);
     }
 }
