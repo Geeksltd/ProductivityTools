@@ -88,6 +88,8 @@ namespace Geeks.GeeksProductivityTools.Menus.Cleanup
                         .Members
                         .OfType<FieldDeclarationSyntax>()
                         .Where(fd => fd.AttributeLists.Any() == false)
+                        .Where(fd => fd.HasStructuredTrivia == false)
+                        .Where(fd => fd.DescendantTrivia().Any(t=> t.IsKind(SyntaxKind.SingleLineCommentTrivia) || t.IsKind(SyntaxKind.MultiLineCommentTrivia))== false)
                         .Where(fd => fd.Declaration.Variables.All(x => x.Initializer == null || x.Initializer.Value is LiteralExpressionSyntax))
                         .ToList();
 
