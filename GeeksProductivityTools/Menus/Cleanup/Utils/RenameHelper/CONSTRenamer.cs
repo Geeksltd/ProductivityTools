@@ -34,7 +34,7 @@ namespace Geeks.GeeksProductivityTools.Menus.Cleanup
 
             return output.Select(x => x.Identifier);
         }
-        protected override string GetNewName(string currentName)
+        protected override string[] GetNewName(string currentName)
         {
             StringBuilder newNameBuilder = new StringBuilder();
             bool lastCharIsLowwer = false;
@@ -56,7 +56,7 @@ namespace Geeks.GeeksProductivityTools.Menus.Cleanup
 
             if (string.Compare(currentName, currentName.ToUpper(), false) == 0) return null;
 
-            return newNameBuilder.ToString().ToUpper();
+            return new[] { newNameBuilder.ToString().ToUpper() };
         }
     }
 }

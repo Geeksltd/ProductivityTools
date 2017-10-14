@@ -34,14 +34,14 @@ namespace Geeks.GeeksProductivityTools.Menus.Cleanup
             return output.Select(x => x.Identifier);
         }
 
-        protected override string GetNewName(string currentName)
+        protected override string[] GetNewName(string currentName)
         {
             if (currentName.StartsWith("_"))
             {
                 currentName = currentName.TrimStart('_');
                 if (Char.IsLetter(currentName[0]))
                 {
-                    return GetCamelCased(currentName);
+                    return new[] { GetCamelCased(currentName), GetPascalCased(currentName) };
                 }
             }
 

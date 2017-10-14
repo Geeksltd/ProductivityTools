@@ -15,6 +15,257 @@ namespace Geeks.GeeksProductivityTools.Menus.Cleanup
 {
     abstract partial class Renamer
     {
+        SemanticModel _semanticModel;
+        Document WorkingDocument { get; set; }
+
+        public Renamer(Document document)
+        {
+            WorkingDocument = document;
+            _semanticModel = WorkingDocument.GetSemanticModelAsync().Result;
+        }
+
+        public RenameResult RenameDeclarations(SyntaxNode containerNode)
+        {
+            SyntaxNode currentNode;
+            SyntaxNode newNode = containerNode;
+            RenameResult renamingResult = null;
+            RenameResult workingRenamingResult = null;
+            do
+            {
+                currentNode = newNode;
+                workingRenamingResult = RenameDeclarationNodeOfContainerNode(currentNode);
+
+                if (workingRenamingResult != null)
+                {
+                    renamingResult = workingRenamingResult;
+                    newNode = renamingResult.Node;
+                    WorkingDocument = renamingResult.Document;
+                    _semanticModel = renamingResult.Document.GetSemanticModelAsync().Result;
+                }
+            }
+            while (workingRenamingResult != null && newNode != currentNode);
+
+            return renamingResult;
+        }
+
+        IList<string> VisitedTokens = new List<string>();
+
+        RenameResult RenameDeclarationNodeOfContainerNode(SyntaxNode containerNode)
+        {
+            var filteredItemsToRenmae = GetItemsToRename(containerNode).Where(i => VisitedTokens.Contains(i.ValueText) == false);
+
+            foreach (var identifierToRename in filteredItemsToRenmae)
+            {
+                var currentName = identifierToRename.ValueText;
+                var newNames = GetNewName(currentName);
+
+                if (newNames == null) continue;
+
+                var selectedName = currentName;
+                RenameResult result = null;
+
+                foreach (var newName in newNames)
+                {
+                    var renameResult = RenameIdentifierOfContainerNode(containerNode, identifierToRename, newName);
+
+                    if (renameResult == null) continue;
+
+                    result = renameResult.Value.Key;
+                    selectedName = renameResult.Value.Value;
+                }
+
+                VisitedTokens.Add(selectedName);
+
+                if (result != null)
+                {
+                    return result;
+                }
+            }
+
+            return null;
+        }
+
+        KeyValuePair<RenameResult,string>? RenameIdentifierOfContainerNode(SyntaxNode containerNode, SyntaxToken identifierToRename, string newVarName)
+        {
+            RenameResult result = null;
+
+            var currentName = identifierToRename.ValueText;
+            string selectedName = currentName;
+
+            if (string.Compare(newVarName, currentName, false) == 0)  return null;
+            if (ValidateNewName(newVarName) == false) return null;
+
+            var identifierDeclarationNode = identifierToRename.Parent;
+
+            var identifierSymbol = _semanticModel.GetDeclaredSymbol(identifierDeclarationNode);
+
+            var validateNameResult = RenameHelper.IsValidNewMemberNameAsync(_semanticModel, identifierSymbol, newVarName).Result;
+
+            if (validateNameResult == false) return null;
+
+            result = RenameSymbol(WorkingDocument, WorkingDocument.GetSyntaxRootAsync().Result, containerNode, identifierDeclarationNode, newVarName);
+
+            if (result != null) selectedName = newVarName;
+
+            return new KeyValuePair<RenameResult, string>(result, selectedName);
+        }
+
+        //RenameResult RenameDeclarations(SyntaxNode containerNode, IdentifierStrcut identifierStrcut)
+        //{
+        //    var identifierDeclarationNode = identifierStrcut.Token.Parent;
+
+        //    var identifierSymbol = _semanticModel.GetDeclaredSymbol(identifierDeclarationNode);
+
+        //    var newVarName = identifierStrcut.NewName;
+
+        //    var validateNameResult = RenameHelper.IsValidNewMemberNameAsync(_semanticModel, identifierSymbol, newVarName).Result;
+
+        //    if (validateNameResult == false) return null;
+
+        //    return RenameSymbol(WorkingDocument, WorkingDocument.GetSyntaxRootAsync().Result, containerNode, identifierDeclarationNode, newVarName);
+        //}
+        //string[] GetNewNameWithChecking(SyntaxToken identifierToken)
+        //{
+        //    var variableName = identifierToken.ValueText;
+
+
+        //    if (newVarNames == null) return null;
+
+        //    if (string.Compare(newVarNames[0], variableName, false) == 0) return null;
+
+        //    if (ValidateNewName(newVarNames) == false) return null;
+
+        //    return newVarNames;
+        //}
+        //protected IList<IdentifierStrcut> internalGetItemsToRename(SyntaxNode currentNode)
+        //{
+        //    return
+        //        GetItemsToRename(currentNode)
+        //        .Select(
+        //            identifier =>
+        //                new IdentifierStrcut
+        //                {
+        //                    Token = identifier,
+        //                    NewName = GetNewNameWithChecking(identifier)
+        //                }
+        //        )
+        //        .Where(x => x.NewName != null)
+        //        .Where(x => VisitedTokens.Contains(x.NewName) == false)
+        //        .ToList();
+        //}
+        //RenameResult RenameDeclaration(SyntaxNode containerNode)
+        //{
+        //    foreach (var identifierToRename in GetItemsToRename(containerNode))
+        //    {
+        //        var currentName = identifierToRename.ValueText;
+        //        var newNames = GetNewName(currentName);
+
+        //        if (newNames == null) continue;
+
+        //        RenameResult result = null;
+        //        string selectedName = currentName;
+
+        //        if (VisitedTokens.Contains(currentName)) continue;
+
+        //        foreach (var newName in newNames)
+        //        {
+        //            if (string.Compare(newName, currentName, false) == 0) continue;
+        //            if (ValidateNewName(newName) == false) continue;
+
+        //            {
+        //                var identifierStrcut = new IdentifierStrcut { Token = identifierToRename, NewName = newName };
+
+        //                var identifierDeclarationNode = identifierStrcut.Token.Parent;
+
+        //                var identifierSymbol = _semanticModel.GetDeclaredSymbol(identifierDeclarationNode);
+
+        //                var newVarName = identifierStrcut.NewName;
+
+        //                var validateNameResult = RenameHelper.IsValidNewMemberNameAsync(_semanticModel, identifierSymbol, newVarName).Result;
+
+        //                if (validateNameResult == false) continue;
+
+        //                result = RenameSymbol(WorkingDocument, WorkingDocument.GetSyntaxRootAsync().Result, containerNode, identifierDeclarationNode, newVarName);
+        //            }
+
+        //            if (result != null) selectedName = newName;
+        //        }
+
+        //        VisitedTokens.Add(selectedName);
+
+        //        if (result != null)
+        //        {
+        //            return result;
+        //        }
+        //    }
+
+        //    return null;
+        //}
+        //internal class IdentifierStrcut
+        //{
+        //    public SyntaxToken Token { get; set; }
+        //    public string NewName { get; set; }
+        //}
+
+        const string KEYWORD = "Keyword";
+        Lazy<string[]> keywords =
+            new Lazy<string[]>(
+            () =>
+                Enum.GetNames(typeof(SyntaxKind))
+                    .Where(k => k.EndsWith(KEYWORD))
+                    .Select(k => k.Remove(k.Length - KEYWORD.Length).ToLower())
+                    .ToArray()
+            );
+
+        protected virtual bool ValidateNewName(string newVarName)
+        {
+            bool isValid = true;
+            isValid &= SyntaxFacts.IsValidIdentifier(newVarName);
+            isValid &= !keywords.Value.Contains(newVarName);
+            return isValid;
+        }
+        protected abstract IEnumerable<SyntaxToken> GetItemsToRename(SyntaxNode currentNode);
+        protected abstract string[] GetNewName(string currentName);
+
+
+        protected static string GetCamelCased(string variableName)
+        {
+            var noneLetterCount = variableName.TakeWhile(x => Char.IsLetter(x) == false).Count();
+            if (noneLetterCount >= variableName.Length) return variableName;
+            if (char.IsUpper(variableName[noneLetterCount]) == false) return variableName;
+
+            var newVarName =
+                variableName.Substring(0, noneLetterCount) +
+                variableName.Substring(noneLetterCount, 1).ToLower() +
+                variableName.Substring(noneLetterCount + 1);
+
+            return newVarName;
+        }
+        protected static string GetPascalCased(string variableName)
+        {
+            var noneLetterCount = variableName.TakeWhile(x => Char.IsLetter(x) == false).Count();
+            if (noneLetterCount >= variableName.Length) return variableName;
+            if (char.IsUpper(variableName[noneLetterCount]) == false) return variableName;
+
+            var newVarName =
+                variableName.Substring(0, noneLetterCount) +
+                variableName.Substring(noneLetterCount, 1).ToUpper() +
+                variableName.Substring(noneLetterCount + 1);
+
+            return newVarName;
+        }
+        protected static bool IsPrivate(FieldDeclarationSyntax x)
+        {
+            return
+                x.Modifiers.Any(m => m.IsKind(SyntaxKind.PrivateKeyword)) ||
+                x.Modifiers
+                    .Any(
+                        m =>
+                            m.IsKind(SyntaxKind.PublicKeyword) ||
+                            m.IsKind(SyntaxKind.ProtectedKeyword) ||
+                            m.IsKind(SyntaxKind.InternalKeyword)
+                    ) == false;
+        }
         const string SELECTED_METHOD_ANNOTATION = "SELECTED_METHOD_ANNOTATION";
         private static RenameResult RenameSymbol(Document document, SyntaxNode root, SyntaxNode startNode, ParameterSyntax declarationNode, string newName)
         {
@@ -92,151 +343,6 @@ namespace Geeks.GeeksProductivityTools.Menus.Cleanup
             var newSolution = await Microsoft.CodeAnalysis.Rename.Renamer.RenameSymbolAsync(annotatedSolution, symbol, newName, annotatedSolution.Workspace.Options, cancellationToken).ConfigureAwait(false);
 
             return newSolution;
-        }
-
-        SemanticModel _semanticModel;
-        Document WorkingDocument { get; set; }
-
-        public Renamer(Document document)
-        {
-            WorkingDocument = document;
-            _semanticModel = WorkingDocument.GetSemanticModelAsync().Result;
-        }
-
-        public RenameResult RenameDeclarations(SyntaxNode containerNode)
-        {
-            SyntaxNode currentNode;
-            SyntaxNode newNode = containerNode;
-            RenameResult renamingResult = null;
-            RenameResult workingRenamingResult = null;
-            do
-            {
-                currentNode = newNode;
-                workingRenamingResult = RenameDeclarations(currentNode, internalGetItemsToRename(currentNode));
-
-                if (workingRenamingResult != null)
-                {
-                    renamingResult = workingRenamingResult;
-                    newNode = renamingResult.Node;
-                    WorkingDocument = renamingResult.Document;
-                    _semanticModel = renamingResult.Document.GetSemanticModelAsync().Result;
-                }
-            }
-            while (workingRenamingResult != null && newNode != currentNode);
-
-            return renamingResult;
-        }
-
-        IList<string> VisitedTokens = new List<string>();
-        protected IList<IdentifierStrcut> internalGetItemsToRename(SyntaxNode currentNode)
-        {
-            return
-                GetItemsToRename(currentNode)
-                .Select(
-                    identifier =>
-                        new IdentifierStrcut
-                        {
-                            Token = identifier,
-                            NewName = GetNewNameWithChecking(identifier)
-                        }
-                )
-                .Where(x => x.NewName != null)
-                .Where(x => VisitedTokens.Contains(x.NewName) == false)
-                .ToList();
-        }
-        protected abstract IEnumerable<SyntaxToken> GetItemsToRename(SyntaxNode currentNode);
-        RenameResult RenameDeclarations(SyntaxNode containerNode, IList<IdentifierStrcut> identifieridentifierStrcuts)
-        {
-            foreach (var identifier in identifieridentifierStrcuts)
-            {
-                var newcontainerNode = RenameDeclarations(containerNode, identifier);
-                VisitedTokens.Add(identifier.NewName);
-
-                if (newcontainerNode != null)
-                {
-                    return newcontainerNode;
-                }
-            }
-
-            return null;
-        }
-        RenameResult RenameDeclarations(SyntaxNode containerNode, IdentifierStrcut identifierStrcut)
-        {
-            var identifierDeclarationNode = identifierStrcut.Token.Parent;
-
-            var identifierSymbol = _semanticModel.GetDeclaredSymbol(identifierDeclarationNode);
-
-            var newVarName = identifierStrcut.NewName;
-
-            var validateNameResult = RenameHelper.IsValidNewMemberNameAsync(_semanticModel, identifierSymbol, newVarName).Result;
-
-            if (validateNameResult == false) return null;
-
-            return RenameSymbol(WorkingDocument, WorkingDocument.GetSyntaxRootAsync().Result, containerNode, identifierDeclarationNode, newVarName);
-        }
-        string GetNewNameWithChecking(SyntaxToken identifierToken)
-        {
-            var variableName = identifierToken.ValueText;
-
-            var newVarName = GetNewName(variableName);
-
-            if (string.Compare(newVarName, variableName, false) == 0) return null;
-
-            if (ValidateNewName(newVarName) == false) return null;
-
-            return newVarName;
-        }
-        protected abstract string GetNewName(string currentName);
-
-        const string KEYWORD = "Keyword";
-        Lazy<string[]> keywords =
-            new Lazy<string[]>(
-            () =>
-                Enum.GetNames(typeof(SyntaxKind))
-                    .Where(k => k.EndsWith(KEYWORD))
-                    .Select(k => k.Remove(k.Length - KEYWORD.Length).ToLower())
-                    .ToArray()
-            );
-
-        protected virtual bool ValidateNewName(string newVarName)
-        {
-            bool isValid = true;
-            isValid &= SyntaxFacts.IsValidIdentifier(newVarName);
-            isValid &= !keywords.Value.Contains(newVarName);
-            return isValid;
-        }
-
-        protected static string GetCamelCased(string variableName)
-        {
-            var noneLetterCount = variableName.TakeWhile(x => Char.IsLetter(x) == false).Count();
-            if (noneLetterCount >= variableName.Length) return variableName;
-            if (char.IsUpper(variableName[noneLetterCount]) == false) return variableName;
-
-            var newVarName =
-                variableName.Substring(0, noneLetterCount) +
-                variableName.Substring(noneLetterCount, 1).ToLower() +
-                variableName.Substring(noneLetterCount + 1);
-
-            return newVarName;
-        }
-
-        protected static bool IsPrivate(FieldDeclarationSyntax x)
-        {
-            return
-                x.Modifiers.Any(m => m.IsKind(SyntaxKind.PrivateKeyword)) ||
-                x.Modifiers
-                    .Any(
-                        m =>
-                            m.IsKind(SyntaxKind.PublicKeyword) ||
-                            m.IsKind(SyntaxKind.ProtectedKeyword) ||
-                            m.IsKind(SyntaxKind.InternalKeyword)
-                    ) == false;
-        }
-
-        internal class IdentifierStrcut
-        {
-            public SyntaxToken Token { get; set; }
-            public string NewName { get; set; }
         }
     }
 }

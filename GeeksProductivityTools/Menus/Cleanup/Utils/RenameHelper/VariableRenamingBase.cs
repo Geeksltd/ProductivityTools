@@ -8,11 +8,16 @@ namespace Geeks.GeeksProductivityTools.Menus.Cleanup
     {
         const string SELECTED_METHOD_ANNOTATION = "SELECTED_Node_To_RENAME_ANNOTATION";
 
+        Document WorkingDocument, orginalDocument;
+
         public override SyntaxNode CleanUp(SyntaxNode initialSourceNode)
         {
             SyntaxAnnotation annotationForSelectedNode = new SyntaxAnnotation(SELECTED_METHOD_ANNOTATION);
-            var orginalDocument = ProjectItemDetails.ProjectItemDocument;
-            var WorkingDocument = ProjectItemDetails.ProjectItemDocument;
+            orginalDocument = ProjectItemDetails.ProjectItemDocument;
+            WorkingDocument = ProjectItemDetails.ProjectItemDocument;
+
+            if (orginalDocument == null) return initialSourceNode;
+
             SyntaxNode workingNode;
             var annotatedRoot = initialSourceNode;
             do
@@ -34,32 +39,14 @@ namespace Geeks.GeeksProductivityTools.Menus.Cleanup
 
             } while (workingNode != null);
 
-            if (SaveDocument(WorkingDocument, orginalDocument) == false)
-            {
-                return initialSourceNode;
-            }
-
             return null;
         }
-
-        bool SaveDocument(Document WorkingDocument, Document orginalDocument)
+        protected override void SaveResult(SyntaxNode initialSourceNode)
         {
-            if (WorkingDocument != orginalDocument)
+            if (string.Compare(WorkingDocument.GetTextAsync().Result.ToString(), ProjectItemDetails.InitialSourceNode.GetText().ToString(), false) != 0)
             {
-                var changedProject = WorkingDocument.Project.GetChanges(orginalDocument.Project).GetChangedDocuments().ToList();
-
-                if (changedProject.Count == 0) return false;
-
-                foreach (var documentId in changedProject)
-                {
-                    var changedDocument = WorkingDocument.Project.GetDocument(documentId);
-
-                    var changedDocumentRoot = changedDocument.GetSyntaxRootAsync().Result;
-
-                    changedDocumentRoot.WriteSourceTo(changedDocument.FilePath);
-                }
+                GeeksProductivityToolsPackage.Instance.RefreshSolution(WorkingDocument.Project.Solution);
             }
-            return true;
         }
 
         protected abstract SyntaxNode GetWorkingNode(SyntaxNode initialSourceNode, SyntaxAnnotation annotationForSelectedNodes);
