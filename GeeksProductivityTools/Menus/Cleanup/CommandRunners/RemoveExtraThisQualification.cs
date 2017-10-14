@@ -24,23 +24,15 @@ namespace Geeks.GeeksProductivityTools.Menus.Cleanup
             {
                 semanticModel = projectItemDetails.SemanticModel;
             }
-            //public override SyntaxNode VisitMemberAccessExpression(MemberAccessExpressionSyntax node)
-            //{
-            //    if (node.Expression is ThisExpressionSyntax == false) return base.VisitMemberAccessExpression(node);
-
-            //    var right = node.Name;
-            //    var symbols = semanticModel.LookupSymbols(node.SpanStart, name: right.Identifier.ValueText);
-            //    var thisItemAsMemberAccessExceptionSymbol = semanticModel.GetSymbolInfo(node).Symbol;
-            //    if (symbols.Any(x => x == thisItemAsMemberAccessExceptionSymbol))
-            //    {
-            //        return right.WithLeadingTrivia(node.GetLeadingTrivia());
-            //    }
-            //    return base.VisitMemberAccessExpression(node);
-            //}
 
             public override SyntaxNode VisitClassDeclaration(ClassDeclarationSyntax node)
             {
-                return base.VisitClassDeclaration(Remove(node));
+                if (node.Parent is ClassDeclarationSyntax == false)
+                {
+                    node = Remove(node);
+                }
+
+                return base.VisitClassDeclaration(node);
             }
 
             ClassDeclarationSyntax Remove(ClassDeclarationSyntax classNode)
@@ -53,7 +45,7 @@ namespace Geeks.GeeksProductivityTools.Menus.Cleanup
                     if (thisItem.Parent is MemberAccessExpressionSyntax thisItemAsMemberAccessException)
                     {
                         var newAccess = GetMemberAccessWithoutThis(thisItemAsMemberAccessException);
-                        if(newAccess != null)
+                        if (newAccess != null)
                         {
                             newItems.Add(thisItemAsMemberAccessException, newAccess);
                         }
