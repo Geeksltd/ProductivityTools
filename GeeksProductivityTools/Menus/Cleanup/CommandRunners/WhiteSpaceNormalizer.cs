@@ -21,10 +21,10 @@ namespace Geeks.GeeksProductivityTools.Menus.Cleanup
         {
             if (GeeksProductivityToolsPackage.Instance != null)
             {
-                initialSourceNode = Formatter.Format(initialSourceNode, GeeksProductivityToolsPackage.Instance.VsWorkspace);
+                initialSourceNode = Formatter.Format(initialSourceNode, GeeksProductivityToolsPackage.Instance.CleanupWorkingSolution.Workspace);
             }
 
-            //initialSourceNode = new BlockRewriter(initialSourceNode).Visit(initialSourceNode);
+            initialSourceNode = new BlockRewriter(initialSourceNode).Visit(initialSourceNode);
             initialSourceNode = new WhitespaceRewriter(initialSourceNode).Visit(initialSourceNode);
             return initialSourceNode;
         }
@@ -227,23 +227,27 @@ namespace Geeks.GeeksProductivityTools.Menus.Cleanup
             {
                 if (node is BlockSyntax)
                 {
-                    try
-                    {
-                        node = ApplyNodeChange(node as BlockSyntax);
-                    }
-                    catch (System.Exception exp)
-                    {
-
-                    }
+                    var newNode = ApplyNodeChange(node as BlockSyntax);
+                    return base.Visit(newNode);
                 }
                 return base.Visit(node);
             }
             SyntaxToken lastBlockToken = default(SyntaxToken);
             SyntaxNode ApplyNodeChange(BlockSyntax blockNode)
             {
+                if (blockNode.Parent is ConversionOperatorDeclarationSyntax) return blockNode;
+                if (blockNode.Parent is OperatorDeclarationSyntax) return blockNode;
+                if (blockNode.Parent is AccessorDeclarationSyntax) return blockNode;
+                if (blockNode.Parent is ConstructorDeclarationSyntax) return blockNode;
                 if (blockNode.Parent is DestructorDeclarationSyntax) return blockNode;
                 if (blockNode.Parent is TryStatementSyntax) return blockNode;
                 if (blockNode.Parent is CatchClauseSyntax) return blockNode;
+                if (blockNode.Parent is FinallyClauseSyntax) return blockNode;
+                if (blockNode.Parent is IfStatementSyntax) return blockNode;
+                if (blockNode.Parent is ElseClauseSyntax) return blockNode;
+                //if (blockNode.Parent is ParenthesizedExpressionSyntax) return blockNode;
+                if (blockNode.Parent is SimpleLambdaExpressionSyntax) return blockNode;
+                if (blockNode.Parent is ParenthesizedLambdaExpressionSyntax) return blockNode;
                 if (blockNode.Parent is MethodDeclarationSyntax == false && blockNode.Statements.Count == 1)
                 {
                     var singleStatement = blockNode.Statements.First();
