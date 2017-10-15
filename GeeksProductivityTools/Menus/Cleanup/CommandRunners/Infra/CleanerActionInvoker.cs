@@ -11,8 +11,11 @@ namespace Geeks.GeeksProductivityTools.Menus.Cleanup
 
         public void InvokeAll()
         {
-            var organizeUsingDirectiveTask = Task.Run(() => Invoke(CodeCleanerType.OrganizeUsingDirectives));
-            var privateModifiersRemoverTask = organizeUsingDirectiveTask.ContinueWith(antecedentTask => Invoke(CodeCleanerType.PrivateAccessModifier));
+            Invoke(CodeCleanerType.OrganizeUsingDirectives);
+            //var organizeUsingDirectiveTask = Task.Run(() => Invoke(CodeCleanerType.OrganizeUsingDirectives));
+            //var privateModifiersRemoverTask = organizeUsingDirectiveTask.ContinueWith(antecedentTask => Invoke(CodeCleanerType.PrivateAccessModifier));
+            //var organizeUsingDirectiveTask = Task.Run(() => Invoke(CodeCleanerType.OrganizeUsingDirectives));
+            var privateModifiersRemoverTask = Task.Run(() => Invoke(CodeCleanerType.PrivateAccessModifier));
             var membersToExpressionBodyTask = privateModifiersRemoverTask.ContinueWith(antecedentTask => Invoke(CodeCleanerType.ConvertMembersToExpressionBodied));
             var fullNameTypesToBuiltInTypesTask = membersToExpressionBodyTask.ContinueWith(antecedentTask => Invoke(CodeCleanerType.ConvertFullNameTypesToBuiltInTypes));
             var simplyAsyncCallsCommandTask = fullNameTypesToBuiltInTypesTask.ContinueWith(antecedentTask => Invoke(CodeCleanerType.SimplyAsyncCallsCommand));
@@ -41,7 +44,7 @@ namespace Geeks.GeeksProductivityTools.Menus.Cleanup
                 fullNameTypesToBuiltInTypesTask,
                 membersToExpressionBodyTask,
                 privateModifiersRemoverTask,
-                organizeUsingDirectiveTask
+                //organizeUsingDirectiveTask
             });
         }
 
