@@ -40,6 +40,11 @@ namespace Geeks.GeeksProductivityTools.Menus.Cleanup
         {
             Encoding encoding = null;
 
+            using (var reader = new StreamReader(filePath))
+            {
+                encoding = reader.CurrentEncoding;
+            }
+
             using (var reader = new FileStream(filePath, FileMode.Open, FileAccess.Read))
             {
                 byte[] bom = new byte[4];
@@ -54,15 +59,16 @@ namespace Geeks.GeeksProductivityTools.Menus.Cleanup
                 }
                 else if (bom[0] == 0xff && bom[1] == 0xfe)
                 {
-                    //encoding = new UnicodeEncoding(true);
+                    encoding = new UnicodeEncoding(false, true);
                 }
                 else if (bom[0] == 0xfe && bom[1] == 0xff)
                 {
+                    encoding = new UTF8Encoding(false);
                     //encoding = new BigEndianUnicode(true);
                 }
                 else if (bom[0] == 0 && bom[1] == 0 && bom[2] == 0xfe && bom[3] == 0xff)
                 {
-                    //encoding = new UTF32Encoding(true);
+                    encoding = new UTF32Encoding(false, true);
                 }
                 else encoding = new UTF8Encoding(false);
 
