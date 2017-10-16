@@ -88,5 +88,47 @@ namespace Geeks.GeeksProductivityTools.Menus.Cleanup
         {
             return token.WithLeadingTrivia().WithTrailingTrivia();
         }
+        public static SyntaxTriviaList WithoutWhitespaceTrivia(this SyntaxTriviaList triviaList)
+        {
+            return new SyntaxTriviaList().AddRange(triviaList.Where(t => !t.IsWhitespaceTrivia()));
+        }
+
+        public static SyntaxToken WithoutWhitespaceTrivia(this SyntaxToken token)
+        {
+            return
+                token
+                    .WithLeadingTrivia(token.LeadingTrivia.Where(t => !t.IsWhitespaceTrivia()))
+                    .WithTrailingTrivia(token.TrailingTrivia.Where(t => !t.IsWhitespaceTrivia()));
+        }
+        public static T WithoutWhitespaceTrivia<T>(this T token)
+            where T : SyntaxNode
+        {
+            return
+                token
+                    .WithLeadingTrivia(token.GetLeadingTrivia().Where(t => !t.IsWhitespaceTrivia()))
+                    .WithTrailingTrivia(token.GetTrailingTrivia().Where(t => !t.IsWhitespaceTrivia()));
+        }
+        public static bool HasNoneWhitespaceTrivia(this IEnumerable<SyntaxTrivia> triviaList)
+        {
+            return triviaList.Any(t => !t.IsWhitespaceTrivia());
+        }
+        public static bool IsWhitespaceTrivia(this SyntaxTrivia trivia)
+        {
+            return trivia.IsKind(SyntaxKind.EndOfLineTrivia) || trivia.IsKind(SyntaxKind.WhitespaceTrivia);
+        }
+        public static bool HasNoneWhitespaceTrivia(this SyntaxNode node)
+        {
+            if (node.ContainsDirectives) return true;
+            if (node.HasStructuredTrivia) return true;
+            if (node.DescendantTrivia(descendIntoTrivia: true).HasNoneWhitespaceTrivia()) return true;
+            return false;
+        }
+        public static bool HasNoneWhitespaceTrivia(this SyntaxToken token)
+        {
+            if (token.ContainsDirectives) return true;
+            if (token.HasStructuredTrivia) return true;
+            if (token.GetAllTrivia().HasNoneWhitespaceTrivia()) return true;
+            return false;
+        }
     }
 }
