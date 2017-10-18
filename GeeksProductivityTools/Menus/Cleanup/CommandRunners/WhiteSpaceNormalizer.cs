@@ -374,14 +374,6 @@ namespace Geeks.GeeksProductivityTools.Menus.Cleanup
                 else
                 {
                     triviList = CleanUpListWithDefaultWhitespaces(triviList);
-                    //var endOfLineCount =
-                    //    methodNode.GetTrailingTrivia().Count(x => x.IsKind(SyntaxKind.EndOfLineTrivia)) +
-                    //    methodNode.GetLastToken().GetNextToken().LeadingTrivia.Count(x => x.IsKind(SyntaxKind.EndOfLineTrivia));
-
-                    //if (endOfLineCount != 1)
-                    //{
-                    //    methodNode = methodNode.WithTrailingTrivia(CleanUpListWithExactNumberOfWhitespaces(triviList, 1));
-                    //}
                 }
 
                 _LastMember = methodNode;
@@ -413,6 +405,7 @@ namespace Geeks.GeeksProductivityTools.Menus.Cleanup
 
                 return statementNode;
             }
+
             StatementSyntax ApplyNodeChange(StatementSyntax statementNode)
             {
                 var triviList = statementNode.GetLeadingTrivia();
@@ -484,16 +477,6 @@ namespace Geeks.GeeksProductivityTools.Menus.Cleanup
                 _LastMember = null;
 
                 classNode = classNode.WithLeadingTrivia(triviList);
-
-
-                //var e1 = classNode.OpenBraceToken.TrailingTrivia.Count(x => x.IsKind(SyntaxKind.EndOfLineTrivia));
-                //var e2 = classNode.OpenBraceToken.GetNextToken().LeadingTrivia.Count(x => x.IsKind(SyntaxKind.EndOfLineTrivia));
-
-                //if (e1 + e2 != 1 && e1 > 0)
-                //{
-                //    classNode = classNode.WithOpenBraceToken(classNode.OpenBraceToken.WithTrailingTrivia(CleanUpListWithExactNumberOfWhitespaces(classNode.OpenBraceToken.TrailingTrivia, 1)));
-                //}
-
 
                 return classNode;
             }
