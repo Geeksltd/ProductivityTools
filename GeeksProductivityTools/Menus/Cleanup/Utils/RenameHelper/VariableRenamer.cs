@@ -18,6 +18,7 @@ namespace Geeks.GeeksProductivityTools.Menus.Cleanup
                 currentNode
                 .DescendantNodes()
                 .OfType<VariableDeclaratorSyntax>()
+                .Where(v => (v?.Parent?.Parent as LocalDeclarationStatementSyntax)?.Modifiers.Any(m => m.IsKind(Microsoft.CodeAnalysis.CSharp.SyntaxKind.ConstKeyword)) == false)
                 .Select(x => x.Identifier);
         }
 
