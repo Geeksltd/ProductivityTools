@@ -10,7 +10,7 @@ namespace Geeks.GeeksProductivityTools.Extensions
         }
         public static bool IsCSharpDesignerFile(this ProjectItem projectItem)
         {
-            return projectItem.Kind == Constants.vsProjectItemKindPhysicalFile && projectItem.Name.EndsWith(".Designer.cs");
+            return projectItem.Kind == Constants.vsProjectItemKindPhysicalFile && projectItem.Name.ToLower().EndsWith(".designer.cs");
         }        
     }
 }
