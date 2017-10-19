@@ -10,6 +10,7 @@ using System.Windows.Forms;
 using EnvDTE;
 using EnvDTE80;
 using Geeks.GeeksProductivityTools.Definition;
+using Geeks.GeeksProductivityTools.Properties;
 
 namespace Geeks.GeeksProductivityTools.Menus.Cleanup.CommandsHandlers.Infra
 {
@@ -41,6 +42,25 @@ namespace Geeks.GeeksProductivityTools.Menus.Cleanup.CommandsHandlers.Infra
             {
                 NewCheckbox((CodeCleanerType)itemValue);
             }
+
+            var choices = Settings.Default.CleanupChoices.Split(',');
+            int value = 0;
+            foreach (var item in choices)
+            {
+                if (int.TryParse(item, out value))
+                {
+                    if (Enum.IsDefined(typeof(CodeCleanerType), value))
+                    {
+                        CodeCleanerType enumValue = (CodeCleanerType)Enum.ToObject(typeof(CodeCleanerType), value);
+
+                        var foundItem = checkedListBox1.Items.OfType<CheckBoxItem>().FirstOrDefault(x => x.CleanerType == enumValue);
+
+                        if (foundItem == null) continue;
+
+                        checkedListBox1.SetItemChecked(checkedListBox1.Items.IndexOf(foundItem), true);
+                    }
+                }
+            }
         }
 
         private void NewCheckbox(CodeCleanerType itemValue)
@@ -65,8 +85,10 @@ namespace Geeks.GeeksProductivityTools.Menus.Cleanup.CommandsHandlers.Infra
 
         private void btnApply_Click(object sender, EventArgs e)
         {
-            SelectedTypes =
-                checkedListBox1.CheckedItems?.Cast<CheckBoxItem>().Select(x => x.CleanerType).ToArray();
+            SelectedTypes = checkedListBox1.CheckedItems?.Cast<CheckBoxItem>().Select(x => x.CleanerType).ToArray();
+
+            Settings.Default.CleanupChoices = string.Join(",", SelectedTypes.Select(x => (int)x));
+            Settings.Default.Save();
 
             bInsideClose = true;
             this.Close();
