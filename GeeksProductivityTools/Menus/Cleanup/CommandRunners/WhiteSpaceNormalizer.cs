@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.CodeAnalysis;
@@ -367,7 +368,7 @@ namespace Geeks.GeeksProductivityTools.Menus.Cleanup
                 {
                     triviList = CleanUpListWithExactNumberOfWhitespaces(triviList, 0, itsForCloseBrace: true);
                 }
-                else if (_LastMember is MethodDeclarationSyntax)
+                else if (_LastMember is MethodDeclarationSyntax && IsStartWithSpecialDirective(triviList) == false)
                 {
                     triviList = CleanUpListWithExactNumberOfWhitespaces(triviList, 1);
                 }
@@ -392,7 +393,7 @@ namespace Geeks.GeeksProductivityTools.Menus.Cleanup
                 {
                     triviList = CleanUpListWithExactNumberOfWhitespaces(triviList, 0);
                 }
-                else if (_lastTokenIsACloseBrace)
+                else if (_lastTokenIsACloseBrace && IsStartWithSpecialDirective(triviList) == false)
                 {
                     triviList = CleanUpListWithExactNumberOfWhitespaces(triviList, 1, itsForCloseBrace: false);
                 }
@@ -404,6 +405,21 @@ namespace Geeks.GeeksProductivityTools.Menus.Cleanup
                 statementNode = statementNode.WithLeadingTrivia(triviList);
 
                 return statementNode;
+            }
+
+            private bool IsStartWithSpecialDirective(SyntaxTriviaList leadingTriviaList)
+            {
+                var firstDirective = leadingTriviaList.SkipWhile(x => x.IsWhitespaceTrivia()).FirstOrDefault();
+
+                if (firstDirective == default(SyntaxTrivia)) return false;
+
+                if (firstDirective.IsDirective)
+                {
+                    return
+                        firstDirective.IsKind(SyntaxKind.ElseDirectiveTrivia) ||
+                        firstDirective.IsKind(SyntaxKind.EndIfDirectiveTrivia);
+                }
+                return false;
             }
 
             StatementSyntax ApplyNodeChange(StatementSyntax statementNode)
