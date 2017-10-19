@@ -27,7 +27,7 @@ namespace Geeks.GeeksProductivityTools.Menus.Cleanup
         }
 
         static SyntaxTrivia _endOfLineTrivia = default(SyntaxTrivia);
-        const int BLOCK_SINGLE_STATEMENT_MAX_LENGTH = 70;
+        public const int BLOCK_SINGLE_STATEMENT_MAX_LENGTH = 70;
 
         class CSharpSyntaxRewriterBase : CSharpSyntaxRewriter
         {
