@@ -36,7 +36,7 @@
             // 
             // btnApply
             // 
-            this.btnApply.Location = new System.Drawing.Point(113, 6);
+            this.btnApply.Location = new System.Drawing.Point(167, 6);
             this.btnApply.Name = "btnApply";
             this.btnApply.Size = new System.Drawing.Size(58, 22);
             this.btnApply.TabIndex = 1;
@@ -51,7 +51,7 @@
             this.panel1.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.panel1.Location = new System.Drawing.Point(0, 223);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(291, 37);
+            this.panel1.Size = new System.Drawing.Size(404, 37);
             this.panel1.TabIndex = 2;
             // 
             // checkedListBox1
@@ -63,14 +63,14 @@
             this.checkedListBox1.FormattingEnabled = true;
             this.checkedListBox1.Location = new System.Drawing.Point(0, 0);
             this.checkedListBox1.Name = "checkedListBox1";
-            this.checkedListBox1.Size = new System.Drawing.Size(291, 223);
+            this.checkedListBox1.Size = new System.Drawing.Size(404, 223);
             this.checkedListBox1.TabIndex = 3;
             // 
             // CleanupOptionForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(291, 260);
+            this.ClientSize = new System.Drawing.Size(404, 260);
             this.Controls.Add(this.checkedListBox1);
             this.Controls.Add(this.panel1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;

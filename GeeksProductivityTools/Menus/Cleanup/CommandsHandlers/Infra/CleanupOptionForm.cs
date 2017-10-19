@@ -29,7 +29,6 @@ namespace Geeks.GeeksProductivityTools.Menus.Cleanup.CommandsHandlers.Infra
             InitializeComponent();
             base.ShowInTaskbar = false;
             base.WindowState = FormWindowState.Normal;
-            this.FormClosed += CleanupOptionForm_FormClosed;
             this.StartPosition = FormStartPosition.CenterScreen;
             this.BackColor = Color.FromArgb(0xF0, 0xF0, 0xF0);
 
@@ -47,8 +46,8 @@ namespace Geeks.GeeksProductivityTools.Menus.Cleanup.CommandsHandlers.Infra
             NewCheckbox(CodeCleanerType.SortClassMembersCommand, "Move constructors before methods");
             NewCheckbox(CodeCleanerType.SimplifyClassFieldDeclarationsCommand, "Compact class field declarations");
             NewCheckbox(CodeCleanerType.RemoveAttributeKeyworkCommand, "Remove unnecessary \"Attribute\" (e.g. [SomethingAttribute] -> [Something]");
-            NewCheckbox(CodeCleanerType.CompactSmallIfElseStatementsCommand, ">Compact small if/else blocks");
-            NewCheckbox(CodeCleanerType.RemoveExtraThisQualification, ">Remove unnecessary 'this.'");
+            NewCheckbox(CodeCleanerType.CompactSmallIfElseStatementsCommand, "Compact small if/else blocks");
+            NewCheckbox(CodeCleanerType.RemoveExtraThisQualification, "Remove unnecessary 'this.'");
             NewCheckbox(CodeCleanerType.CamelCasedLocalVariable, "Local variables -> camelCased");
             NewCheckbox(CodeCleanerType.CamelCasedFields, "\"_something\" -> \"Something\" or \"something\"");
             NewCheckbox(CodeCleanerType.CamelCasedConstFields, "Const names \"Something\" -> \"SOME_THING\"");
@@ -105,13 +104,8 @@ namespace Geeks.GeeksProductivityTools.Menus.Cleanup.CommandsHandlers.Infra
 
         private void btnApply_Click(object sender, EventArgs e)
         {
-            this.Close();
-        }
-
-
-        private void CleanupOptionForm_FormClosed(object sender, FormClosedEventArgs e)
-        {
             ApplyCleanup();
+            this.Close();
         }
 
         public class CheckBoxItem
