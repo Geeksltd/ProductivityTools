@@ -386,6 +386,13 @@
     <Compile Include="Menus\Cleanup\CommandRunners\SimplifyClassFieldDeclarations.cs" />
     <Compile Include="Menus\Cleanup\CommandRunners\CompactSmallIfElseStatements.cs" />
     <Compile Include="Menus\Cleanup\CommandsHandlers\CamelCasedConstFieldsCommand.cs" />
+    <Compile Include="Menus\Cleanup\CommandsHandlers\Infra\ActionCustomCodeCleanup.cs" />
+    <Compile Include="Menus\Cleanup\CommandsHandlers\Infra\CleanupOptionForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Menus\Cleanup\CommandsHandlers\Infra\CleanupOptionForm.Designer.cs">
+      <DependentUpon>CleanupOptionForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Menus\Cleanup\Utils\RenameHelper\VariableRenamingBase.cs" />
     <Compile Include="Menus\Cleanup\CommandsHandlers\ActionAllCodeCleanup.cs" />
     <Compile Include="Menus\Cleanup\CommandsHandlers\CamelCasedFieldsCommand.cs" />
@@ -559,6 +566,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="FileFinder\FormOptions.resx">
       <DependentUpon>FormOptions.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Menus\Cleanup\CommandsHandlers\Infra\CleanupOptionForm.resx">
+      <DependentUpon>CleanupOptionForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Resources.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>

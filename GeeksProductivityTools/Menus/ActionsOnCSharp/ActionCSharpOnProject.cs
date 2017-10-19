@@ -8,7 +8,7 @@ namespace Geeks.GeeksProductivityTools.Menus.ActionsOnCSharp
 {
     public class ActionCSharpOnProject
     {
-        public static void Invoke(TargetAction action, Definition.CodeCleanerType type)
+        public static void Invoke(TargetAction action, Definition.CodeCleanerType[] type)
         {
             try
             {

@@ -6,7 +6,7 @@ namespace Geeks.GeeksProductivityTools.Menus.ActionsOnCSharp
 {
     public class ActionCSharpOnSolution
     {
-        public static void Invoke(TargetAction action, Definition.CodeCleanerType type)
+        public static void Invoke(TargetAction action, Definition.CodeCleanerType[] type)
         {
             try
             {

@@ -1,5 +1,4 @@
 using System;
-using System.ComponentModel.Design;
 using System.Windows.Forms;
 using Geeks.GeeksProductivityTools.Definition;
 using Geeks.GeeksProductivityTools.Menus.ActionsOnCSharp;
@@ -10,22 +9,12 @@ namespace Geeks.GeeksProductivityTools.Menus.Cleanup
 {
     public abstract class ExtendedBaseCodeCleanupCommand : BaseCodeCleanupCommand
     {
-        protected OleMenuCommandService Menu { get; private set; }
-        protected uint CommandID { get; private set; }
         protected CodeCleanerType CleanerType { get; private set; }
 
-        protected ExtendedBaseCodeCleanupCommand(OleMenuCommandService menu, uint commandID, CodeCleanerType cleanerType)
+        protected ExtendedBaseCodeCleanupCommand(OleMenuCommandService menu, uint commandID, CodeCleanerType cleanerType) 
+            : base(menu, commandID)
         {
-            Menu = menu;
-            CommandID = commandID;
             CleanerType = cleanerType;
-        }
-        public override void SetupCommands()
-        {
-            var menuCommandID = new CommandID(GuidList.GuidCleanupCmdSet, (int)CommandID);
-            var menuItem = new OleMenuCommand(CallBack, menuCommandID);
-            menuItem.BeforeQueryStatus += Item_BeforeQueryStatus;
-            Menu.AddCommand(menuItem);
         }
 
         protected override void CallBack(object sender, EventArgs e)
@@ -45,7 +34,7 @@ namespace Geeks.GeeksProductivityTools.Menus.Cleanup
 
             if (commandGuid == GuidList.GuidCleanupCmdSet)
             {
-                ActionCSharpOnAnyWhere.Invoke(desiredAction, CleanerType);
+                ActionCSharpOnAnyWhere.Invoke(desiredAction, new[] { CleanerType });
                 GeeksProductivityToolsPackage.Instance.SaveSolutionChanges();
             }
             else return;

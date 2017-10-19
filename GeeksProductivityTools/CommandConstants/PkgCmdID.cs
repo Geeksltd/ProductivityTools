@@ -39,5 +39,6 @@ namespace Geeks.GeeksProductivityTools
         public const uint CmdCamelCasedConstFields = 0x010D;
         
         public const uint CmdCleanUpAllActions = 0x0135;
+        public const uint CmdCustomUpAllActions = 0x0138;
     };
 }

@@ -8,7 +8,7 @@ namespace Geeks.GeeksProductivityTools.Menus.ActionsOnCSharp
 {
     public class ActionsCSharpOnFile
     {
-        public static void DoCleanup(ProjectItem item, CodeCleanerType actionType)
+        public static void DoCleanup(ProjectItem item, CodeCleanerType[] actionType)
         {
             try
             {
@@ -18,7 +18,10 @@ namespace Geeks.GeeksProductivityTools.Menus.ActionsOnCSharp
                 var window = item.Open(Constants.vsViewKindCode);
 
                 window.Activate();
-                CodeCleanerHost.Run(item, actionType);
+                foreach (var actionTypeItem in actionType)
+                {
+                    CodeCleanerHost.Run(item, actionTypeItem);
+                }
                 window.Close(vsSaveChanges.vsSaveChangesYes);
             }
             catch (Exception e)

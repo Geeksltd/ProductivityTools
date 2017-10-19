@@ -8,7 +8,7 @@ namespace Geeks.GeeksProductivityTools.Menus.ActionsOnCSharp
 {
     public class ActionCSharpOnAnyWhere
     {
-        public static void Invoke(TargetAction action, Definition.CodeCleanerType type)
+        public static void Invoke(TargetAction action, Definition.CodeCleanerType[] type)
         {
             try
             {
@@ -41,7 +41,7 @@ namespace Geeks.GeeksProductivityTools.Menus.ActionsOnCSharp
             }
         }
 
-        private static void DoActionForItems(ProjectItems projectItems, TargetAction action, CodeCleanerType type)
+        private static void DoActionForItems(ProjectItems projectItems, TargetAction action, CodeCleanerType[] type)
         {
             for (int subItemIndex = 1; subItemIndex <= projectItems.Count; subItemIndex++)
             {
