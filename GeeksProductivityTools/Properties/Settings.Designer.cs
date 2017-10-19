@@ -147,7 +147,7 @@ namespace Geeks.GeeksProductivityTools.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
         public string CleanupChoices {
             get {
                 return ((string)(this["CleanupChoices"]));

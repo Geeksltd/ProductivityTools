@@ -39,20 +39,12 @@
         <Parent guid="guidSolutionExplorerMenu" id="menuidSolutionExplorerItemMenu" />
       </Group>
       <Group guid="GuidCleanupCmdSet" id="MySubMenuGroup">
-        <Parent guid="GuidCleanupCmdSet" id="MyMenuController" />
+        <Parent guid="GuidCleanupCmdSet" id="CustomCleanUpCommand" />
       </Group>
     </Groups>
     <!--/Clean-up-->
 
     <Menus>
-
-      <Menu guid="GuidCleanupCmdSet" id="MyMenuController" type="Context">
-        <Parent guid="GuidCleanupCmdSet" id="CleanupContextMenuGroup" />
-        <CommandFlag>DynamicVisibility</CommandFlag>
-        <Strings>
-          <ButtonText>Clean up C#...</ButtonText>
-        </Strings>
-      </Menu>
 
       <Menu guid="GuidGeeksProductivityToolsCmdSet" id="GeeksSubMenu" priority="0x0000" type="Menu">
         <Parent guid="guidSHLMainMenu" id="IDG_VS_TOOLS_OTHER2" />
@@ -64,106 +56,14 @@
     </Menus>
 
     <Buttons>
-      <!--Clean-up-->
+      <Button guid="GuidCleanupCmdSet" id="CustomCleanUpCommand" priority="0x0100" type="Button">
+        <Parent guid="GuidCleanupCmdSet" id="CleanupContextMenuGroup" />
+        <CommandFlag>DynamicVisibility</CommandFlag>
+        <Strings>
+          <ButtonText>Clean up C#...</ButtonText>
+        </Strings>
+      </Button>
       
-      <Button guid="GuidCleanupCmdSet" id="WhiteSpaceNormalizerCommand" priority="0x0100" type="Button">
-        <Parent guid="GuidCleanupCmdSet" id="MySubMenuGroup" />
-        <Strings>
-          <ButtonText>Normalize white spaces</ButtonText>
-        </Strings>
-      </Button>
-      <Button guid="GuidCleanupCmdSet" id="AllCleanUpCommand" priority="0x0101" type="Button">
-        <Parent guid="GuidCleanupCmdSet" id="MySubMenuGroup" />
-        <Strings>
-          <ButtonText>All</ButtonText>
-        </Strings>
-      </Button>
-      <Button guid="GuidCleanupCmdSet" id="CustomCleanUpCommand" priority="0x0102" type="Button">
-        <Parent guid="GuidCleanupCmdSet" id="MySubMenuGroup" />
-        <Strings>
-          <ButtonText>Custom</ButtonText>
-        </Strings>
-      </Button>
-      <Button guid="GuidCleanupCmdSet" id="OrganizeUsingDirectivesCommand" priority="0x0103" type="Button">
-        <Parent guid="GuidCleanupCmdSet" id="MySubMenuGroup" />
-        <Strings>
-          <ButtonText>Remove and sort Usings</ButtonText>
-        </Strings>
-      </Button>
-      <Button guid="GuidCleanupCmdSet" id="PrivateRemoverCommand" priority="0x0104" type="Button">
-        <Parent guid="GuidCleanupCmdSet" id="MySubMenuGroup" />
-        <Strings>
-          <ButtonText>Remove unnecessary &quot;private&quot;</ButtonText>
-        </Strings>
-      </Button>
-      <Button guid="GuidCleanupCmdSet" id="ConvertMembersToExpressionBodiedCommand" priority="0x0105" type="Button">
-        <Parent guid="GuidCleanupCmdSet" id="MySubMenuGroup" />
-        <Strings>
-          <ButtonText>Small methods &amp; properties -&gt; Expression bodied</ButtonText>
-        </Strings>
-      </Button>
-      <Button guid="GuidCleanupCmdSet" id="ConvertFullNameTypesToBuiltInTypesCommand" priority="0x0106" type="Button">
-        <Parent guid="GuidCleanupCmdSet" id="MySubMenuGroup" />
-        <Strings>
-          <ButtonText>Use C# alias type names (e.g. "System.Int32" -&gt; "int")</ButtonText>
-        </Strings>
-      </Button>
-      <Button guid="GuidCleanupCmdSet" id="SimplyAsyncCallsCommand" priority="0x0107" type="Button">
-        <Parent guid="GuidCleanupCmdSet" id="MySubMenuGroup" />
-        <Strings>
-          <ButtonText>Simply async calls</ButtonText>
-        </Strings>
-      </Button>
-      <Button guid="GuidCleanupCmdSet" id="SortClassMembersCommand" priority="0x0108" type="Button">
-        <Parent guid="GuidCleanupCmdSet" id="MySubMenuGroup" />
-        <Strings>
-          <ButtonText>Move constructors before methods</ButtonText>
-        </Strings>
-      </Button>
-      <Button guid="GuidCleanupCmdSet" id="SimplifyClassFieldDeclarationsCommand" priority="0x0109" type="Button">
-        <Parent guid="GuidCleanupCmdSet" id="MySubMenuGroup" />
-        <Strings>
-          <ButtonText>Compact class field declarations</ButtonText>
-        </Strings>
-      </Button>
-      <Button guid="GuidCleanupCmdSet" id="RemoveAttributeKeyworkCommand" priority="0x010A" type="Button">
-        <Parent guid="GuidCleanupCmdSet" id="MySubMenuGroup" />
-        <Strings>
-          <ButtonText>Remove unnecessary &quot;Attribute&quot; (e.g. [SomethingAttribute] -&gt; [Something]</ButtonText>
-        </Strings>
-      </Button>
-      <Button guid="GuidCleanupCmdSet" id="CompactSmallIfElseStatementsCommand" priority="0x010B" type="Button">
-        <Parent guid="GuidCleanupCmdSet" id="MySubMenuGroup" />
-        <Strings>
-          <ButtonText>Compact small if/else blocks</ButtonText>
-        </Strings>
-      </Button>
-      <Button guid="GuidCleanupCmdSet" id="RemoveExtraThisQualificationCommand" priority="0x010C" type="Button">
-        <Parent guid="GuidCleanupCmdSet" id="MySubMenuGroup" />
-        <Strings>
-          <ButtonText>Remove unnecessary 'this.'</ButtonText>
-        </Strings>
-      </Button> 
-      <Button guid="GuidCleanupCmdSet" id="CamelCasedLocalVariableCommand" priority="0x010D" type="Button">
-        <Parent guid="GuidCleanupCmdSet" id="MySubMenuGroup" />
-        <Strings>
-          <ButtonText>Local variables -&gt; camelCased</ButtonText>
-        </Strings>
-      </Button>
-      <Button guid="GuidCleanupCmdSet" id="CamelCasedFieldsCommand" priority="0x010E" type="Button">
-        <Parent guid="GuidCleanupCmdSet" id="MySubMenuGroup" />
-        <Strings>
-          <ButtonText>"_something" -> "Something" or "something"</ButtonText>
-        </Strings>
-      </Button>
-      <Button guid="GuidCleanupCmdSet" id="CamelCasedConstFieldsCommand" priority="0x010F" type="Button">
-        <Parent guid="GuidCleanupCmdSet" id="MySubMenuGroup" />
-        <Strings>
-          <ButtonText>Const names "Something" -> "SOME_THING"</ButtonText>
-        </Strings>
-      </Button>
-      <!--/Clean-up-->
-
       <Button guid="GuidOpenInMSharpSlnCmdSet" id="cmdOpenInMSharpSln" priority="0x0100" type="Button">
         <Parent guid="GuidOpenInMSharpSlnCmdSet" id="OpenInMSharpSlnCmdSetContextMenuGroup" />
         <CommandFlag>DynamicVisibility</CommandFlag>
@@ -321,22 +221,6 @@
     
     <GuidSymbol name="GuidCleanupCmdSet" value="{53366ba1-1788-42c8-922a-034d6dc89b12}">
       <IDSymbol name="CleanupContextMenuGroup" value="0x1020" />
-      <IDSymbol name="WhiteSpaceNormalizerCommand" value="0x0100" />
-      <IDSymbol name="OrganizeUsingDirectivesCommand" value="0x0101" />
-      <IDSymbol name="PrivateRemoverCommand" value="0x0102" />
-      <IDSymbol name="ConvertMembersToExpressionBodiedCommand" value="0x0103" />
-      <IDSymbol name="ConvertFullNameTypesToBuiltInTypesCommand" value="0x0104" />
-      <IDSymbol name="SimplyAsyncCallsCommand" value="0x0105" />
-      <IDSymbol name="SortClassMembersCommand" value="0x0106" />
-      <IDSymbol name="SimplifyClassFieldDeclarationsCommand" value="0x0107" />
-      <IDSymbol name="RemoveAttributeKeyworkCommand" value="0x0108" />
-      <IDSymbol name="CompactSmallIfElseStatementsCommand" value="0x0109" />
-      <IDSymbol name="RemoveExtraThisQualificationCommand" value="0x010A" />
-      <IDSymbol name="CamelCasedLocalVariableCommand" value="0x010B" />
-      <IDSymbol name="CamelCasedFieldsCommand" value="0x010C" />
-      <IDSymbol name="CamelCasedConstFieldsCommand" value="0x010D" />
-      <IDSymbol name="AllCleanUpCommand" value="0x0135" />
-      <IDSymbol name="MyMenuController" value="0x0136" />
       <IDSymbol name="MySubMenuGroup" value="0x0137" />
       <IDSymbol name="CustomCleanUpCommand" value="0x0138" />
     </GuidSymbol>

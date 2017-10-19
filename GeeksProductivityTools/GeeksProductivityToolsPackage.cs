@@ -146,21 +146,6 @@ namespace Geeks.GeeksProductivityTools
                 new Menus.Typescript(menuCommandService).SetupCommands();
                 new Menus.RunBatchFiles(menuCommandService).SetupCommands();
 
-                new Menus.Cleanup.PrivateModifier(menuCommandService).SetupCommands();
-                new Menus.Cleanup.NormalizeWhiteSpaceCommand(menuCommandService).SetupCommands();
-                new Menus.Cleanup.ConvertMembersToExpressionBodiedCommand(menuCommandService).SetupCommands();
-                new Menus.Cleanup.ConvertFullNameTypesToBuiltInTypesCommand(menuCommandService).SetupCommands();
-                new Menus.Cleanup.SimplyAsyncCallsCommand(menuCommandService).SetupCommands();
-                new Menus.Cleanup.SortClassMembersCommand(menuCommandService).SetupCommands();
-                new Menus.Cleanup.SimplifyClassFieldDeclarationsCommand(menuCommandService).SetupCommands();
-                new Menus.Cleanup.CompactSmallIfElseStatementsCommand(menuCommandService).SetupCommands();
-                new Menus.Cleanup.RemoveAttributeKeyworkCommand(menuCommandService).SetupCommands();
-                new Menus.Cleanup.RemoveExtraThisQualificationCommand(menuCommandService).SetupCommands();
-                new Menus.Cleanup.CamelCasedLocalVariableCommand(menuCommandService).SetupCommands();
-                new Menus.Cleanup.CamelCasedFieldsCommand(menuCommandService).SetupCommands();
-                new Menus.Cleanup.CamelCasedConstFieldsCommand(menuCommandService).SetupCommands();
-                new Menus.Cleanup.OrganizeUsingDirectives(menuCommandService).SetupCommands();
-                new Menus.Cleanup.ActionAllCodeCleanup(menuCommandService).SetupCommands();
                 new Menus.Cleanup.ActionCustomCodeCleanup(menuCommandService).SetupCommands();
             }
 
