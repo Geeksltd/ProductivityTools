@@ -58,6 +58,7 @@ namespace Geeks.GeeksProductivityTools.Menus.Cleanup
             if (method.Modifiers.Any(x => x.IsKind(SyntaxKind.AsyncKeyword)) == false) return method;
             if (method.Body == null) return method;
             if (method.ReturnType.WithoutTrivia().ToFullString() == typeof(Task).Name) return method;
+            if (method.ReturnType.WithoutTrivia().ToFullString() == "void") return method;
             if (method.Body.Statements.Count != 1) return method;
 
             var singleStatement = method.Body.Statements.First();

@@ -17,11 +17,12 @@ namespace Geeks.GeeksProductivityTools.Menus.Cleanup
 
         public static SyntaxNode CompactSmallIfElseStatementsHelper(SyntaxNode initialSourceNode)
         {
-            initialSourceNode = new Rewriter(initialSourceNode).Visit(initialSourceNode);
-            if (GeeksProductivityToolsPackage.Instance != null)
+            var newRoot = new Rewriter(initialSourceNode).Visit(initialSourceNode);
+
+            if (newRoot != initialSourceNode && GeeksProductivityToolsPackage.Instance != null)
             {
                 initialSourceNode = Formatter.Format(initialSourceNode, GeeksProductivityToolsPackage.Instance.CleanupWorkingSolution.Workspace);
-            }
+            }                           
             return initialSourceNode;
         }
 
@@ -92,7 +93,6 @@ namespace Geeks.GeeksProductivityTools.Menus.Cleanup
 
             private bool CanCleanupIF(IfStatementSyntax originalIfNode)
             {
-                if (originalIfNode.HasNoneWhitespaceTrivia()) return false;
                 if (originalIfNode.DescendantTrivia(descendIntoTrivia: true).Any(t => t.IsKind(SyntaxKind.EndOfLineTrivia)) == false) return false;
                 return true;
             }
@@ -112,7 +112,17 @@ namespace Geeks.GeeksProductivityTools.Menus.Cleanup
 
                 if (singleStatementInsideIf is ReturnStatementSyntax returnStatement)
                 {
-                    if (returnStatement.Expression == null || returnStatement.Expression is LiteralExpressionSyntax || returnStatement.Expression.Span.Length <= MAX_RETURN_STATEMENT_LENGTH) return newIf;
+                    if
+                    (
+                        returnStatement.Expression == null ||
+                        (
+                            newIf.WithElse(null).Span.Length <= MAX_IF_LINE_LENGTH
+                            &&
+                            (returnStatement.Expression is LiteralExpressionSyntax || returnStatement.Expression.Span.Length <= MAX_RETURN_STATEMENT_LENGTH)
+                        )
+                    )
+                        return newIf;
+
                     if (singleStatementInsideIf.WithoutTrivia().DescendantTrivia().Any(t => t.IsKind(SyntaxKind.EndOfLineTrivia))) return orginalIFnode;
                     if (newIf.WithElse(null).WithoutTrivia().Span.Length <= MAX_IF_LINE_LENGTH) return newIf;
                     return orginalIFnode;

@@ -322,8 +322,7 @@ namespace Geeks.GeeksProductivityTools.Menus.Cleanup
                 }
                 else if (node is MemberDeclarationSyntax)
                 {
-                    triviList = CleanUpListWithDefaultWhitespaces(triviList);
-                    node = node.WithLeadingTrivia(triviList);
+                    node = ApplyNodeChange(node as MemberDeclarationSyntax);
                     _LastMember = node as MemberDeclarationSyntax;
                 }
                 else if (node is BlockSyntax)
@@ -366,7 +365,7 @@ namespace Geeks.GeeksProductivityTools.Menus.Cleanup
 
                 if (_lastTokenIsAOpenBrace)
                 {
-                    triviList = CleanUpListWithDefaultWhitespaces(triviList);
+                    triviList = CleanUpListWithExactNumberOfWhitespaces(triviList, 0, itsForCloseBrace: true);
                 }
                 else if (_LastMember is MethodDeclarationSyntax)
                 {
@@ -382,6 +381,29 @@ namespace Geeks.GeeksProductivityTools.Menus.Cleanup
                 methodNode = methodNode.WithLeadingTrivia(triviList);
 
                 return methodNode;
+            }
+            MemberDeclarationSyntax ApplyNodeChange(MemberDeclarationSyntax statementNode)
+            {
+                var triviList = statementNode.GetLeadingTrivia();
+
+                var zeroCondition = _lastTokenIsAOpenBrace || _lastToken == default(SyntaxToken);
+
+                if (zeroCondition)
+                {
+                    triviList = CleanUpListWithExactNumberOfWhitespaces(triviList, 0);
+                }
+                else if (_lastTokenIsACloseBrace)
+                {
+                    triviList = CleanUpListWithExactNumberOfWhitespaces(triviList, 1, itsForCloseBrace: false);
+                }
+                else
+                {
+                    triviList = CleanUpListWithDefaultWhitespaces(triviList);
+                }
+
+                statementNode = statementNode.WithLeadingTrivia(triviList);
+
+                return statementNode;
             }
 
             StatementSyntax ApplyNodeChange(StatementSyntax statementNode)

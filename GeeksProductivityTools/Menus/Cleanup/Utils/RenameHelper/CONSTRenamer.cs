@@ -18,24 +18,43 @@ namespace Geeks.GeeksProductivityTools.Menus.Cleanup
         {
             List<VariableDeclaratorSyntax> output = new List<VariableDeclaratorSyntax>();
 
-            var selectedFields =
-                (currentNode as ClassDeclarationSyntax)
-                    .Members.OfType<FieldDeclarationSyntax>()
-                    .Where(
-                        x =>
-                            x.Modifiers.Any(m => m.IsKind(SyntaxKind.ConstKeyword)) &&
-                            IsPrivate(x)
-                    );
-
-            foreach (var item in selectedFields)
             {
-                output.AddRange(item.Declaration.Variables);
+
+                var selectedFields =
+                    (currentNode as ClassDeclarationSyntax)
+                        .Members.OfType<FieldDeclarationSyntax>()
+                        .Where(
+                            x =>
+                                x.Modifiers.Any(m => m.IsKind(SyntaxKind.ConstKeyword)) &&
+                                IsPrivate(x)
+                        );
+
+                foreach (var item in selectedFields)
+                {
+                    output.AddRange(item.Declaration.Variables);
+                }
+            }
+            {
+                var selectedFields =
+                    (currentNode as ClassDeclarationSyntax)
+                        .DescendantNodes().OfType<LocalDeclarationStatementSyntax>()
+                        .Where(
+                            x =>
+                                x.Modifiers.Any(m => m.IsKind(SyntaxKind.ConstKeyword))
+                        );
+
+                foreach (var item in selectedFields)
+                {
+                    output.AddRange(item.Declaration.Variables);
+                }
             }
 
             return output.Select(x => x.Identifier);
         }
         protected override string[] GetNewName(string currentName)
         {
+            const char UNDERLINE = '_';
+
             StringBuilder newNameBuilder = new StringBuilder();
             bool lastCharIsLowwer = false;
             foreach (var c in currentName)
@@ -44,10 +63,11 @@ namespace Geeks.GeeksProductivityTools.Menus.Cleanup
                 {
                     if (lastCharIsLowwer)
                     {
-                        newNameBuilder.Append("_");
+                        newNameBuilder.Append(UNDERLINE);
                     }
+                    lastCharIsLowwer = false;
                 }
-                else
+                else if (c != UNDERLINE)
                 {
                     lastCharIsLowwer = true;
                 }
