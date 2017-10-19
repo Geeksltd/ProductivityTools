@@ -87,6 +87,8 @@ namespace Geeks.GeeksProductivityTools.Menus.Cleanup.CommandsHandlers.Infra
         {
             SelectedTypes = checkedListBox1.CheckedItems?.Cast<CheckBoxItem>().Select(x => x.CleanerType).ToArray();
 
+            SelectedTypes = SortSelectedTypes(SelectedTypes);
+
             Settings.Default.CleanupChoices = string.Join(",", SelectedTypes.Select(x => (int)x));
             Settings.Default.Save();
 
@@ -94,14 +96,17 @@ namespace Geeks.GeeksProductivityTools.Menus.Cleanup.CommandsHandlers.Infra
             this.Close();
         }
 
+        private CodeCleanerType[] SortSelectedTypes(CodeCleanerType[] selectedTypes)
+        {
+            return selectedTypes.OrderByDescending(x => (int)x).ToArray();
+        }
+
         private void btnReset_Click(object sender, EventArgs e)
         {
-
             for (int i = 0; i < checkedListBox1.Items.Count; i++)
             {
                 checkedListBox1.SetItemChecked(i, false);
             }
-
         }
 
         bool bInsideClose = false;
