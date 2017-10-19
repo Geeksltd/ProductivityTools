@@ -3,8 +3,8 @@ namespace Geeks.GeeksProductivityTools.Definition
     public enum CodeCleanerType
     {
         Unspecified = 0,
-        PrivateAccessModifier = 1,
-        NormalizeWhiteSpaces = 2,
+        NormalizeWhiteSpaces = 1,
+        PrivateAccessModifier = 2,
         OrganizeUsingDirectives = 3,
         ConvertMembersToExpressionBodied = 4,
         ConvertFullNameTypesToBuiltInTypes = 5,
