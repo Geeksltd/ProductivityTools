@@ -23,7 +23,6 @@ namespace Geeks.GeeksProductivityTools.Menus.Cleanup.CommandsHandlers.Infra
         public static CleanupOptionForm Instance { get; set; }
         public CodeCleanerType[] SelectedTypes { get; private set; }
 
-
         CleanupOptionForm()
         {
             InitializeComponent();
@@ -31,9 +30,13 @@ namespace Geeks.GeeksProductivityTools.Menus.Cleanup.CommandsHandlers.Infra
             base.WindowState = FormWindowState.Normal;
             this.StartPosition = FormStartPosition.CenterScreen;
             this.BackColor = Color.FromArgb(0xF0, 0xF0, 0xF0);
-
+            this.Load += CleanupOptionForm_Load;
             CreateControls();
             LoadFromSetting();
+        }
+
+        private void CleanupOptionForm_Load(object sender, EventArgs e)
+        {
         }
 
         private void CreateControls()
@@ -105,6 +108,7 @@ namespace Geeks.GeeksProductivityTools.Menus.Cleanup.CommandsHandlers.Infra
         private void btnApply_Click(object sender, EventArgs e)
         {
             ApplyCleanup();
+            this.DialogResult = DialogResult.OK;
             this.Close();
         }
 

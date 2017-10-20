@@ -22,7 +22,14 @@ namespace Geeks.GeeksProductivityTools.Menus.ActionsOnCSharp
 
                     if (selectedProjectItem != null)
                     {
-                        ActionCSharpOnProjectItem.Action(selectedProjectItem, action, type);
+                        if (selectedProjectItem.ProjectItems == null || selectedProjectItem.ProjectItems.Count == 0)
+                        {
+                            action(selectedProjectItem, type, true);
+                        }
+                        else
+                        {
+                            ActionCSharpOnProjectItem.Action(selectedProjectItem, action, type);
+                        }
                     }
                     else if (selectItem.Project != null)
                     {

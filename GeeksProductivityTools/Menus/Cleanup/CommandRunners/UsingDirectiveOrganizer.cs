@@ -20,7 +20,6 @@ namespace Geeks.GeeksProductivityTools.Menus.Cleanup
             }
             catch (Exception e)
             {
-                ErrorNotification.LogError(e);
                 ErrorNotification.EmailError(e);
                 ProcessActions.GeeksProductivityToolsProcess();
             }

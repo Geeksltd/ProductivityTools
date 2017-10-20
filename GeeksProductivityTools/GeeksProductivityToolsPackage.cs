@@ -73,8 +73,6 @@ namespace Geeks.GeeksProductivityTools
                             {
                                 foreach (var documentItem in otherProject.Documents.Where(d => d.FilePath == changedDocument.FilePath))
                                 {
-                                    //var tempDocument = documentItem.WithText(documentRoot.GetText());
-                                    //var g = tempDocument.GetSyntaxRootAsync().Result;
                                     changedSolution = changedSolution.WithDocumentText(documentItem.Id, documentRoot.GetText());
                                 }
                             }
@@ -87,6 +85,7 @@ namespace Geeks.GeeksProductivityTools
 
         public void SaveSolutionChanges()
         {
+            if (_CleanupWorkingSolution == null) return;
             var changedSolution = ExtactChanges(VsWorkspace.CurrentSolution, _CleanupWorkingSolution);
             bool b = VsWorkspace.TryApplyChanges(changedSolution);
             _CleanupWorkingSolution = null;

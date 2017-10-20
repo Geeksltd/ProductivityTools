@@ -3,6 +3,7 @@ using EnvDTE;
 using Geeks.GeeksProductivityTools.Definition;
 using Geeks.GeeksProductivityTools.Menus.Cleanup;
 using Geeks.GeeksProductivityTools.Utils;
+using Geeks.GeeksProductivityTools.Extensions;
 
 namespace Geeks.GeeksProductivityTools.Menus.ActionsOnCSharp
 {
@@ -10,6 +11,13 @@ namespace Geeks.GeeksProductivityTools.Menus.ActionsOnCSharp
     {
         public static void DoCleanup(ProjectItem item, CodeCleanerType[] actionType)
         {
+            DoCleanup(item, actionType, false);
+        }
+
+        public static void DoCleanup(ProjectItem item, CodeCleanerType[] actionType, bool fileWindowMustBeOpend = false)
+        {
+            if (!item.IsCsharpFile() || item.IsCSharpDesignerFile()) return;
+
             try
             {
                 var path = item.Properties.Item("FullPath").Value.ToString();
@@ -22,11 +30,13 @@ namespace Geeks.GeeksProductivityTools.Menus.ActionsOnCSharp
                 {
                     CodeCleanerHost.Run(item, actionTypeItem);
                 }
-                window.Close(vsSaveChanges.vsSaveChangesYes);
+                if (fileWindowMustBeOpend == false)
+                {
+                    window.Close(vsSaveChanges.vsSaveChangesYes);
+                }
             }
             catch (Exception e)
             {
-                ErrorNotification.LogError(e, item);
                 ErrorNotification.EmailError(e);
                 ProcessActions.GeeksProductivityToolsProcess();
             }
